@@ -64,10 +64,10 @@ JobSphere is a comprehensive job board application designed to streamline the jo
 
   - `npm run dev`
 
-- Ensure to initiate the command within the API folder. For instance:
+- Ensure to initiate the command within the Server folder. For instance:
 
   ```bash
-  cd Jobsphere/server> npm run dev
+  cd Jobsphere\server> npm run dev
   ```
 
 ## Contributors
