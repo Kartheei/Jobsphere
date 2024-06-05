@@ -1,13 +1,23 @@
-import React from 'react';
-import SignupPage from './pages/SignupPage';
-// import SignInPage from './SignInPage';
+import './App.css';
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <SignupPage />
+    <div className="App">
+      <header className="App-header">        
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
   );
-};
+}
 
 export default App;
