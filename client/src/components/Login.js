@@ -18,11 +18,11 @@ const Login = () => {
                 <h2>Login</h2>
                 <form>
                     <div className="signin_form-group">
-                        <label for="email">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input type="email" name="email" required />
                     </div>
                     <div className="signin_form-group">
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input type="password" name="password" required />
                     </div>
                     <button type="submit" className="signin_btn">Login</button>
