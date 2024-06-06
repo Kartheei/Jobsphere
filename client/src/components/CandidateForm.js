@@ -1,6 +1,7 @@
 import React from 'react';
 
 const CandidateForm = ({ handleToggle, isCandidate }) => {
+ 
   return (
     <main className="App-main">
       <div className="signup_container_candidate">
@@ -31,19 +32,22 @@ const CandidateForm = ({ handleToggle, isCandidate }) => {
                     <input type="text" id="clname" name="clname" required />
                   </div>
                 </div>
-                <div class="signup_form-group">
+                <div className="signup_form-group">
                   <label for="cemail">Email</label>
                   <input type="email" id="cemail" name="cemail" required />
                 </div>
-                <div class="signup_form-group">
+                <div className="signup_form-group">
                   <label for="cpassword">Password</label>
                   <input type="password" id="cpassword" name="cpassword" required />
                 </div>
-                <div class="signup_form-group">
+                <div className="signup_form-group">
                   <label for="cconfirm-password">Confirm Password</label>
                   <input type="password" id="cconfirm-password" name="cconfirm-password" required />
                 </div>
-                <button type="submit" class="signup_submit-btn">Create Account</button>
+                <button type="submit" className="signup_submit-btn">Create Account</button>
+                <div className= 'signin-link'>
+                  <span>Already have an account? <a href='/login'>signin</a></span>
+                </div>
               </form>
             </div>
           </div>

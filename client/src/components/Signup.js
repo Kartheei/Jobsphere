@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import CandidateForm from '../components/CandidateForm';
-import EmployerForm from '../components/EmployerForm';
+import CandidateForm from './CandidateForm';
+import EmployerForm from './EmployerForm';
 
-const SignUpPage = () => {
+const SignUp = () => {
   const [isCandidate, setIsCandidate] = useState(true);
 
   const handleToggle = () => {
@@ -20,4 +20,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp;

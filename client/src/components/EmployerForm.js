@@ -1,11 +1,11 @@
 import React from 'react';
 
-const EmployerForm = ({ handleToggle, isCandidate   }) => {
+const EmployerForm = ({ handleToggle, isCandidate }) => {
   return (
     <main className="App-main">
       <div className="signup_container_employer">
         <div className="signup_grid1">
-          <img src="./images/employer_sideimage.jpg" alt="A person collecting on board which contains details regarding a person from a person."/>
+          <img src="./images/employer_sideimage.jpg" alt="A person collecting information on board which contains details regarding another person."/>
         </div>
         <div className="signup_grid2">
           <div className="grid2_container">
@@ -24,31 +24,34 @@ const EmployerForm = ({ handleToggle, isCandidate   }) => {
               <form>
                 <div className="signup_form-group1">
                   <div>
-                    <label for="efname">First Name</label>
+                    <label htmlFor="efname">First Name</label>
                     <input type="text" id="efname" name="efname" required />
                   </div>
                   <div>
-                    <label for="elname">Last Name</label>
-                    <input type="text" id="elname" name="lname" required />
+                    <label htmlFor="elname">Last Name</label>
+                    <input type="text" id="elname" name="elname" required />
                   </div>
                 </div>
-                <div class="signup_form-group">
-                  <label for="eoname">Organization Name</label>
-                  <input type="eoname" id="eoname" name="eoname" required />
+                <div className="signup_form-group">
+                  <label htmlFor="eoname">Organization Name</label>
+                  <input type="text" id="eoname" name="eoname" required />
                 </div>
-                <div class="signup_form-group">
-                  <label for="eemail">Email</label>
+                <div className="signup_form-group">
+                  <label htmlFor="eemail">Email</label>
                   <input type="email" id="eemail" name="eemail" required />
                 </div>
-                <div class="signup_form-group">
-                  <label for="epassword">Password</label>
+                <div className="signup_form-group">
+                  <label htmlFor="epassword">Password</label>
                   <input type="password" id="epassword" name="epassword" required />
                 </div>
-                <div class="signup_form-group">
-                  <label for="econfirm-password">Confirm Password</label>
+                <div className="signup_form-group">
+                  <label htmlFor="econfirm-password">Confirm Password</label>
                   <input type="password" id="econfirm-password" name="econfirm-password" required />
                 </div>
-                <button type="submit" class="signup_submit-btn">Create Account</button>
+                <button type="submit" className="signup_submit-btn">Create Account</button>
+                <div className= 'signin-link'>
+                  <span>Already have an account? <a href='/login'>signin</a></span>
+                </div>
               </form>
             </div>
           </div>
