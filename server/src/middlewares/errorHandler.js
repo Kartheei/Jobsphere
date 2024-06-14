@@ -1,17 +1,25 @@
-export const errorHandler = (err, req, res, next) => {
-    // Log the error for debugging
-    console.error(err.stack);
+export const errorHandler = (error, req, res, next) => {
+    console.error('Error caught by errorHandler middleware:', error);
+    let statusCode = 500;
+    let message = 'Internal Server Error';
 
-    // Handle specific Mongoose validation errors
-    if (err.name === 'ValidationError') {
-        return res.status(400).json({ message: err.message });
+    if (error.name === 'ValidationError') {
+        statusCode = 400;
+        message = error.message;
+    } else if (error.name === 'CastError') {
+        statusCode = 400;
+        message = `Invalid ${err.path}: ${err.value}`;
+    } else if (error.name === 'MongoError' && error.code === 11000) {
+        statusCode = 400;
+        message = 'Duplicate key error';
+    } else if (error.message && error.message.startsWith('MongoError:')) {
+        statusCode = 500;
+        message = 'MongoDB error';
+    } else if (error.name === 'MongooseError' && error.reason && error.reason.name === 'MongoNetworkError') {
+        // Handle MongoDB network errors (e.g., connection timeout)
+        statusCode = 500;
+        message = 'MongoDB connection error';
     }
 
-    // Handle MongoDB specific errors
-    if (err.name === 'MongoError') {
-        return res.status(500).json({ message: 'MongoDB Error: ' + err.message });
-    }
-
-    // Default error handling
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(statusCode).json({ error: message });
 };

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { errorHandler } from '../middlewares/errorHandler.js';
 dotenv.config();
 
 const connectDB = async () => {
@@ -8,7 +9,8 @@ const connectDB = async () => {
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    // Pass the error to the errorHandler middleware
+    errorHandler(error);
     process.exit(1);
   }
 };

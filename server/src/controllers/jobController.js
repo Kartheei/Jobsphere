@@ -6,8 +6,8 @@ export const getJobs = async (req, res, next) => {
   try {
     const jobs = await job.find();
     res.json(jobs);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error); // errorHandler middleware
   }
 };
 
@@ -21,13 +21,15 @@ export const createJob = async (req, res, next) => {
     company,
     location,
     salary,
-    postedBy
+    postedBy,
   });
 
   try {
     const savedJob = await newJob.save();
     res.status(201).json(savedJob);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error); // errorHandler middleware
   }
 };
+
+export default errorHandler; // Export errorHandler if needed
