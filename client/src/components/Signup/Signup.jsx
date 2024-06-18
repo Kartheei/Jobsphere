@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CandidateForm from './CandidateForm';
-import EmployerForm from './EmployerForm';
+import CandidateForm from '../CandidateForms/CandidateForm';
+import EmployerForm from '../CandidateForms/EmployerForm';
 
 const SignUp = () => {
   const [isCandidate, setIsCandidate] = useState(true);
