@@ -1,30 +1,31 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
+// Define Port number 
+const PORT = process.env.PORT || 5000;
 
 // Import Routes
 import connectDB from './src/config/db.js';
 import jobRoutes from './src/routes/jobRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
 
-// Custom middleware
-import { errorHandler } from './src/middlewares/errorHandler.js';
-
+// Middleware
+const app = express();
+app.use(cors())
+app.use(express.json());
 dotenv.config();
 
-const app = express();
-
-// Define Port number 
-const PORT = process.env.PORT || 5000;
+// Custom middleware
+import { errorHandler } from './src/middlewares/errorHandler.js'; // middleware for error handel
 
 // Connect to MongoDB
 connectDB();
 
-// Middleware to parse JSON
-app.use(express.json());
-
 // Routes
 app.use('/api/jobs', jobRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes); // authentication routes
 
 // Error handling middleware
 app.use(errorHandler);
