@@ -24,8 +24,9 @@ connectDB();
 
 // Routes
 app.use('/api/jobs', jobRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes); // registration route
 app.use('/api/auth', authRoutes); // authentication routes
+
 
 // Error handling middleware
 app.use(errorHandler);

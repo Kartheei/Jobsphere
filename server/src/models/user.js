@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['employee', 'employer'],
+    enum: ['Candidate', 'Employer'],
     required: true
   },
   profile: {
@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
     experience: String,
     education: String,
     skills: [String],
-    resume: String // URL to the resume file
+    resume: String, // URL to the resume file
+    organizationName: String, // Specific to Employers
   },
   appliedJobs: [
     {

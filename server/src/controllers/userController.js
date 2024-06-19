@@ -1,23 +1,34 @@
+import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
-import { errorHandler } from '../middlewares/errorHandler.js';
 
-export const getUsers = async (req, res, next) => {
+// User registration
+export const registerUser = async (req, res, next) => {
+  const { cfname, clname, cemail, cpassword, cconfirmPassword, role, eoname } = req.body;
+
+  if (cpassword !== cconfirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
+
   try {
-    const users = await User.find();
-    res.json(users);
+    const userExists = await User.findOne({ email: cemail });
+
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const user = new User({
+      name: `${cfname} ${clname}`,
+      email: cemail,
+      password: cpassword,
+      role: role || 'Candidate',  // Default role is 'Candidate'
+      profile: {
+        organizationName: role === 'Employer' ? eoname : undefined,
+      }
+    });
+
+    const createdUser = await user.save();
+    res.status(201).json({ message: 'User registered successfully', user: createdUser });
   } catch (error) {
-    next(error); // errorHandler middleware
+    next(error); // Pass the error to the next middleware (error handler)
   }
 };
-
-export const createUser = async (req, res, next) => {
-  const newUser = new User(req.body);
-  try {
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (error) {
-    next(error); // errorHandler middleware
-  }
-};
-
-export default errorHandler; // Export errorHandler if needed
