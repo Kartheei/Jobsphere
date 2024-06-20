@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['employee', 'employer'],
+    enum: ['Candidate', 'Employer'],
     required: true
   },
   profile: {
@@ -24,7 +25,8 @@ const userSchema = new mongoose.Schema({
     experience: String,
     education: String,
     skills: [String],
-    resume: String // URL to the resume file
+    resume: String, // URL to the resume file
+    organizationName: String, // Specific to Employers
   },
   appliedJobs: [
     {
@@ -36,6 +38,16 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+// Hash the password before saving
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 const user = mongoose.model('user', userSchema);
