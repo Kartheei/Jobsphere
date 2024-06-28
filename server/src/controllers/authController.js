@@ -1,12 +1,11 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
-export const loginUser = async (req, res, next) => {
-   
-    const { email, password } = req.body;
+import generateToken from '../utils/generateToken.js';
 
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${password}`);
+// @desc - Login User
+// @access - public
+const loginUser = async (req, res, next) => {
+    const { email, password } = req.body;
 
     try {
         const user = await User.findOne({ email });
@@ -19,18 +18,35 @@ export const loginUser = async (req, res, next) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign(
-            { userId: user._id, email: user.email },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
+        generateToken(res, user._id); // This sets the token in a cookie
 
-        res.status(200).json({ message: 'Login successful', token, user });
+        // Return necessary user information
+        const sanitizedUser = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        };
+
+        res.status(200).json({ message: 'Login successful', user: sanitizedUser });
     } catch (error) {
         next(error); // Pass the error to the next middleware (error handler)
     }
 };
-export const getProtectedData = (req, res) => {
-    res.status(200).json({ message: 'This is protected data', user: req.user });
+
+// @desc - Logout User
+// @access - private
+const logoutUser = async (req, res, next) => {
+    try {
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            expires: new Date(0),
+        });
+
+        res.status(200).json({ message: 'User logged out' });
+    } catch (error) {
+        next(error);
+    }
 };
+
+export { loginUser, logoutUser };

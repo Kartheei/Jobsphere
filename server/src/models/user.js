@@ -20,13 +20,15 @@ const userSchema = new mongoose.Schema({
     enum: ['Candidate', 'Employer'],
     required: true
   },
+  organizationName: {
+    type: String,
+    required: function () {
+      return this.role === 'Employer';
+    }, // Specific to Employers, required only for Employer role
+  },
   profile: {
-    bio: String,
-    experience: String,
-    education: String,
-    skills: [String],
-    resume: String, // URL to the resume file
-    organizationName: String, // Specific to Employers
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserProfile',
   },
   appliedJobs: [
     {
@@ -37,7 +39,11 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // Hash the password before saving
@@ -47,6 +53,18 @@ userSchema.pre('save', async function (next) {
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Update updatedAt before saving
+userSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
+  next();
+});
+
+// Update updatedAt before updating
+userSchema.pre('findOneAndUpdate', function (next) {
+  this.set({ updatedAt: Date.now() });
   next();
 });
 

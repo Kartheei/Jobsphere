@@ -1,20 +1,30 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config(); // Load environment variables
+import User from '../models/user.js';
 
-export const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+const protect = async (req, res, next) => {
+    let token;
 
-    if (!token) {
-        return res.status(401).json({ message: 'No token, authorization denied' });
+    if (req.cookies.jwt) {
+        try {
+            // Get token from cookies
+            token = req.cookies.jwt;
+
+            // Verify token
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+            // Get user from the token
+            req.user = await User.findById(decoded.userId).select('-password');
+
+            next();
+        } catch (error) {
+            next(error); // Pass the error to the next middleware (error handler);
+            res.status(401).json({ message: 'Not authorized, token failed' });
+        }
     }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(401).json({ message: 'Token is not valid' });
+    if (!token) {
+        res.status(401).json({ message: 'Not authorized, no token' });
     }
 };
 
+export { protect };
