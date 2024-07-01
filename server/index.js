@@ -11,6 +11,8 @@ import jobRoutes from './src/routes/jobRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 
+dotenv.config();
+
 // Middleware
 const app = express();
 app.use(cors())
@@ -24,8 +26,8 @@ import { errorHandler } from './src/middlewares/errorHandler.js'; // middleware 
 // Connect to MongoDB
 connectDB();
 
-// Routes
-app.use('/api/jobs', jobRoutes);
+// // Routes
+app.use('/api', jobRoutes); // Use the imported jobRoutes
 app.use('/api/users', userRoutes); // registration route
 app.use('/api/auth', authRoutes); // authentication routes
 

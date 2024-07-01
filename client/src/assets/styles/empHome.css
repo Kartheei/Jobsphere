@@ -1,0 +1,51 @@
+.emp-hero-section {
+  background-image: url("/images/Hero_Candidate.png"); /* Ensure the path is correct */
+  background-size: cover !important;
+  background-position: center !important;
+  height: 500px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.emp-hero-content {
+  max-width: md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.emp-hero-heading {
+  width: auto !important;
+  color: #28395a;
+  line-height: 4rem !important;
+}
+
+.post-job-button {
+  background-color: #28395a !important;
+  color: white !important;
+}
+
+.stat-box {
+  background-color: #2d3748;
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recent-jobs-box {
+  background-color: #f7fafc;
+}
+
+.info-box {
+  background-color: #f7fafc;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.view-button {
+  background-color: #28395a !important;
+  color: white !important;
+}

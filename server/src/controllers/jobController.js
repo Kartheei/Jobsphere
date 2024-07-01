@@ -1,35 +1,21 @@
-import job from '../models/job.js';
-import { errorHandler } from '../middlewares/errorHandler.js';
+import { Job } from '../models/job.js'; // Use named import
 
-// Get all jobs
-export const getJobs = async (req, res, next) => {
-  try {
-    const jobs = await job.find();
-    res.json(jobs);
-  } catch (error) {
-    next(error); // errorHandler middleware
-  }
-};
+export async function createJob(req, res) { // Use export for functions
+    const { jobTitle, companyName, location, jobDescription, jobRequirements, employmentType } = req.body;
 
-// Create a new job
-export const createJob = async (req, res, next) => {
-  const { title, description, company, location, salary, postedBy } = req.body;
+    try {
+        const job = new Job({
+            jobTitle,
+            companyName,
+            location,
+            jobDescription,
+            jobRequirements,
+            employmentType,
+        });
 
-  const newJob = new job({
-    title,
-    description,
-    company,
-    location,
-    salary,
-    postedBy,
-  });
-
-  try {
-    const savedJob = await newJob.save();
-    res.status(201).json(savedJob);
-  } catch (error) {
-    next(error); // errorHandler middleware
-  }
-};
-
-export default errorHandler; // Export errorHandler if needed
+        await job.save();
+        res.status(201).json({ message: 'Job posted successfully', job });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to post job', error });
+    }
+}

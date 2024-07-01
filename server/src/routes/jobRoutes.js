@@ -1,8 +1,7 @@
-import express from 'express';
-const router = express.Router();
-import { getJobs, createJob } from '../controllers/jobController.js';
+import { Router } from 'express';
+import { createJob } from '../controllers/jobController.js'; // Use named import
 
-router.get('/', getJobs);
-router.post('/', createJob);
+const router = Router();
+router.post('/jobs', createJob);
 
-export default router;
+export default router; // Use default export
