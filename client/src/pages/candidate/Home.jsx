@@ -9,12 +9,33 @@ import {
   CSSReset,
   Input,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/candidate/Footer";
+import { fetchAllJobs } from "../../services/authService";
 
 function Home() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        const data = await fetchAllJobs();
+        setJobs(data);
+      } catch (error) {
+        console.error('Error fetching jobs', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getJobs();
+  }, []);
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -49,46 +70,32 @@ function Home() {
         <Heading as="h3" size="xl" mb="8" textAlign="center">
           Get Your Job
         </Heading>
-        <VStack spacing="8" align="stretch">
-          <Box className="job-card">
-            <Flex justifyContent="space-between" alignItems="center">
-              <Box>
-                <Heading as="h4" size="md" mb="2">
-                  Software Engineer
-                </Heading>
-                <Text fontWeight="bold">Tech Innovators Inc.</Text>
-                <Text mb="4">
-                  Seeking a skilled software engineer with 3+ years of
-                  experience in JavaScript, Python, and cloud computing.
-                  Responsibilities include developing scalable web applications
-                  and collaborating with cross-functional teams.
-                </Text>
-              </Box>
-              <Button className="apply-button" width="120px">
-                Apply
-              </Button>
-            </Flex>
-          </Box>
-          <Box className="job-card">
-            <Flex justifyContent="space-between" alignItems="center">
-              <Box>
-                <Heading as="h4" size="md" mb="2">
-                  Software Engineer
-                </Heading>
-                <Text fontWeight="bold">Tech Innovators Inc.</Text>
-                <Text mb="4">
-                  Seeking a skilled software engineer with 3+ years of
-                  experience in JavaScript, Python, and cloud computing.
-                  Responsibilities include developing scalable web applications
-                  and collaborating with cross-functional teams.
-                </Text>
-              </Box>
-              <Button className="apply-button" width="120px">
-                Apply
-              </Button>
-            </Flex>
-          </Box>
-        </VStack>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <VStack spacing="8" align="stretch">
+            {jobs.length > 0 ? (
+              jobs.slice(0, 2).map((job) => (
+                <Box key={job._id} className="job-card" borderWidth="1px" borderRadius="lg" p={5}>
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Box>
+                      <Heading as="h4" size="md" mb="2">
+                        {job.title}
+                      </Heading>
+                      <Text fontWeight="bold">{job.company}</Text>
+                      <Text mb="4">{job.description}</Text>
+                    </Box>
+                    <Button className="apply-button" width="120px">
+                      Apply
+                    </Button>
+                  </Flex>
+                </Box>
+              ))
+            ) : (
+              <Text>No jobs available</Text>
+            )}
+          </VStack>
+        )}
       </Container>
 
       <Footer />
@@ -97,3 +104,5 @@ function Home() {
 }
 
 export default Home;
+
+

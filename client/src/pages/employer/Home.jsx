@@ -62,7 +62,7 @@ const Home = () => {
           </Box>
           <Box className="stat-box" bg="#2d3748" color="white">
             <Heading as="h3" size="xl">
-              28
+              0
             </Heading>
             <Text>Applications received</Text>
           </Box>

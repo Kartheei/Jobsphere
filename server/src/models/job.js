@@ -2,15 +2,15 @@
 
 
 // const jobSchema = new mongoose.Schema({
-//   title: {
+//   jobTitle: {
 //     type: String,
 //     required: true
 //   },
-//   description: {
+//   jobDescription: {
 //     type: String,
 //     required: true
 //   },
-//   company: {
+//   companyName: {
 //     type: String,
 //     required: true
 //   },
@@ -18,8 +18,9 @@
 //     type: String,
 //     required: true
 //   },
-//   salary: {
-//     type: Number
+//   jobRequirements: {
+//     type: String,
+//     required: true
 //   },
 //   postedBy: {
 //     type: mongoose.Schema.Types.ObjectId,
@@ -48,34 +49,16 @@
 
 
 
-//part 2
-
-// const mongoose = require('mongoose');
-
-// const jobSchema = new mongoose.Schema({
-//     jobTitle: { type: String, required: true },
-//     companyName: { type: String, required: true },
-//     location: { type: String, required: true },
-//     jobDescription: { type: String, required: true },
-//     jobRequirements: { type: String, required: true },
-//     employmentType: { type: String, required: true },
-// }, { timestamps: true });
-
-// module.exports = mongoose.model('Job', jobSchema);
-
-
-// job.js
 import mongoose from 'mongoose';
 
 const jobSchema = new mongoose.Schema({
-    jobTitle: String,
-    companyName: String,
-    location: String,
-    jobDescription: String,
-    jobRequirements: String,
-    employmentType: String,
-    // Add more fields as needed
-});
+    jobTitle: { type:String, required: true },
+    companyName: { type:String, required: true },
+    location: { type:String, required: true },
+    jobDescription: { type:String, required: true },
+    jobRequirements: { type:String, required: true },
+    employmentType: { type:String, required: true },
+}, { timestamps: true });
 
 const Job = mongoose.model('Job', jobSchema);
 

@@ -19,3 +19,13 @@ export async function createJob(req, res) { // Use export for functions
         res.status(500).json({ message: 'Failed to post job', error });
     }
 }
+
+
+export const getAllJobs = async (req, res) => {
+    try {
+      const jobs = await Job.find();
+      res.status(200).json(jobs);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching jobs', error });
+    }
+  };

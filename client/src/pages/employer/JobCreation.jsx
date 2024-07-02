@@ -1,3 +1,4 @@
+
 import {
   Box,
   Button,
@@ -40,7 +41,7 @@ function JobCreation() {
 
     try {
       // Send the job data to the API
-      await axios.post("/api/jobs", jobData);
+      await axios.post("http://localhost:5000/api/jobs", jobData);
       toast({
         title: "Job posted.",
         description: "Your job has been posted successfully.",
@@ -141,3 +142,4 @@ function JobCreation() {
 }
 
 export default JobCreation;
+
