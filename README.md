@@ -50,12 +50,12 @@ JobSphere is a comprehensive job board application designed to streamline the jo
 
 - To start React project, execute the following commands:
 
-  - `npm run start`
+  - `npm run dev`
 
 - Ensure to initiate the command within the client folder. For instance:
 
   ```bash
-  cd Jobsphere\client> npm run start
+  cd Jobsphere\client> npm run dev
   ```
 
 #### Server

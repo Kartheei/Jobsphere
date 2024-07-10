@@ -1,0 +1,90 @@
+/* Header Styles */
+.header {
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+}
+.emp-header {
+  background-color: #010B1D;
+  padding: 1rem 0;
+}
+
+.Logo-text {
+  color: #28395a;
+}
+
+.emp-logo-text {
+  color: #f8f9fa;
+}
+
+/* Navigation Link Styles */
+.navLink .nav-link {
+  color: #28395a;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 0px 8px;
+  transition: color 0.3s ease, outline 0.3s ease;
+}
+
+.emp-navLink .nav-link {
+  color: #f8f9fa;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 0px 8px;
+  transition: color 0.3s ease, outline 0.3s ease;
+}
+
+.navLink .nav-link:hover {
+  text-decoration: none;
+  border-radius: 10px;
+  outline: 2px solid #28395a; /* Add outline on hover */
+}
+
+.emp-navLink .nav-link:hover {
+  text-decoration: none;
+  border-radius: 10px;
+  outline: 2px solid #f8f9fa; /* Add outline on hover */
+}
+
+.jobSearch:hover{
+  background-color:#2f4269 !important;
+}
+
+.login-button,
+.sign-up-button {
+  background-color: #28395a !important;
+  color: white !important;
+}
+
+.emp-login-button,
+.emp-sign-up-button {
+  background-color: #f8f9fa !important;
+  color: #28395a !important;
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #010b1d;
+  color: white;
+  padding: 2rem 0;
+}
+
+.footer-section {
+  margin-bottom: 1rem;
+}
+
+.footer-section h5 {
+  color: #ffffff;
+}
+
+.footer-section {
+  flex: 1 !important; /* Ensure all sections are equal width */
+  margin-bottom: 2rem;
+}
+
+.footer-section:last-child {
+  margin-bottom: 0;
+}
