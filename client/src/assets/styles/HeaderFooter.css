@@ -4,8 +4,17 @@
   padding: 1rem 0;
 }
 .emp-header {
-  background-color: #010B1D;
+  background-color: #010b1d;
   padding: 1rem 0;
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-image: url("../images/profile.png");
+  background-size: cover;
+  background-position: center;
 }
 
 .Logo-text {
@@ -24,7 +33,9 @@
   border-radius: 10px;
   margin: 5px;
   padding: 0px 8px;
-  transition: color 0.3s ease, outline 0.3s ease;
+  transition:
+    color 0.3s ease,
+    outline 0.3s ease;
 }
 
 .emp-navLink .nav-link {
@@ -34,7 +45,9 @@
   border-radius: 10px;
   margin: 5px;
   padding: 0px 8px;
-  transition: color 0.3s ease, outline 0.3s ease;
+  transition:
+    color 0.3s ease,
+    outline 0.3s ease;
 }
 
 .navLink .nav-link:hover {
@@ -49,8 +62,8 @@
   outline: 2px solid #f8f9fa; /* Add outline on hover */
 }
 
-.jobSearch:hover{
-  background-color:#2f4269 !important;
+.jobSearch:hover {
+  background-color: #2f4269 !important;
 }
 
 .login-button,

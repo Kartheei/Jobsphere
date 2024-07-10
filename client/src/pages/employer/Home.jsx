@@ -9,9 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+
 import "../../assets/styles/empHome.css";
+import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
-import Footer from "../../components/employer/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -153,7 +154,7 @@ const Home = () => {
         </Flex>
       </Container>
 
-      <Footer />
+      <Footer contentType="employer" />
     </ChakraProvider>
   );
 };

@@ -1,5 +1,7 @@
 "use client";
-import PropTypes from "prop-types";
+import { useState } from "react";
+
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -17,9 +19,9 @@ import {
   Link,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import PropTypes from "prop-types";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 import { registerEmployer } from "../../services/authService"; // Import the service
 
 const EmployerSignup = ({ handleToggle, isCandidate }) => {

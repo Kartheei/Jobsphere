@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   ChakraProvider,
   CSSReset,
@@ -11,10 +13,9 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-// import { FaSearch } from "react-icons/fa";
-import { useEffect, useState } from "react";
+
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/candidate/Footer";
+import Footer from "../../components/common/Footer";
 import { fetchJobs } from "../../services/jobService";
 
 function JobDisplay() {
@@ -107,7 +108,7 @@ function JobDisplay() {
         </Box>
       </Container>
 
-      <Footer />
+      <Footer contentType="candidate" />
     </ChakraProvider>
   );
 }

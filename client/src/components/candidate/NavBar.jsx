@@ -1,4 +1,6 @@
 import { useContext } from "react";
+
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -23,13 +25,13 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Avatar,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom"; // Import RouterLink
-import { HamburgerIcon } from "@chakra-ui/icons";
+
 import "../../assets/styles/HeaderFooter.css";
-import { SearchBar } from "./SearchBar";
 import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+
+import { SearchBar } from "./SearchBar";
 
 const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,31 +63,7 @@ const NavBar = () => {
               </HStack>
               <HStack spacing="4">
                 <SearchBar />
-                {isAuthenticated ? (
-                  <Flex alignItems={"center"}>
-                    <Menu>
-                      <MenuButton
-                        as={Button}
-                        rounded={"full"}
-                        variant={"link"}
-                        cursor={"pointer"}
-                        minW={0}
-                      >
-                        <HStack>
-                          <Avatar size={"sm"} src={"../images/profile.png"} />
-                          <Text>{user.name}</Text>
-                        </HStack>
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem as={RouterLink} to="/profile">
-                          Profile
-                        </MenuItem>
-                        <MenuDivider />
-                        <MenuItem onClick={logout}>Logout</MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                ) : (
+                {!isAuthenticated ? (
                   <>
                     <Button
                       px={8}
@@ -104,6 +82,30 @@ const NavBar = () => {
                       Login
                     </Button>
                   </>
+                ) : (
+                  <Flex alignItems={"center"}>
+                    <Menu>
+                      <MenuButton
+                        as={Button}
+                        rounded={"full"}
+                        variant={"link"}
+                        cursor={"pointer"}
+                        minW={0}
+                      >
+                        <HStack>
+                          <Box className="profile-avatar" />
+                          <Text>{user.name}</Text>
+                        </HStack>
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem as={RouterLink} to="/profile">
+                          Profile
+                        </MenuItem>
+                        <MenuDivider />
+                        <MenuItem onClick={logout}>Logout</MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Flex>
                 )}
               </HStack>
             </>
@@ -126,29 +128,7 @@ const NavBar = () => {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerHeader>
               <Flex alignItems={"center"} width="100%">
-                {isAuthenticated ? (
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rounded={"full"}
-                      variant={"link"}
-                      cursor={"pointer"}
-                      minW={0}
-                    >
-                      <HStack>
-                        <Avatar size={"sm"} src={"../images/profile.png"} />
-                        <Text>{user.name}</Text>
-                      </HStack>
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem as={RouterLink} to="/profile">
-                        Profile
-                      </MenuItem>
-                      <MenuDivider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </MenuList>
-                  </Menu>
-                ) : (
+                {!isAuthenticated ? (
                   <>
                     <Button
                       px={8}
@@ -167,6 +147,28 @@ const NavBar = () => {
                       Login
                     </Button>
                   </>
+                ) : (
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={"full"}
+                      variant={"link"}
+                      cursor={"pointer"}
+                      minW={0}
+                    >
+                      <HStack>
+                        <Box className="profile-avatar" />
+                        <Text>{user.name}</Text>
+                      </HStack>
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem as={RouterLink} to="/profile">
+                        Profile
+                      </MenuItem>
+                      <MenuDivider />
+                      <MenuItem onClick={logout}>Logout</MenuItem>
+                    </MenuList>
+                  </Menu>
                 )}
               </Flex>
             </DrawerHeader>

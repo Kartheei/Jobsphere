@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+
 import {
   Flex,
   Heading,
@@ -18,8 +19,9 @@ import {
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/AuthContext";
 import { loginUser } from "../../services/authService"; // Import the service
-import { AuthContext } from "../../context/AuthContext"; // Ensure correct path to AuthContext
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);

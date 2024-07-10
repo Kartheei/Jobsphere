@@ -1,3 +1,5 @@
+import { useContext, useState, useEffect } from "react";
+
 import {
   Box,
   Button,
@@ -13,11 +15,11 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import { useContext, useState, useEffect } from "react";
+
+import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
-import Footer from "../../components/employer/Footer";
-import { createJob } from "../../services/jobService";
 import { AuthContext } from "../../context/AuthContext";
+import { createJob } from "../../services/jobService";
 
 function JobCreation() {
   const { user, loading } = useContext(AuthContext);
@@ -164,7 +166,7 @@ function JobCreation() {
           </VStack>
         </Box>
       </Container>
-      <Footer />
+      <Footer contentType="employer" />
     </>
   );
 }

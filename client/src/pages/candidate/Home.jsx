@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   ChakraProvider,
   Box,
@@ -12,10 +14,10 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/candidate/Footer";
+import Footer from "../../components/common/Footer";
 import { fetchRandomJobs } from "../../services/jobService";
 
 function Home() {
@@ -112,7 +114,7 @@ function Home() {
         )}
       </Container>
 
-      <Footer />
+      <Footer contentType="candidate" />
     </ChakraProvider>
   );
 }

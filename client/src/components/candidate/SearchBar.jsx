@@ -1,3 +1,4 @@
+import { Search2Icon } from "@chakra-ui/icons";
 import {
   Button,
   Input,
@@ -6,7 +7,6 @@ import {
   InputRightAddon,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons";
 
 export const SearchBar = () => {
   const inputWidth = useBreakpointValue({

@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect } from "react";
-import PropTypes from "prop-types"; // Import PropTypes
+
 import axios from "axios";
 import Cookies from "js-cookie";
+import PropTypes from "prop-types"; // Import PropTypes
 
 export const AuthContext = createContext();
 
