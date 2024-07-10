@@ -1,35 +1,48 @@
-import job from '../models/job.js';
-import { errorHandler } from '../middlewares/errorHandler.js';
-
-// Get all jobs
-export const getJobs = async (req, res, next) => {
-  try {
-    const jobs = await job.find();
-    res.json(jobs);
-  } catch (error) {
-    next(error); // errorHandler middleware
-  }
-};
+import { jobs as Job } from "../models/job.js";
 
 // Create a new job
-export const createJob = async (req, res, next) => {
-  const { title, description, company, location, salary, postedBy } = req.body;
-
-  const newJob = new job({
+export async function createJob(req, res, next) {
+  const {
     title,
     description,
-    company,
     location,
     salary,
-    postedBy,
-  });
+    requirements,
+    job_type,
+    // companyId,
+  } = req.body;
 
   try {
-    const savedJob = await newJob.save();
-    res.status(201).json(savedJob);
+    if (!req.user || req.user.role !== "Employer") {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to create a job" });
+    }
+
+    const job = new Job({
+      title,
+      description,
+      location,
+      salary,
+      requirements,
+      job_type,
+      // companyId,
+      userId: req.user._id, // Save the logged-in user ID
+    });
+
+    await job.save();
+    res.status(201).json({ message: "Job posted successfully", job });
   } catch (error) {
-    next(error); // errorHandler middleware
+    next(error); // Pass the error to the error handler middleware
+  }
+}
+
+// Fetch all jobs
+export const getAllJobs = async (req, res, next) => {
+  try {
+    const jobs = await Job.find().populate("userId", "-password");
+    res.status(200).json(jobs);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
   }
 };
-
-export default errorHandler; // Export errorHandler if needed

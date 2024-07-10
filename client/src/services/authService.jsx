@@ -48,19 +48,3 @@ const loginUser = async (formData) => {
 };
 
 export { registerCandidate, registerEmployer, loginUser };
-
-
-
-
-
-
-// Fetch all jobs
-export const fetchAllJobs = async () => {
-  try {
-    const response = await axios.get('http://localhost:5000/api/jobs');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching jobs', error);
-    throw error;
-  }
-};

@@ -1,4 +1,3 @@
-
 import {
   Box,
   Button,
@@ -10,64 +9,88 @@ import {
   Select,
   FormControl,
   FormLabel,
-  useToast
+  useToast,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import axios from "axios";
+import { useContext, useState, useEffect } from "react";
 import NavBar from "../../components/employer/NavBar";
 import Footer from "../../components/employer/Footer";
+import { createJob } from "../../services/jobService";
+import { AuthContext } from "../../context/AuthContext";
 
 function JobCreation() {
-  const [jobTitle, setJobTitle] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [location, setLocation] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
-  const [jobRequirements, setJobRequirements] = useState("");
-  const [employmentType, setEmploymentType] = useState("");
+  const { user, loading } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    jobTitle: "",
+    location: "",
+    jobDescription: "",
+    jobRequirements: "",
+    employmentType: "",
+    salary: "",
+  });
+
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Construct the job posting data
-    const jobData = {
-      jobTitle,
-      companyName,
-      location,
-      jobDescription,
-      jobRequirements,
-      employmentType,
-    };
-
+    setIsLoading(true);
     try {
-      // Send the job data to the API
-      await axios.post("http://localhost:5000/api/jobs", jobData);
-      toast({
-        title: "Job posted.",
-        description: "Your job has been posted successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      const response = await createJob(formData);
+      if (response) {
+        toast({
+          title: "Job posted.",
+          description: "Your job has been posted successfully.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
 
-      // Clear the form
-      setJobTitle("");
-      setCompanyName("");
-      setLocation("");
-      setJobDescription("");
-      setJobRequirements("");
-      setEmploymentType("");
+        // Clear the form
+        setFormData({
+          jobTitle: "",
+          location: "",
+          jobDescription: "",
+          jobRequirements: "",
+          employmentType: "",
+          salary: "",
+        });
+      }
     } catch (error) {
-      console.error("Error posting job:", error);
       toast({
         title: "Error.",
-        description: "There was an error posting the job.",
+        description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (loading) {
+    return <Spinner size="xl" />;
+  }
+
+  if (user && user.role !== "Employer") {
+    return (
+      <Container maxW="container.xl" mt="8">
+        <Text fontSize="xl" color="red.500">
+          You are not authorized to create a job.
+        </Text>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -78,60 +101,65 @@ function JobCreation() {
             Create new job
           </Heading>
           <VStack spacing="6" align="start" as="form" onSubmit={handleSubmit}>
-            <FormControl id="job-title" isRequired>
+            <FormControl id="jobTitle" isRequired>
               <FormLabel>Job Title</FormLabel>
-              <Input 
-                placeholder="Enter job title" 
-                value={jobTitle} 
-                onChange={(e) => setJobTitle(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="company-name" isRequired>
-              <FormLabel>Company Name</FormLabel>
-              <Input 
-                placeholder="Enter company name" 
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
+              <Input
+                placeholder="Enter job title"
+                value={formData.jobTitle}
+                onChange={handleChange}
               />
             </FormControl>
             <FormControl id="location" isRequired>
               <FormLabel>Location</FormLabel>
-              <Input 
-                placeholder="Enter location" 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+              <Input
+                placeholder="Enter location"
+                value={formData.location}
+                onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="job-description" isRequired>
-              <FormLabel>Job Description with Salary Range</FormLabel>
-              <Textarea 
-                placeholder="Enter job description and salary range"
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
+            <FormControl id="salary" isRequired>
+              <FormLabel>Salary Range</FormLabel>
+              <Input
+                placeholder="Enter salary range"
+                value={formData.salary}
+                onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="job-requirements" isRequired>
+            <FormControl id="jobDescription" isRequired>
+              <FormLabel>Job Description</FormLabel>
+              <Textarea
+                placeholder="Enter job description"
+                value={formData.jobDescription}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="jobRequirements" isRequired>
               <FormLabel>Job Requirements</FormLabel>
-              <Textarea 
+              <Textarea
                 placeholder="Enter job requirements"
-                value={jobRequirements}
-                onChange={(e) => setJobRequirements(e.target.value)}
+                value={formData.jobRequirements}
+                onChange={handleChange}
               />
             </FormControl>
-            <FormControl id="employment-type" isRequired>
+            <FormControl id="employmentType" isRequired>
               <FormLabel>Employment Type</FormLabel>
-              <Select 
+              <Select
                 placeholder="Select employment type"
-                value={employmentType}
-                onChange={(e) => setEmploymentType(e.target.value)}
+                value={formData.employmentType}
+                onChange={handleChange}
               >
-                <option>Full-time</option>
-                <option>Part-time</option>
-                <option>Contract</option>
+                <option value="full_time">Full-time</option>
+                <option value="part_time">Part-time</option>
+                <option value="contract">Contract</option>
               </Select>
             </FormControl>
-            <Button colorScheme="blue" size="lg" type="submit">
-              Submit
+            <Button
+              colorScheme="blue"
+              size="lg"
+              type="submit"
+              isDisabled={isLoading}
+            >
+              {isLoading ? <Spinner size="sm" /> : "Submit"}
             </Button>
           </VStack>
         </Box>
@@ -142,4 +170,3 @@ function JobCreation() {
 }
 
 export default JobCreation;
-

@@ -25,7 +25,7 @@ import { errorHandler } from './src/middlewares/errorHandler.js'; // middleware 
 connectDB();
 
 // Routes
-app.use('/api/jobs', jobRoutes);
+app.use('/api/jobs', jobRoutes); // jobRoutes
 app.use('/api/users', userRoutes); // registration route
 app.use('/api/auth', authRoutes); // authentication routes
 

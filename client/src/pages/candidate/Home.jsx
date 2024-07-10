@@ -10,31 +10,45 @@ import {
   Input,
   Text,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/candidate/Footer";
-import { fetchAllJobs } from "../../services/authService";
+import { fetchRandomJobs } from "../../services/jobService";
 
 function Home() {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const toast = useToast();
 
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const data = await fetchAllJobs();
-        setJobs(data);
+        const jobsData = await fetchRandomJobs();
+        if (jobsData.length === 0) {
+          setError("No jobs available at the moment.");
+        } else {
+          setJobs(jobsData);
+        }
       } catch (error) {
-        console.error('Error fetching jobs', error);
+        setError(error.message);
+        toast({
+          title: "Error.",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     getJobs();
-  }, []);
+  }, [toast]);
 
   return (
     <ChakraProvider>
@@ -70,30 +84,30 @@ function Home() {
         <Heading as="h3" size="xl" mb="8" textAlign="center">
           Get Your Job
         </Heading>
-        {loading ? (
-          <Spinner />
+        {isLoading ? (
+          <Spinner size="xl" />
+        ) : error ? (
+          <Text fontSize="xl" color="red.500" textAlign="center">
+            {error}
+          </Text>
         ) : (
           <VStack spacing="8" align="stretch">
-            {jobs.length > 0 ? (
-              jobs.slice(0, 2).map((job) => (
-                <Box key={job._id} className="job-card" borderWidth="1px" borderRadius="lg" p={5}>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Box>
-                      <Heading as="h4" size="md" mb="2">
-                        {job.jobTitle}
-                      </Heading>
-                      <Text fontWeight="bold">{job.companyName}</Text>
-                      <Text mb="4">{job.jobDescription}</Text>
-                    </Box>
-                    <Button className="apply-button" width="120px">
-                      Apply
-                    </Button>
-                  </Flex>
-                </Box>
-              ))
-            ) : (
-              <Text>No jobs available</Text>
-            )}
+            {jobs.map((job) => (
+              <Box key={job._id} className="job-card">
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Box>
+                    <Heading as="h4" size="md" mb="2">
+                      {job.title}
+                    </Heading>
+                    <Text fontWeight="bold">{job.location}</Text>
+                    <Text mb="4">{job.description}</Text>
+                  </Box>
+                  <Button className="apply-button" width="120px">
+                    Apply
+                  </Button>
+                </Flex>
+              </Box>
+            ))}
           </VStack>
         )}
       </Container>
@@ -104,5 +118,3 @@ function Home() {
 }
 
 export default Home;
-
-
