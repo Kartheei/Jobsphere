@@ -67,4 +67,21 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
+export const getUserRoleById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).select('role');
+
+    if (user) {
+      res.status(200).json({ role: user.role });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    next(error); // Pass the error to the next middleware (error handler)
+  }
+};
+
+
 export { getUserProfile }
