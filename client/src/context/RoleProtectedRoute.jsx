@@ -1,8 +1,6 @@
 import { useContext } from "react";
-
 import PropTypes from "prop-types"; // Import PropTypes
 import { Navigate, useLocation } from "react-router-dom";
-
 import { AuthContext } from "../context/AuthContext";
 
 const RoleProtectedRoute = ({ children, allowedRoles }) => {
