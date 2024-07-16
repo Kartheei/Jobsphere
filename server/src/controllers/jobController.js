@@ -1,4 +1,5 @@
 import { jobs as Job } from "../models/job.js";
+import User from "../models/user.js";
 
 // Create a new job
 export async function createJob(req, res, next) {
@@ -51,7 +52,7 @@ export const updateJobDetails = async (req, res, next) => {
         company,
         location,
         salary,
-        updatedAt: new Date().toISOString() 
+        updatedAt: new Date().toISOString()
       },
       { new: true, runValidators: true }
     );
@@ -62,7 +63,7 @@ export const updateJobDetails = async (req, res, next) => {
 
     res.json(updatedJob);
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
 
@@ -76,7 +77,21 @@ export const getEmployerJobs = async (req, res, next) => {
 
     // Find jobs created by the logged-in employer
     const jobs = await Job.find({ userId: req.user._id }).select('title company description');
-    res.status(200).json(jobs);
+
+    // Retrieve the organization name from the user's information
+    const user = await User.findById(req.user._id).select('organizationName');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Push the organization name into the response for each job
+    const jobsWithOrganization = jobs.map(job => ({
+      ...job._doc,
+      organizationName: user.organizationName,
+    }));
+
+    res.status(200).json(jobsWithOrganization);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }
