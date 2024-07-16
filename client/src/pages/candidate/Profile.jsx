@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Container,
@@ -12,12 +13,28 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
 } from "@chakra-ui/react";
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 
 function Profile() {
+  const handleViewResume = () => {
+    // Logic to view resume
+    console.log("View Resume");
+  };
+
+  const handleUploadResume = () => {
+    // Logic to upload resume
+    console.log("Upload Resume");
+  };
+
   return (
     <>
       <NavBar />
@@ -34,9 +51,9 @@ function Profile() {
           <Heading size="xl">Profile</Heading>
         </Box>
 
-        {/* Profile Picture and Name Section */}
-        <Flex alignItems="center" mb="8">
-          <Box mr="4">
+        {/* Profile Picture and Basic Info Section */}
+        <Flex alignItems="center" mb="8" bg="gray.50" p="6" borderRadius="md">
+          <Box mr="6">
             <Image
               src="./images/profile.png"
               alt="Profile"
@@ -45,12 +62,42 @@ function Profile() {
               objectFit="cover"
             />
           </Box>
-          <FormControl>
-            <FormLabel fontSize="lg" fontWeight="bold">
-              Name
-            </FormLabel>
-            <Input placeholder="John Doe" size="lg" />
-          </FormControl>
+          <VStack spacing="4" align="flex-start" flex="1">
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Name
+              </FormLabel>
+              <Input placeholder="Enter your name" size="lg" />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Title
+              </FormLabel>
+              <Input placeholder="Enter your title" size="lg" />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Location
+              </FormLabel>
+              <Input placeholder="Enter your location" size="lg" />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Contact Details
+              </FormLabel>
+              <Input placeholder="Enter your email" size="lg" mb="2" />
+              <Input placeholder="Enter your phone number" size="lg" />
+            </FormControl>
+          </VStack>
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="blue" size="lg" ml="6">
+              Resume
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={handleViewResume}>View</MenuItem>
+              <MenuItem onClick={handleUploadResume}>Upload</MenuItem>
+            </MenuList>
+          </Menu>
         </Flex>
 
         <Divider mb="8" />
