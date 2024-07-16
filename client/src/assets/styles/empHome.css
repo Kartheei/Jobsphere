@@ -49,3 +49,11 @@
   background-color: #28395a !important;
   color: white !important;
 }
+.btn-disable{
+  background-color: #E5737A !important;
+  color: white !important ;
+}
+.btn-delete{
+  background-color: #591111 !important;
+  color: white !important ;
+}

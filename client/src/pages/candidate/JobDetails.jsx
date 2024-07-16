@@ -1,24 +1,21 @@
+import React from "react";
 import {
-  ChakraProvider,
   Box,
   Button,
-  Container,
   Flex,
   Heading,
-  CSSReset,
   Text,
 } from "@chakra-ui/react";
 
-import "../../assets/styles/empHome.css";
+import "../../assets/styles/canHome.css";
 import Footer from "../../components/common/Footer";
-import NavBar from "../../components/employer/NavBar";
+import NavBar from "../../components/candidate/NavBar";
 
 const JobDetails = () => {
 
 
   return (
-    <ChakraProvider>
-      <CSSReset />
+    <>
       <NavBar />
       <Box
         p="6"
@@ -101,7 +98,7 @@ const JobDetails = () => {
       </Box>
 
       <Footer contentType="employer" />
-    </ChakraProvider>
+    </>
   );
 };
 
