@@ -7,6 +7,8 @@ import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
+import Employer_profile from '../src/components/employer/Employer_profile';
+
 
 const routes = [
   // Candidate routes
@@ -46,6 +48,7 @@ const routes = [
     ),
     index: true,
   },
+  
   {
     path: "/employer/job-creation",
     element: (
@@ -54,7 +57,14 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
-
+  {
+    path: "/Employer_profile",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer_profile "]}>
+        <Employer_profile />
+      </RoleProtectedRoute>
+    ),
+  },
   // Authentication routes
   {
     path: "/auth/signin",
