@@ -56,6 +56,13 @@ const NavBar = () => {
                 >
                   Post a Job
                 </Link>
+                <Link
+                  className="nav-link"
+                  as={RouterLink}
+                  to="/employer/job-listings"
+                >
+                  Job Listings
+                </Link>
                 <Link className="nav-link" to="/employer/find-employee">
                   Find Employee
                 </Link>
@@ -183,6 +190,14 @@ const NavBar = () => {
                   onClick={onClose}
                 >
                   Post a Job
+                </Link>
+                <Link
+                  className="nav-link"
+                  as={RouterLink}
+                  to="/employer/job-listings"
+                  onClick={onClose}
+                >
+                  Job Listings
                 </Link>
                 <Link
                   className="nav-link"
