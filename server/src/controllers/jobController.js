@@ -37,6 +37,36 @@ export async function createJob(req, res, next) {
   }
 }
 
+// /Update Job details
+export const updateJobDetails = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, description, company, location, salary } = req.body;
+
+  try {
+    const updatedJob = await Job.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        company,
+        location,
+        salary,
+        updatedAt: new Date().toISOString() 
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedJob) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    res.json(updatedJob);
+  } catch (error) {
+    next(error); 
+  }
+};
+
+
 // Fetch all jobs
 export const getAllJobs = async (req, res, next) => {
   try {
