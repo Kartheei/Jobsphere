@@ -51,4 +51,16 @@ const fetchRandomJobs = async () => {
   }
 };
 
-export { createJob, fetchJobs, fetchRandomJobs };
+const fetchJoblistbyEmployer = async () => {
+  try {
+    const response = await axios.get("/api/jobs/employer/jobs", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+}
+
+
+export { createJob, fetchJobs, fetchRandomJobs, fetchJoblistbyEmployer };
