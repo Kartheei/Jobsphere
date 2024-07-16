@@ -66,6 +66,21 @@ export const updateJobDetails = async (req, res, next) => {
   }
 };
 
+// Get Jobs based on employer login
+export const getEmployerJobs = async (req, res, next) => {
+  try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    // Find jobs created by the logged-in employer
+    const jobs = await Job.find({ userId: req.user._id }).select('title company description');
+    res.status(200).json(jobs);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
 
 // Fetch all jobs
 export const getAllJobs = async (req, res, next) => {

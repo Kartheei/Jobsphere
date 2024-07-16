@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createJob, getAllJobs, updateJobDetails } from "../controllers/jobController.js";
+import { createJob, getAllJobs, updateJobDetails,getEmployerJobs } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = Router();
@@ -12,5 +12,8 @@ router.get("/", getAllJobs);
 
 // Update Job Details
 router.put('/:id', updateJobDetails);
+
+// /Employer Jobs
+router.get('/employer/jobs', protect, getEmployerJobs);
 
 export default router;
