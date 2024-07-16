@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { Spinner } from "@chakra-ui/react"; // Import Spinner
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
