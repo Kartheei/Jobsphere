@@ -62,4 +62,47 @@ const fetchJoblistbyEmployer = async () => {
   }
 };
 
-export { createJob, fetchJobs, fetchRandomJobs, fetchJoblistbyEmployer };
+const deleteJob = async (jobId) => {
+  try {
+    const response = await axios.delete(`/api/jobs/employer/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// API call for fetching a specific job by ID
+const fetchJobDetails = async (jobId) => {
+  try {
+    const response = await axios.get(`/api/jobs/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// API call for updating job details
+const updateJobDetails = async (jobId, jobData) => {
+  try {
+    const response = await axios.put(`/api/jobs/employer/${jobId}`, jobData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export {
+  createJob,
+  fetchJobs,
+  fetchRandomJobs,
+  fetchJoblistbyEmployer,
+  deleteJob,
+  fetchJobDetails,
+  updateJobDetails,
+};
