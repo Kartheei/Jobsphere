@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   ChakraProvider,
   Box,
@@ -11,6 +12,8 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -20,6 +23,7 @@ const JobPosted = () => {
   const [jobList, setJobList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -47,7 +51,6 @@ const JobPosted = () => {
     "My Network",
     "Tutorial",
   ]);
-
   const truncateDescription = (description, limit = 500) => {
     if (description.length > limit) {
       return description.substring(0, limit) + "...";
@@ -55,7 +58,11 @@ const JobPosted = () => {
     return description;
   };
 
-  const handleDeleteJob = async (jobId) => {
+  const handleEditClick = (jobId) => {
+    navigate(`/employer/jobs/${jobId}/edit`);
+  };
+
+  const handleDeleteClick = async (jobId) => {
     try {
       await deleteJob(jobId);
       setJobList((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
@@ -138,13 +145,14 @@ const JobPosted = () => {
                       <Button
                         mt={{ base: "4", md: "0" }}
                         className="view-button"
+                        onClick={() => handleEditClick(data._id)}
                       >
                         Edit
                       </Button>
                       <Button
                         mt={{ base: "4", md: "0" }}
                         className="btn-delete"
-                        onClick={() => handleDeleteJob(data._id)}
+                        onClick={() => handleDeleteClick(data._id)}
                       >
                         Delete
                       </Button>

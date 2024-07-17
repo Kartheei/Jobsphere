@@ -140,3 +140,21 @@ export const deleteJob = async (req, res, next) => {
     next(error);
   }
 };
+
+// Fetch job details by ID
+export const getJobById = async (req, res, next) => {
+  try {
+    const job = await Job.findById(req.params.id).populate({
+      path: "userId",
+      select: "name organizationName",
+    });
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    res.status(200).json(job);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};

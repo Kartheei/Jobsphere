@@ -1,4 +1,5 @@
 import { useContext } from "react";
+
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -26,6 +27,7 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+
 import "../../assets/styles/HeaderFooter.css";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -60,16 +62,6 @@ const NavBar = () => {
                   to="/employer/job-listings"
                 >
                   Job Listings
-                </Link>
-                <Link
-                  className="nav-link"
-                  as={RouterLink}
-                  to="/employer/job-details-update"
-                >
-                  Edit Job Posting
-                </Link>
-                <Link className="nav-link" to="/employer/find-employee">
-                  Find Employee
                 </Link>
               </HStack>
               <HStack spacing="4">
