@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   ChakraProvider,
   CSSReset,
@@ -13,7 +12,6 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { fetchJobs } from "../../services/jobService";
@@ -43,6 +41,7 @@ function JobDisplay() {
 
     getJobs();
   }, [toast]);
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -90,6 +89,10 @@ function JobDisplay() {
           </Heading>
           {isLoading ? (
             <Spinner size="xl" />
+          ) : jobs.length === 0 ? (
+            <Text fontSize="xl" color="red.500">
+              No jobs available at the moment.
+            </Text>
           ) : (
             <VStack spacing="4" align="start">
               {jobs.map((job) => (
@@ -97,8 +100,12 @@ function JobDisplay() {
                   <Heading size="md" mb="2">
                     {job.title}
                   </Heading>
-                  <Text fontWeight="bold">Tech Innovators Inc.</Text>{" "}
-                  {/* Replace with job.company if available */}
+                  <Text fontWeight="bold">
+                    {job.userId && job.userId.organizationName
+                      ? job.userId.organizationName
+                      : "Unknown Company"}
+                  </Text>
+                  <Text fontWeight="bold">{job.location}</Text>
                   <Text mb="4">{job.description}</Text>
                   <Button className="apply-button">Apply</Button>
                 </Box>
