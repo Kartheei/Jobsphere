@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+
 import {
   Box,
   Button,
@@ -8,7 +9,8 @@ import {
   VStack,
   Text,
   Divider,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
+
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
 
@@ -16,45 +18,49 @@ const JobListings = () => {
   const [jobs, setJobs] = useState([
     {
       id: 1,
-      title: 'Software Engineer',
-      company: 'Tech Innovators Inc.',
-      description: 'Seeking a skilled software engineer with 3+ years of experience in JavaScript, Python, and cloud computing. Responsibilities include developing scalable web applications and collaborating with cross-functional teams.',
+      title: "Software Engineer",
+      company: "Tech Innovators Inc.",
+      description:
+        "Seeking a skilled software engineer with 3+ years of experience in JavaScript, Python, and cloud computing. Responsibilities include developing scalable web applications and collaborating with cross-functional teams.",
       applications: 15,
       active: true,
     },
     {
       id: 2,
-      title: 'Frontend Developer',
-      company: 'Creative Solutions LLC',
-      description: 'Looking for a creative frontend developer with experience in React, CSS, and responsive design. Responsibilities include building user-friendly web interfaces and collaborating with designers.',
+      title: "Frontend Developer",
+      company: "Creative Solutions LLC",
+      description:
+        "Looking for a creative frontend developer with experience in React, CSS, and responsive design. Responsibilities include building user-friendly web interfaces and collaborating with designers.",
       applications: 10,
       active: true,
     },
     {
       id: 3,
-      title: 'Backend Developer',
-      company: 'Innovative Tech Corp.',
-      description: 'Experienced backend developer needed with expertise in Node.js, Express, and database management. Responsibilities include creating robust server-side applications and ensuring high performance.',
+      title: "Backend Developer",
+      company: "Innovative Tech Corp.",
+      description:
+        "Experienced backend developer needed with expertise in Node.js, Express, and database management. Responsibilities include creating robust server-side applications and ensuring high performance.",
       applications: 20,
       active: true,
     },
     {
       id: 4,
-      title: 'UI/UX Designer',
-      company: 'Design Hub',
-      description: 'Seeking a talented UI/UX designer with a strong portfolio and experience in Adobe XD, Figma, and user research. Responsibilities include designing intuitive user interfaces and enhancing user experience.',
+      title: "UI/UX Designer",
+      company: "Design Hub",
+      description:
+        "Seeking a talented UI/UX designer with a strong portfolio and experience in Adobe XD, Figma, and user research. Responsibilities include designing intuitive user interfaces and enhancing user experience.",
       applications: 12,
       active: true,
     },
     {
       id: 5,
-      title: 'Data Scientist',
-      company: 'Data Analytics Inc.',
-      description: 'Looking for a data scientist with expertise in Python, R, and machine learning. Responsibilities include analyzing large datasets, building predictive models, and working with cross-functional teams.',
+      title: "Data Scientist",
+      company: "Data Analytics Inc.",
+      description:
+        "Looking for a data scientist with expertise in Python, R, and machine learning. Responsibilities include analyzing large datasets, building predictive models, and working with cross-functional teams.",
       applications: 8,
       active: true,
     },
-      
   ]);
 
   const toggleActiveStatus = (jobId) => {
@@ -83,10 +89,10 @@ const JobListings = () => {
               </Box>
               <VStack>
                 <Button
-                  colorScheme={job.active ? 'green' : 'red'}
+                  colorScheme={job.active ? "green" : "red"}
                   onClick={() => toggleActiveStatus(job.id)}
                 >
-                  {job.active ? 'Active' : 'Disable'}
+                  {job.active ? "Active" : "Disable"}
                 </Button>
                 <Button colorScheme="blue">Edit</Button>
                 <Button colorScheme="red">Delete</Button>

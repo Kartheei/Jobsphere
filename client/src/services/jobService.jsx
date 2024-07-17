@@ -60,7 +60,6 @@ const fetchJoblistbyEmployer = async () => {
   } catch (error) {
     throw new Error(error.response?.data?.message || error.message);
   }
-}
-
+};
 
 export { createJob, fetchJobs, fetchRandomJobs, fetchJoblistbyEmployer };
