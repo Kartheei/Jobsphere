@@ -9,7 +9,8 @@ import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
 import JobDetails from "./pages/candidate/JobDetails";
 import JobPosted from "./pages/employer/JobPosted";
-
+import JobApplied from "./pages/candidate/JobApplied";
+import JobPostedDetails from "./pages/employer/JobPostedDetails";
 
 const routes = [
   // Candidate routes
@@ -46,6 +47,14 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
+  {
+    path: "/jobApplied",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Candidate"]}>
+        <JobApplied />
+      </RoleProtectedRoute>
+    ),
+  },
 
   // Employer routes
   {
@@ -66,10 +75,18 @@ const routes = [
     ),
   },
   {
-    path: "/jobPosted",
+    path: "/employer/jobPosted",
     element: (
       <RoleProtectedRoute allowedRoles={["Employer"]}>
         <JobPosted />
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/employer/jobPostedDetails",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <JobPostedDetails />
       </RoleProtectedRoute>
     ),
   },
