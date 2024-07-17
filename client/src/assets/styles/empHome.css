@@ -53,7 +53,21 @@
   background-color: #E5737A !important;
   color: white !important ;
 }
-.btn-delete{
-  background-color: #591111 !important;
-  color: white !important ;
+/* Styles for the buttons */
+.btn-delete {
+  background-color: #e53e3e !important; 
+  color: #fff !important; 
+}
+
+.btn-delete:hover {
+  background-color: #c53030 !important; 
+}
+
+.btn-approve {
+  background-color: #38a169 !important; 
+  color: #fff !important; 
+}
+
+.btn-approve:hover {
+  background-color: #2f855a !important  ; 
 }
