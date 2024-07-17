@@ -26,7 +26,7 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import "../../assets/styles/HeaderFooter.css";
 import { AuthContext } from "../../context/AuthContext";
@@ -35,6 +35,12 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   const { isAuthenticated, user, logout } = useContext(AuthContext); // Use AuthContext
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    navigate("/employerprofile");
+    onClose(); // Close the drawer if in mobile view
+  };
 
   return (
     <Box as="header" className="emp-header" py={4}>
@@ -63,7 +69,11 @@ const NavBar = () => {
                 >
                   Job Listings
                 </Link>
-                <Link className="nav-link" to="/employer/find-employee">
+                <Link
+                  className="nav-link"
+                  as={RouterLink}
+                  to="/employer/find-employee"
+                >
                   Find Employee
                 </Link>
               </HStack>
@@ -103,7 +113,7 @@ const NavBar = () => {
                         </HStack>
                       </MenuButton>
                       <MenuList>
-                        <MenuItem>Profile</MenuItem>
+                        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                         <MenuDivider />
                         <MenuItem onClick={logout}>Logout</MenuItem>
                       </MenuList>
@@ -165,7 +175,7 @@ const NavBar = () => {
                       </HStack>
                     </MenuButton>
                     <MenuList>
-                      <MenuItem>Profile</MenuItem>
+                      <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
                       <MenuDivider />
                       <MenuItem onClick={logout}>Logout</MenuItem>
                     </MenuList>
