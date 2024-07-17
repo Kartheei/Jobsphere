@@ -5,10 +5,10 @@ import Profile from "./pages/candidate/Profile";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
-import Employerprofile from "./pages/employer/Employerprofile";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
 import JobListing from "./pages/employer/JobListing";
+import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate"; // Import JobDetailsUpdate
 
 const routes = [
   // Candidate routes
@@ -17,15 +17,6 @@ const routes = [
     element: (
       <RoleProtectedRoute allowedRoles={["Candidate"]}>
         <CandidateHome />
-      </RoleProtectedRoute>
-    ),
-    index: true,
-  },
-  {
-    path: "/Employerprofile",
-    element: (
-      <RoleProtectedRoute allowedRoles={["Employer"]}>
-        <Employerprofile />
       </RoleProtectedRoute>
     ),
     index: true,
@@ -70,6 +61,14 @@ const routes = [
     element: (
       <RoleProtectedRoute allowedRoles={["Employer"]}>
         <JobListing />
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/employer/job-details-update",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <JobDetailsUpdate />
       </RoleProtectedRoute>
     ),
   },
