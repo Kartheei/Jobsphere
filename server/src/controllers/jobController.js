@@ -111,3 +111,32 @@ export const getAllJobs = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
+// @desc - Delete job by ide
+export const deleteJob = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.user || req.user.role !== "Employer") {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete a job" });
+    }
+
+    const job = await Job.findById(id);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    if (job.userId.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this job" });
+    }
+
+    await Job.deleteOne({ _id: id });
+    res.status(200).json({ message: "Job deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -7,8 +7,8 @@ import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
-import JobListing from "./pages/employer/JobListing";
 import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate"; // Import JobDetailsUpdate
+import JobListing from "./pages/employer/JobPosted";
 
 const routes = [
   // Candidate routes
@@ -65,7 +65,7 @@ const routes = [
     ),
   },
   {
-    path: "/employer/job-details-update",
+    path: "/employer/job-details-update/",
     element: (
       <RoleProtectedRoute allowedRoles={["Employer"]}>
         <JobDetailsUpdate />

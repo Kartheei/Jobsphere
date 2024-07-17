@@ -62,4 +62,21 @@ const fetchJoblistbyEmployer = async () => {
   }
 };
 
-export { createJob, fetchJobs, fetchRandomJobs, fetchJoblistbyEmployer };
+const deleteJob = async (jobId) => {
+  try {
+    const response = await axios.delete(`/api/jobs/employer/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export {
+  createJob,
+  fetchJobs,
+  fetchRandomJobs,
+  fetchJoblistbyEmployer,
+  deleteJob,
+};

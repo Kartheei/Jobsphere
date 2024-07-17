@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   ChakraProvider,
   Box,
@@ -12,11 +11,10 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
-import { fetchJoblistbyEmployer } from "../../services/jobService";
+import { fetchJoblistbyEmployer, deleteJob } from "../../services/jobService";
 
 const JobPosted = () => {
   const [jobList, setJobList] = useState([]);
@@ -49,11 +47,34 @@ const JobPosted = () => {
     "My Network",
     "Tutorial",
   ]);
+
   const truncateDescription = (description, limit = 500) => {
     if (description.length > limit) {
       return description.substring(0, limit) + "...";
     }
     return description;
+  };
+
+  const handleDeleteJob = async (jobId) => {
+    try {
+      await deleteJob(jobId);
+      setJobList((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+      toast({
+        title: "Job deleted.",
+        description: "The job has been deleted successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -89,21 +110,21 @@ const JobPosted = () => {
                   borderRadius="md"
                   bg="#F7FAFC"
                   mb={6}
+                  key={index}
                 >
                   <Flex
                     justify="space-between"
                     alignItems="center"
                     flexWrap="wrap"
-                    key={index}
                   >
                     <Box textAlign="left" flex="1" minW="250px">
-                      <Heading as="h4" size="md" mb={4}>
+                      <Heading as="h4" size="md" mb="2">
                         {data.title}
                       </Heading>
-                      <Text fontWeight="bold" mb={4}>
+                      <Text fontWeight="bold" mb="2">
                         {data.organizationName}
                       </Text>
-                      <Text fontWeight="bold" mb={4}>
+                      <Text mb="1">
                         {truncateDescription(data.description)}
                       </Text>
                     </Box>
@@ -123,6 +144,7 @@ const JobPosted = () => {
                       <Button
                         mt={{ base: "4", md: "0" }}
                         className="btn-delete"
+                        onClick={() => handleDeleteJob(data._id)}
                       >
                         Delete
                       </Button>

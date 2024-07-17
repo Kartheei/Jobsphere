@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { createJob, getAllJobs, updateJobDetails,getEmployerJobs } from "../controllers/jobController.js";
+import {
+  createJob,
+  getAllJobs,
+  updateJobDetails,
+  getEmployerJobs,
+  deleteJob,
+} from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = Router();
@@ -11,9 +17,12 @@ router.post("/createJob", protect, createJob);
 router.get("/", getAllJobs);
 
 // Update Job Details
-router.put('/:id', updateJobDetails);
+router.put("/:id", updateJobDetails);
 
 // /Employer Jobs
-router.get('/employer/jobs', protect, getEmployerJobs);
+router.get("/employer/jobs", protect, getEmployerJobs);
+
+// Delete Job
+router.delete("/employer/:id", protect, deleteJob);
 
 export default router;
