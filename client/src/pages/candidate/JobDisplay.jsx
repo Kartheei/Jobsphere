@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   ChakraProvider,
   CSSReset,
@@ -12,6 +13,7 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { fetchJobs } from "../../services/jobService";
