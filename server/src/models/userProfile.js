@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const userProfileSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true,
     },
     profilePicture: {
@@ -76,6 +76,6 @@ userProfileSchema.pre('findOneAndUpdate', function (next) {
     next();
 });
 
-const UserProfile = mongoose.model('UserProfile', userProfileSchema);
+const UserProfile = mongoose.model('userProfile', userProfileSchema);
 
 export default UserProfile;

@@ -9,12 +9,10 @@ import {
 } from "@chakra-ui/react";
 
 import "../../assets/styles/canHome.css";
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/candidate/NavBar";
+import Footer from "../../components/common/Footer";
 
 const JobDetails = () => {
-
-
   return (
     <>
       <NavBar />

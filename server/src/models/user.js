@@ -28,12 +28,12 @@ const userSchema = new mongoose.Schema({
   },
   profile: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'UserProfile',
+    ref: 'userProfile',
   },
   appliedJobs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Job'
+      ref: 'job'
     }
   ],
   createdAt: {
