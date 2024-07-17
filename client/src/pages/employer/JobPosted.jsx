@@ -84,6 +84,10 @@ const JobPosted = () => {
     }
   };
 
+  const handleViewClick = (jobId) => {
+    navigate(`/employer/jobs/${jobId}`);
+  };
+
   return (
     <>
       <NavBar />
@@ -138,9 +142,10 @@ const JobPosted = () => {
                     <Flex flexDirection={"column"} gap={3}>
                       <Button
                         mt={{ base: "4", md: "0" }}
-                        className="btn-disable"
+                        className="view-button"
+                        onClick={() => handleViewClick(data._id)}
                       >
-                        Disable
+                        View
                       </Button>
                       <Button
                         mt={{ base: "4", md: "0" }}

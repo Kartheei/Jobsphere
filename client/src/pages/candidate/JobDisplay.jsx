@@ -13,6 +13,7 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
@@ -22,6 +23,7 @@ function JobDisplay() {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -43,6 +45,18 @@ function JobDisplay() {
 
     getJobs();
   }, [toast]);
+
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
+  const handleViewClick = (jobId) => {
+    navigate(`/jobs/jobDetails/${jobId}`);
+  };
 
   return (
     <ChakraProvider>
@@ -108,8 +122,13 @@ function JobDisplay() {
                       : "Unknown Company"}
                   </Text>
                   <Text fontWeight="bold">{job.location}</Text>
-                  <Text mb="4">{job.description}</Text>
-                  <Button className="apply-button">Apply</Button>
+                  <Text mb="4">{truncateText(job.description, 50)}</Text>
+                  <Button
+                    className="apply-button"
+                    onClick={() => handleViewClick(job._id)}
+                  >
+                    View
+                  </Button>
                 </Box>
               ))}
             </VStack>
