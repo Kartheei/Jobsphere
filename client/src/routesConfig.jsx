@@ -5,9 +5,10 @@ import Profile from "./pages/candidate/Profile";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
+import Employerprofile from "./pages/employer/Employerprofile";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
-import JobListing from "./pages/employer/JobListing"; // Import JobListing
+import JobListing from "./pages/employer/JobListing";
 
 const routes = [
   // Candidate routes
@@ -16,6 +17,15 @@ const routes = [
     element: (
       <RoleProtectedRoute allowedRoles={["Candidate"]}>
         <CandidateHome />
+      </RoleProtectedRoute>
+    ),
+    index: true,
+  },
+  {
+    path: "/Employerprofile",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <Employerprofile />
       </RoleProtectedRoute>
     ),
     index: true,
