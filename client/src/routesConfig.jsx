@@ -1,4 +1,4 @@
-import RoleProtectedRoute from "./context/RoleProtectedRoute"; // Import RoleProtectedRoute
+import RoleProtectedRoute from "./context/RoleProtectedRoute";
 import CandidateHome from "./pages/candidate/Home";
 import JobDisplay from "./pages/candidate/JobDisplay";
 import Profile from "./pages/candidate/Profile";
@@ -37,6 +37,22 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
+  {
+    path: "/jobDetails",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Candidate"]}>
+        <JobDetails />
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/jobApplied",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Candidate"]}>
+        <JobApplied />
+      </RoleProtectedRoute>
+    ),
+  },
 
   // Employer routes
   {
@@ -57,10 +73,10 @@ const routes = [
     ),
   },
   {
-    path: "/employer/job-listings",
+    path: "/employer/jobPosted",
     element: (
       <RoleProtectedRoute allowedRoles={["Employer"]}>
-        <JobListing />
+        <JobPosted />
       </RoleProtectedRoute>
     ),
   },
