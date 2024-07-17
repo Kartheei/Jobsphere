@@ -8,6 +8,8 @@ import {
   VStack,
   Text,
   Divider,
+  SimpleGrid,
+  Link,
 } from '@chakra-ui/react';
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -54,7 +56,6 @@ const JobListings = () => {
       applications: 8,
       active: true,
     },
-      
   ]);
 
   const toggleActiveStatus = (jobId) => {
@@ -69,32 +70,44 @@ const JobListings = () => {
     <>
       <NavBar />
       <Container maxW="container.xl" mt="8">
-        <Heading as="h1" size="xl" mb="8">
-          My Job Listings
-        </Heading>
-        {jobs.map((job) => (
-          <Box key={job.id} p="4" bg="gray.50" borderRadius="md" mb="4">
-            <Flex justify="space-between" align="center">
-              <Box>
-                <Heading size="md">{job.title}</Heading>
-                <Text>{job.company}</Text>
-                <Text>{job.description}</Text>
-                <Text>Applications Received: {job.applications}</Text>
-              </Box>
-              <VStack>
-                <Button
-                  colorScheme={job.active ? 'green' : 'red'}
-                  onClick={() => toggleActiveStatus(job.id)}
-                >
-                  {job.active ? 'Active' : 'Disable'}
-                </Button>
-                <Button colorScheme="blue">Edit</Button>
-                <Button colorScheme="red">Delete</Button>
-              </VStack>
-            </Flex>
+        <SimpleGrid columns={[1, null, 3]} spacing="40px">
+         <Box boxShadow="md" p="6" rounded="md">
+            <VStack spacing={4} align="stretch">
+              <Link href="#" fontWeight="bold">My Jobs</Link>
+              <Link href="#" fontWeight="bold">Preferences</Link>
+              <Link href="#" fontWeight="bold">My Network</Link>
+              <Link href="#" fontWeight="bold">Tutorial</Link>
+            </VStack>
           </Box>
-        ))}
-        <Divider mt="8" />
+          <Box gridColumn="span 2">
+            <Heading as="h1" size="xl" mb="8">
+              My Job Listings
+            </Heading>
+            {jobs.map((job) => (
+              <Box key={job.id} p="4" bg="gray.50" borderRadius="md" mb="4">
+                <Flex justify="space-between" align="center">
+                  <Box>
+                    <Heading size="md">{job.title}</Heading>
+                    <Text>{job.company}</Text>
+                    <Text>{job.description}</Text>
+                    <Text>Applications Received: {job.applications}</Text>
+                  </Box>
+                  <VStack>
+                    <Button
+                      colorScheme={job.active ? 'green' : 'red'}
+                      onClick={() => toggleActiveStatus(job.id)}
+                    >
+                      {job.active ? 'Active' : 'Disable'}
+                    </Button>
+                    <Button colorScheme="blue">Edit</Button>
+                    <Button colorScheme="red">Delete</Button>
+                  </VStack>
+                </Flex>
+              </Box>
+            ))}
+            <Divider mt="8" />
+          </Box>
+        </SimpleGrid>
       </Container>
       <Footer />
     </>
