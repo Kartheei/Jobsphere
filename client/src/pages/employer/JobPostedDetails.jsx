@@ -37,9 +37,9 @@ const JobPostedDetails = () => {
                                 <Text fontWeight="bold" mb={4}>Tech Innovators Inc.</Text>
                                 <Text fontWeight="bold" mb={4}>Waterloo</Text>
                             </Box>
-                            <Button mt={{ base: "4", md: "0" }} className="view-button">
+                            {/* <Button mt={{ base: "4", md: "0" }} className="view-button">
                                 Apply
-                            </Button>
+                            </Button> */}
                         </Flex>
                     </Box>
 
@@ -105,8 +105,8 @@ const JobPostedDetails = () => {
                             Candidates Applied
                         </Heading>
                         <Flex justify={'center'} flexDirection={'column'} >
-                            <Box height={'40px'} bg={'#d1e1ec'} w={'100%'} display={'flex'} flexDirection={'row'} gap={'700px'} mb={3}>
-                                <Text p={2} width={'60%'} pl={'100px'} fontWeight={'bold'}>Chris Evans</Text>
+                            <Box className="candidate-box" >
+                                <Text className="candidate-name">Chris Evans</Text>
                                 <Flex gap={3}  mt={1}  pr={1} width={'30%'}>
                                     <Button size={'sm'} mt={{ base: "4", md: "0" }} className="view-button" >
                                         View Profile
@@ -120,8 +120,8 @@ const JobPostedDetails = () => {
                                 </Flex>
                             </Box>
 
-                            <Box height={'40px'} bg={'#d1e1ec'} w={'100%'} display={'flex'} flexDirection={'row'} gap={'700px'} mb={3}>
-                                <Text p={2}  width={'60%'} pl={'100px'} fontWeight={'bold'}>Mike</Text>
+                            <Box className="candidate-box" >
+                                <Text className="candidate-name">Mike</Text>
                                 <Flex gap={3}  mt={1}  pr={1} width={'30%'}>
                                     <Button size={'sm'} mt={{ base: "4", md: "0" }} className="view-button" >
                                         View Profile
@@ -136,8 +136,8 @@ const JobPostedDetails = () => {
                             </Box>
 
 
-                            <Box height={'40px'} bg={'#d1e1ec'} w={'100%'} display={'flex'} flexDirection={'row'} gap={'700px'} mb={3}>
-                                <Text p={2} pl={'100px'} width={'60%'} fontWeight={'bold'}>Tyson</Text>
+                            <Box className="candidate-box" >
+                                <Text className="candidate-name">Tyson</Text>
                                 <Flex gap={3}  mt={1} pr={1} width={'30%'}>
                                     <Button size={'sm'} mt={{ base: "4", md: "0" }} className="view-button" >
                                         View Profile
