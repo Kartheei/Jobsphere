@@ -37,3 +37,28 @@ export const createApplication = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
+// @desc - Get applications for a specific job
+// @access - private
+export const getApplicationsByJobId = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+    console.log("Fetching applications for job ID:", jobId);
+
+    const applications = await Application.find({ job_id: jobId }).populate({
+      path: "user_id",
+      select: "name",
+    });
+
+    if (!applications || applications.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No applications found for this job" });
+    }
+
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error("Error fetching applications:", error.message, error.stack);
+    next(error); // Pass the error to the error handler middleware
+  }
+};

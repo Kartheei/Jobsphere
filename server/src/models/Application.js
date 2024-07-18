@@ -9,8 +9,8 @@ const applicationSchema = new Schema({
   },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  job_id: { type: Schema.Types.ObjectId, ref: "Job", required: true },
-  user_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  job_id: { type: Schema.Types.ObjectId, ref: "job", required: true },
+  user_id: { type: Schema.Types.ObjectId, ref: "user", required: true },
 });
 
 // Update updated_at before saving

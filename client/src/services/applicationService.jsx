@@ -16,4 +16,16 @@ const applyForJob = async (jobId) => {
   }
 };
 
-export { applyForJob };
+// Function to fetch applications for a specific job
+const fetchApplicationsByJobId = async (jobId) => {
+  try {
+    const response = await axios.get(`/api/applications/job/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export { applyForJob, fetchApplicationsByJobId };

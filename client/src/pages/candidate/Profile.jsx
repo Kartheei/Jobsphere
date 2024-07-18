@@ -202,9 +202,15 @@ function Profile() {
 
   if (isLoading) {
     return (
-      <Container maxW="container.xl" mt="8">
-        <Spinner size="xl" />
-      </Container>
+      <div className="app-spinner">
+        <Spinner
+          thickness="10px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </div>
     );
   }
 

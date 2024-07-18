@@ -110,7 +110,7 @@ function Home() {
                       {job.title}
                     </Heading>
                     <Text fontWeight="bold">{job.location}</Text>
-                    <Text mb="4">{truncateText(job.description, 50)}</Text>
+                    <Text>{truncateText(job.description, 50)}</Text>
                   </Box>
                   <Button className="apply-button" width="120px">
                     Apply
