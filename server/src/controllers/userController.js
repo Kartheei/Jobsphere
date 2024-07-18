@@ -80,6 +80,18 @@ const getUserProfile = async (req, res, next) => {
 // @access - private
 const updateUserProfile = async (req, res, next) => {
   try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user information
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    await user.save();
+
     // Validate that experiences and education are not empty arrays
     const experiences = req.body.experiences.filter(
       (exp) =>

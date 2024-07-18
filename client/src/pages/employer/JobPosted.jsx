@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   ChakraProvider,
   Box,
@@ -13,7 +12,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -51,6 +49,7 @@ const JobPosted = () => {
     "My Network",
     "Tutorial",
   ]);
+
   const truncateDescription = (description, limit = 500) => {
     if (description.length > limit) {
       return description.substring(0, limit) + " ....";
@@ -82,6 +81,10 @@ const JobPosted = () => {
         isClosable: true,
       });
     }
+  };
+
+  const handleViewClick = (jobId) => {
+    navigate(`/employer/jobs/${jobId}`);
   };
 
   return (
@@ -138,9 +141,10 @@ const JobPosted = () => {
                     <Flex flexDirection={"column"} gap={3}>
                       <Button
                         mt={{ base: "4", md: "0" }}
-                        className="btn-disable"
+                        className="view-button"
+                        onClick={() => handleViewClick(data._id)}
                       >
-                        Disable
+                        View
                       </Button>
                       <Button
                         mt={{ base: "4", md: "0" }}

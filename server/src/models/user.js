@@ -1,44 +1,44 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    enum: ['Candidate', 'Employer'],
-    required: true
+    enum: ["Candidate", "Employer"],
+    required: true,
   },
   organizationName: {
     type: String,
     required: function () {
-      return this.role === 'Employer';
+      return this.role === "Employer";
     }, // Specific to Employers, required only for Employer role
   },
   profile: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'userProfile',
+    ref: "userProfile",
   },
   appliedJobs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'job'
-    }
+      ref: "Application",
+    },
   ],
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash the password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
     return next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -57,17 +57,17 @@ userSchema.pre('save', async function (next) {
 });
 
 // Update updatedAt before saving
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
 // Update updatedAt before updating
-userSchema.pre('findOneAndUpdate', function (next) {
+userSchema.pre("findOneAndUpdate", function (next) {
   this.set({ updatedAt: Date.now() });
   next();
 });
 
-const user = mongoose.model('user', userSchema);
+const user = mongoose.model("user", userSchema);
 
 export default user;

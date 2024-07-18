@@ -52,6 +52,14 @@ function Home() {
     getJobs();
   }, [toast]);
 
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -102,7 +110,7 @@ function Home() {
                       {job.title}
                     </Heading>
                     <Text fontWeight="bold">{job.location}</Text>
-                    <Text mb="4">{job.description}</Text>
+                    <Text>{truncateText(job.description, 50)}</Text>
                   </Box>
                   <Button className="apply-button" width="120px">
                     Apply
