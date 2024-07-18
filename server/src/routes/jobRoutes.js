@@ -6,6 +6,7 @@ import {
   getEmployerJobs,
   deleteJob,
   getJobById,
+  getCandidateAppliedJobs
 } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -28,5 +29,8 @@ router.get("/employer/jobs", protect, getEmployerJobs);
 
 // Delete Job
 router.delete("/employer/:id", protect, deleteJob);
+
+// Get candidate Applied Jobs
+router.get('/candidate/appliedJobs', protect, getCandidateAppliedJobs);
 
 export default router;

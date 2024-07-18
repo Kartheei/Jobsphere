@@ -1,6 +1,6 @@
 import { jobs as Job } from "../models/job.js";
 import User from "../models/user.js";
-
+import Application from "../models/Application.js";
 // Create a new job
 export async function createJob(req, res, next) {
   const {
@@ -70,6 +70,7 @@ export const updateJobDetails = async (req, res, next) => {
 // Get Jobs based on employer login
 export const getEmployerJobs = async (req, res, next) => {
   try {
+    console.log("rreq user id", req.user._id)
     // Ensure the user is authenticated
     if (!req.user || !req.user._id) {
       return res.status(401).json({ message: "User not authenticated" });
@@ -79,9 +80,11 @@ export const getEmployerJobs = async (req, res, next) => {
     const jobs = await Job.find({ userId: req.user._id }).select(
       "title company description"
     );
+    console.log("Jobs:", jobs);
 
     // Retrieve the organization name from the user's information
     const user = await User.findById(req.user._id).select("organizationName");
+    console.log("User:", user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -92,12 +95,14 @@ export const getEmployerJobs = async (req, res, next) => {
       ...job._doc,
       organizationName: user.organizationName,
     }));
+    console.log("Jobs with Organization:", jobsWithOrganization);
 
     res.status(200).json(jobsWithOrganization);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
 
 // Fetch all jobs
 export const getAllJobs = async (req, res, next) => {
@@ -136,6 +141,31 @@ export const deleteJob = async (req, res, next) => {
 
     await Job.deleteOne({ _id: id });
     res.status(200).json({ message: "Job deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCandidateAppliedJobs = async (req, res, next) => {
+
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user._id;
+
+    // Find the user's applications and populate job details
+    const userApplications = await Application.find({ user_id: userId }).populate('job_id');
+
+    if (!userApplications) {
+      return res.status(404).json({ message: "No applications found" });
+    }
+
+    // Extract job details from applications
+    const appliedJobs = userApplications.map(app => app.job_id);
+
+    return res.status(200).json(appliedJobs);
   } catch (error) {
     next(error);
   }
