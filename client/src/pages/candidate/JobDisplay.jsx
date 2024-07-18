@@ -44,6 +44,13 @@ function JobDisplay() {
     getJobs();
   }, [toast]);
 
+  const truncateDescription = (description, limit = 500) => {
+    if (description.length > limit) {
+      return description.substring(0, limit) + " ....";
+    }
+    return description;
+  };
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -108,7 +115,7 @@ function JobDisplay() {
                       : "Unknown Company"}
                   </Text>
                   <Text fontWeight="bold">{job.location}</Text>
-                  <Text mb="4">{job.description}</Text>
+                  <Text mb="4">{truncateDescription(job.description)}</Text>
                   <Button className="apply-button">Apply</Button>
                 </Box>
               ))}
