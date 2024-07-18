@@ -40,7 +40,6 @@ function Profile() {
     experience: [],
     education: [],
   });
-  const [originalProfileData, setOriginalProfileData] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
@@ -50,11 +49,6 @@ function Profile() {
       try {
         const data = await fetchUserProfile();
         setProfileData({
-          ...data,
-          experience: data.experience || [],
-          education: data.education || [],
-        });
-        setOriginalProfileData({
           ...data,
           experience: data.experience || [],
           education: data.education || [],
@@ -75,11 +69,31 @@ function Profile() {
     getUserProfile();
   }, [toast]);
 
-  const handleEditToggle = () => {
+  const handleEditToggle = async () => {
     if (editMode) {
-      updateProfile();
+      await updateProfile();
+      await refreshProfileData(); // Refresh profile data after update
     }
     setEditMode(!editMode);
+  };
+
+  const refreshProfileData = async () => {
+    try {
+      const data = await fetchUserProfile();
+      setProfileData({
+        ...data,
+        experience: data.experience || [],
+        education: data.education || [],
+      });
+    } catch (error) {
+      toast({
+        title: "Error fetching profile.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const updateProfile = async () => {
@@ -97,23 +111,13 @@ function Profile() {
     );
 
     try {
-      const updatedProfile = await updateUserProfile({
+      await updateUserProfile({
+        name: profileData.name,
+        email: profileData.email,
         about: profileData.about,
         experiences: nonEmptyExperience,
         education: nonEmptyEducation,
       });
-      setProfileData((prevData) => ({
-        ...prevData,
-        about: updatedProfile.about,
-        experience: updatedProfile.experiences,
-        education: updatedProfile.education,
-      }));
-      setOriginalProfileData((prevData) => ({
-        ...prevData,
-        about: updatedProfile.about,
-        experience: updatedProfile.experiences,
-        education: updatedProfile.education,
-      }));
       toast({
         title: "Profile updated.",
         description: "Your profile has been updated successfully.",
