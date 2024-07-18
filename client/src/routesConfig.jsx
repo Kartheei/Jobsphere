@@ -84,6 +84,14 @@ const routes = [
     ),
   },
   {
+    path: "/employer/jobPostedDetails",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <JobPostedDetails />
+      </RoleProtectedRoute>
+    ),
+  },
+  {
     path: "/employer/jobs/:id/edit",
     element: (
       <RoleProtectedRoute allowedRoles={["Employer"]}>

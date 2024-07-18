@@ -52,7 +52,7 @@ const JobPosted = () => {
 
   const truncateDescription = (description, limit = 500) => {
     if (description.length > limit) {
-      return description.substring(0, limit) + "...";
+      return description.substring(0, limit) + " ....";
     }
     return description;
   };
