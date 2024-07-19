@@ -8,6 +8,7 @@ import {
     Spinner,
     useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
@@ -18,6 +19,7 @@ const JobApplied = () => {
     const [jobList, setJobList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const toast = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getJobs = async () => {
@@ -51,7 +53,9 @@ const JobApplied = () => {
         }
         return description;
     };
-
+    const handleViewClick = (jobId) => {
+        navigate(`/jobs/jobDetails/${jobId}`);
+    };
     return (
         <>
             <NavBar />
@@ -91,7 +95,7 @@ const JobApplied = () => {
                                         <Text fontWeight="bold" mb={4}>{truncateDescription(data.description)}</Text>
                                     </Box>
 
-                                    <Button mt={{ base: "4", md: "0" }} className="view-button">
+                                    <Button mt={{ base: "4", md: "0" }} className="view-button" onClick={() => handleViewClick(data._id)}>
                                         View
                                     </Button>
 

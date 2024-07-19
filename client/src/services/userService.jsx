@@ -1,5 +1,16 @@
 import axios from "axios";
 
+export const saveUserProfile = async () => {
+  try {
+    const response = await axios.get("/api/users/register", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+}
+
 // Function to fetch the profile of the logged-in user
 const fetchUserProfile = async () => {
   try {

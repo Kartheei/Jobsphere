@@ -1,34 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  Text,
-  VStack,
-  Image,
-  Input,
-  Textarea,
-  Divider,
-  Button,
-  FormControl,
-  FormLabel,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  useToast,
-  Spinner,
+  Box, Container, Flex, Heading, Text, VStack, Image, Input, Textarea, Divider, Button,
+  FormControl, FormLabel, Menu, MenuButton, MenuList, MenuItem, useToast, Spinner,
 } from "@chakra-ui/react";
-
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
 import {
   fetchUserProfile,
   updateUserProfile,
+  // uploadResume,
 } from "../../services/userService";
 
 function Profile() {
@@ -42,6 +24,7 @@ function Profile() {
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [resumeFile, setResumeFile] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -195,13 +178,47 @@ function Profile() {
   };
 
   const handleViewResume = () => {
-    // Logic to view resume
     console.log("View Resume");
+    window.open('http://localhost:5000/api/users/getResume', '_blank');
   };
 
-  const handleUploadResume = () => {
-    // Logic to upload resume
-    console.log("Upload Resume");
+  const handleFileChange = (e) => {
+    setResumeFile(e.target.files[0]);
+  };
+
+  const handleUploadResume = async () => {
+    if (!resumeFile) {
+      toast({
+        title: "No file selected.",
+        description: "Please select a file to upload.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("resume", resumeFile);
+
+    // try {
+    //   await uploadResume(formData);
+    //   toast({
+    //     title: "Resume uploaded.",
+    //     description: "Your resume has been uploaded successfully.",
+    //     status: "success",
+    //     duration: 5000,
+    //     isClosable: true,
+    //   });
+    // } catch (error) {
+    //   toast({
+    //     title: "Error uploading resume.",
+    //     description: error.message,
+    //     status: "error",
+    //     duration: 5000,
+    //     isClosable: true,
+    //   });
+    // }
   };
 
   if (isLoading) {
@@ -294,7 +311,15 @@ function Profile() {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={handleViewResume}>View</MenuItem>
-              <MenuItem onClick={handleUploadResume}>Upload</MenuItem>
+              <MenuItem>
+                <Input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  display="none"
+                />
+                <label htmlFor="fileInput">Upload</label>
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
