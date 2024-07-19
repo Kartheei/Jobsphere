@@ -5,10 +5,10 @@ import Profile from "./pages/candidate/Profile";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
+import Employerprofile from "./pages/employer/Employerprofile";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
-import Employer_profile from '../src/components/employer/Employer_profile';
-
+import JobListing from "./pages/employer/JobListing";
 
 const routes = [
   // Candidate routes
@@ -17,6 +17,15 @@ const routes = [
     element: (
       <RoleProtectedRoute allowedRoles={["Candidate"]}>
         <CandidateHome />
+      </RoleProtectedRoute>
+    ),
+    index: true,
+  },
+  {
+    path: "/Employerprofile",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <Employerprofile />
       </RoleProtectedRoute>
     ),
     index: true,
@@ -48,7 +57,6 @@ const routes = [
     ),
     index: true,
   },
-  
   {
     path: "/employer/job-creation",
     element: (
@@ -58,13 +66,14 @@ const routes = [
     ),
   },
   {
-    path: "/Employer_profile",
+    path: "/employer/job-listings",
     element: (
-      <RoleProtectedRoute allowedRoles={["Employer_profile "]}>
-        <Employer_profile />
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <JobListing />
       </RoleProtectedRoute>
     ),
   },
+
   // Authentication routes
   {
     path: "/auth/signin",
