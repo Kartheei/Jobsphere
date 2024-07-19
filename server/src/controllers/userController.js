@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import UserProfile from "../models/userProfile.js";
 import generateToken from "../utils/generateToken.js";
+import path from 'path';
+
 
 // @desc - Register new user
 // @access - public
@@ -131,4 +133,55 @@ const updateUserProfile = async (req, res, next) => {
   }
 };
 
+
+// // Configure multer for file uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/resumes');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   }
+// });
+export const uploadResume = async (req, res) => {
+  try {
+    const userProfile = await UserProfile.findOne({ userId: req.user._id });
+    if (!userProfile) {
+      return res.status(404).json({ message: 'User profile not found' });
+    }
+
+    userProfile.resume = {
+      filename: req.file.originalname,
+      mimeType: req.file.mimetype,
+      path: req.file.path,
+    };
+
+    await userProfile.save();
+
+    res.status(200).json({ message: 'Resume uploaded successfully', resume: userProfile.resume });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+
+};
+
+export const getResume = async (req, res) => {
+  try {
+    const userProfile = await UserProfile.findOne({ userId: req.user._id });
+    if (!userProfile || !userProfile.resume) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    const resumePath = path.resolve(userProfile.resume.path);
+    res.sendFile(resumePath, (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+        res.status(500).json({ message: 'Error sending file', error: err.message });
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching resume:', error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+};
 export { getUserProfile, updateUserProfile };
