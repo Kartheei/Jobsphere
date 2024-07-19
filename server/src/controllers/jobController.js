@@ -77,9 +77,7 @@ export const getEmployerJobs = async (req, res, next) => {
     }
 
     // Find jobs created by the logged-in employer
-    const jobs = await Job.find({ userId: req.user._id }).select(
-      "title company description"
-    );
+    const jobs = await Job.find({ userId: req.user._id });
     console.log("Jobs:", jobs);
 
     // Retrieve the organization name from the user's information
