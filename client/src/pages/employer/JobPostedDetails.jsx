@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -15,7 +16,7 @@ import {
   Tag,
   MenuButton,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -27,6 +28,7 @@ import { fetchJobDetails } from "../../services/jobService";
 
 const JobPostedDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Use navigate hook
   const [job, setJob] = useState(null);
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -138,14 +140,7 @@ const JobPostedDetails = () => {
             </Flex>
           </Box>
 
-          <Box
-            p="6"
-            boxShadow="md"
-            className="recent-jobs-box"
-            borderRadius="md"
-            bg="#F7FAFC"
-            mb={6}
-          >
+          <Box p="6" mb={6}>
             <Flex justify="space-between" alignItems="center" flexWrap="wrap">
               <Box textAlign="left" flex="1" minW="250px">
                 <Heading as="h4" size="md" mb={4}>
@@ -156,14 +151,7 @@ const JobPostedDetails = () => {
             </Flex>
           </Box>
 
-          <Box
-            p="6"
-            boxShadow="md"
-            className="recent-jobs-box"
-            borderRadius="md"
-            bg="#F7FAFC"
-            mb={6}
-          >
+          <Box p="6" mb={6}>
             <Flex justify="space-between" alignItems="center" flexWrap="wrap">
               <Box textAlign="left" flex="1" minW="250px">
                 <Heading as="h4" size="md" mb={4}>
@@ -203,6 +191,11 @@ const JobPostedDetails = () => {
                         size={"sm"}
                         mt={{ base: "4", md: "0" }}
                         className="view-button"
+                        onClick={() =>
+                          navigate(
+                            `/employer/candidate/${application.user_id._id}`
+                          )
+                        } // Navigate to candidate profile
                       >
                         View Profile
                       </Button>

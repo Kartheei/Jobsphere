@@ -131,4 +131,32 @@ const updateUserProfile = async (req, res, next) => {
   }
 };
 
-export { getUserProfile, updateUserProfile };
+// @desc - Get candidate profile by ID
+// @access - private
+const getCandidateProfileById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).populate("profile");
+
+    if (user) {
+      const userProfile = await UserProfile.findOne({ userId: userId });
+
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profilePicture: userProfile?.profilePicture || "",
+        about: userProfile?.about || "",
+        experience: userProfile?.experiences || [],
+        education: userProfile?.education || [],
+      });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    next(error); // Pass the error to the next middleware (error handler)
+  }
+};
+
+export { getUserProfile, updateUserProfile, getCandidateProfileById };

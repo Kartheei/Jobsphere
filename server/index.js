@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 app.use(cookieParser());
+app.use(express.static("public"));
 
 // Custom middleware
 import { errorHandler } from "./src/middlewares/errorHandler.js"; // middleware for error handel
