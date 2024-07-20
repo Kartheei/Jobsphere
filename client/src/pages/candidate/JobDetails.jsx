@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -8,10 +8,11 @@ import {
   Heading,
   Text,
   Spinner,
-  HStack,
   useToast,
   Tag,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import {
@@ -95,7 +96,7 @@ const JobDetails = () => {
   return (
     <>
       <NavBar />
-      <Center minH="100vh" mt={5}>
+      <Center mt={5}>
         <Box
           width={"80%"}
           display={"flex"}
@@ -154,14 +155,7 @@ const JobDetails = () => {
                 </Flex>
               </Box>
 
-              <Box
-                p="6"
-                boxShadow="md"
-                className="recent-jobs-box"
-                borderRadius="md"
-                bg="#F7FAFC"
-                mb={6}
-              >
+              <Box p="6" mb={2}>
                 <Flex
                   justify="space-between"
                   alignItems="center"
@@ -176,14 +170,7 @@ const JobDetails = () => {
                 </Flex>
               </Box>
 
-              <Box
-                p="6"
-                boxShadow="md"
-                className="recent-jobs-box"
-                borderRadius="md"
-                bg="#F7FAFC"
-                mb={6}
-              >
+              <Box p="6" mb={6}>
                 <Flex
                   justify="space-between"
                   alignItems="center"

@@ -6,6 +6,8 @@ import {
   getEmployerJobs,
   deleteJob,
   getJobById,
+  getEmployerStats,
+  getRecentJobs,
 } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -28,5 +30,11 @@ router.get("/employer/jobs", protect, getEmployerJobs);
 
 // Delete Job
 router.delete("/employer/:id", protect, deleteJob);
+
+// Employer Stats
+router.get("/employer/stats", protect, getEmployerStats);
+
+// Recent Jobs
+router.get("/employer/recent", protect, getRecentJobs);
 
 export default router;

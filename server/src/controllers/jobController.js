@@ -166,3 +166,44 @@ export const getJobById = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
+// get the total job posts and applications received
+export const getEmployerStats = async (req, res, next) => {
+  try {
+    const employerId = req.user._id;
+
+    // Total job posts by the employer
+    const totalJobPosts = await Job.countDocuments({ userId: employerId });
+
+    // Total applications received for jobs posted by the employer
+    const jobs = await Job.find({ userId: employerId }).select("_id");
+    const jobIds = jobs.map((job) => job._id);
+    const totalApplicationsReceived = await Application.countDocuments({
+      job_id: { $in: jobIds },
+    });
+
+    res.status(200).json({ totalJobPosts, totalApplicationsReceived });
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
+
+// Get two recent Jobs based on employer login
+export const getRecentJobs = async (req, res, next) => {
+  try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // Find jobs created by the logged-in employer, sorted by creation date
+    const jobs = await Job.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select("title description createdAt");
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};

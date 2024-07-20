@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -13,6 +12,7 @@ import {
   Menu,
   MenuList,
   MenuItem,
+  Tag,
   MenuButton,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
@@ -75,8 +75,8 @@ const JobPostedDetails = () => {
         )
       );
       toast({
-        title: "Application status updated.",
-        description: `The application status has been updated to ${status}.`,
+        title: `Application ${status}`,
+        description: `The application has been ${status} successfully.`,
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -107,7 +107,7 @@ const JobPostedDetails = () => {
   return (
     <>
       <NavBar />
-      <Center minH="100vh" mt={5}>
+      <Center mt={5}>
         <Box
           width={"80%"}
           display={"flex"}
@@ -206,6 +206,14 @@ const JobPostedDetails = () => {
                       >
                         View Profile
                       </Button>
+                      <Tag
+                        size="md"
+                        height="31px"
+                        variant="solid"
+                        colorScheme={getColorScheme(application.status)}
+                      >
+                        {application.status}
+                      </Tag>
                       <Menu>
                         <MenuButton
                           as={Button}
@@ -242,6 +250,18 @@ const JobPostedDetails = () => {
       <Footer contentType="employer" />
     </>
   );
+};
+
+const getColorScheme = (status) => {
+  switch (status) {
+    case "accepted":
+      return "green";
+    case "rejected":
+      return "red";
+    case "pending":
+    default:
+      return "gray";
+  }
 };
 
 export default JobPostedDetails;
