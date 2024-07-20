@@ -40,4 +40,25 @@ const getApplicationStatus = async (jobId) => {
   }
 };
 
-export { applyForJob, fetchApplicationsByJobId, getApplicationStatus };
+// Function to update the application status
+const updateApplicationStatus = async (applicationId, status) => {
+  try {
+    const response = await axios.put(
+      `/api/applications/${applicationId}`,
+      { status },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export {
+  applyForJob,
+  fetchApplicationsByJobId,
+  getApplicationStatus,
+  updateApplicationStatus,
+};

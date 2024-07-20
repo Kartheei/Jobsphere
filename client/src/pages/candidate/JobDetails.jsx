@@ -14,11 +14,11 @@ import {
 } from "@chakra-ui/react";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
-import { fetchJobDetails } from "../../services/jobService";
 import {
   applyForJob,
   getApplicationStatus,
 } from "../../services/applicationService"; // Import the services
+import { fetchJobDetails } from "../../services/jobService";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -80,6 +80,18 @@ const JobDetails = () => {
     }
   };
 
+  const getColorScheme = (status) => {
+    switch (status) {
+      case "accepted":
+        return "green";
+      case "rejected":
+        return "red";
+      case "pending":
+      default:
+        return "gray";
+    }
+  };
+
   return (
     <>
       <NavBar />
@@ -111,18 +123,16 @@ const JobDetails = () => {
                   <Box textAlign="left" flex="1" minW="250px">
                     <Heading as="h4" size="md" mb={4}>
                       {job.title}
-                      {applicationStatus &&
-                        ["md"].map((size) => (
-                          <Tag
-                            size={size}
-                            key={size}
-                            variant="solid"
-                            colorScheme="teal"
-                            ml="5"
-                          >
-                            {applicationStatus}
-                          </Tag>
-                        ))}
+                      {applicationStatus && (
+                        <Tag
+                          size="md"
+                          variant="solid"
+                          colorScheme={getColorScheme(applicationStatus)}
+                          ml="5"
+                        >
+                          {applicationStatus}
+                        </Tag>
+                      )}
                     </Heading>
                     <Text fontWeight="bold" mb={4}>
                       {job.userId && job.userId.organizationName

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -9,12 +10,19 @@ import {
   Text,
   Spinner,
   useToast,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
-import { fetchApplicationsByJobId } from "../../services/applicationService";
+import {
+  fetchApplicationsByJobId,
+  updateApplicationStatus,
+} from "../../services/applicationService";
 import { fetchJobDetails } from "../../services/jobService";
 
 const JobPostedDetails = () => {
@@ -55,6 +63,34 @@ const JobPostedDetails = () => {
     getJobDetails();
     getApplications();
   }, [id, toast]);
+
+  const handleStatusUpdate = async (applicationId, status) => {
+    try {
+      await updateApplicationStatus(applicationId, status);
+      setApplications((prevApplications) =>
+        prevApplications.map((application) =>
+          application._id === applicationId
+            ? { ...application, status }
+            : application
+        )
+      );
+      toast({
+        title: "Application status updated.",
+        description: `The application status has been updated to ${status}.`,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -170,20 +206,31 @@ const JobPostedDetails = () => {
                       >
                         View Profile
                       </Button>
-                      <Button
-                        size={"sm"}
-                        mt={{ base: "4", md: "0" }}
-                        className="btn-approve"
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        mt={{ base: "4", md: "0" }}
-                        className="btn-delete"
-                      >
-                        Reject
-                      </Button>
+                      <Menu>
+                        <MenuButton
+                          as={Button}
+                          rightIcon={<ChevronDownIcon />}
+                          size={"sm"}
+                        >
+                          Actions
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem
+                            onClick={() =>
+                              handleStatusUpdate(application._id, "accepted")
+                            }
+                          >
+                            Accept
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() =>
+                              handleStatusUpdate(application._id, "rejected")
+                            }
+                          >
+                            Reject
+                          </MenuItem>
+                        </MenuList>
+                      </Menu>
                     </Flex>
                   </Box>
                 ))}

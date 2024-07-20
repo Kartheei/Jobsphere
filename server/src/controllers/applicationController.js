@@ -86,3 +86,26 @@ export const getApplicationStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc - Update the application status
+export const updateApplicationStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const application = await Application.findById(id);
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    application.status = status;
+    await application.save();
+
+    res
+      .status(200)
+      .json({ message: "Application status updated", application });
+  } catch (error) {
+    next(error);
+  }
+};
