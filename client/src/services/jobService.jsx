@@ -97,6 +97,30 @@ const updateJobDetails = async (jobId, jobData) => {
   }
 };
 
+// Fetch employer stats (total jobs and applications received)
+const fetchEmployerStats = async () => {
+  try {
+    const response = await axios.get("/api/jobs/employer/stats", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// Fetch recent jobs
+const fetchRecentJobs = async () => {
+  try {
+    const response = await axios.get("/api/jobs/employer/recent", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
 // Get Applied  Jobs By Candidate
 const fetchJobsApplied = async () => {
   try {
@@ -117,5 +141,7 @@ export {
   deleteJob,
   fetchJobDetails,
   updateJobDetails,
+  fetchEmployerStats,
+  fetchRecentJobs,
   fetchJobsApplied,
 };

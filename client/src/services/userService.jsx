@@ -24,4 +24,16 @@ const updateUserProfile = async (profileData) => {
   }
 };
 
-export { fetchUserProfile, updateUserProfile };
+// Function to fetch the profile of a specific user by ID
+const fetchCandidateProfile = async (userId) => {
+  try {
+    const response = await axios.get(`/api/users/profile/${userId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+export { fetchUserProfile, updateUserProfile, fetchCandidateProfile };

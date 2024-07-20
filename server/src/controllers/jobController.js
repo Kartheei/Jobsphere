@@ -1,6 +1,7 @@
 import { jobs as Job } from "../models/job.js";
 import User from "../models/user.js";
 import Application from "../models/Application.js";
+
 // Create a new job
 export async function createJob(req, res, next) {
   const {
@@ -70,7 +71,6 @@ export const updateJobDetails = async (req, res, next) => {
 // Get Jobs based on employer login
 export const getEmployerJobs = async (req, res, next) => {
   try {
-    console.log("rreq user id", req.user._id)
     // Ensure the user is authenticated
     if (!req.user || !req.user._id) {
       return res.status(401).json({ message: "User not authenticated" });
@@ -88,14 +88,20 @@ export const getEmployerJobs = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Push the organization name into the response for each job
-    const jobsWithOrganization = jobs.map((job) => ({
-      ...job._doc,
-      organizationName: user.organizationName,
-    }));
-    console.log("Jobs with Organization:", jobsWithOrganization);
+    // Push the application count into the response for each job
+    const jobsWithDetails = await Promise.all(
+      jobs.map(async (job) => {
+        const applicationCount = await Application.countDocuments({
+          job_id: job._id,
+        });
+        return {
+          ...job._doc,
+          applicationCount,
+        };
+      })
+    );
 
-    res.status(200).json(jobsWithOrganization);
+    res.status(200).json(jobsWithDetails);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }
@@ -182,6 +188,47 @@ export const getJobById = async (req, res, next) => {
     }
 
     res.status(200).json(job);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
+
+// get the total job posts and applications received
+export const getEmployerStats = async (req, res, next) => {
+  try {
+    const employerId = req.user._id;
+
+    // Total job posts by the employer
+    const totalJobPosts = await Job.countDocuments({ userId: employerId });
+
+    // Total applications received for jobs posted by the employer
+    const jobs = await Job.find({ userId: employerId }).select("_id");
+    const jobIds = jobs.map((job) => job._id);
+    const totalApplicationsReceived = await Application.countDocuments({
+      job_id: { $in: jobIds },
+    });
+
+    res.status(200).json({ totalJobPosts, totalApplicationsReceived });
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
+
+// Get two recent Jobs based on employer login
+export const getRecentJobs = async (req, res, next) => {
+  try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // Find jobs created by the logged-in employer, sorted by creation date
+    const jobs = await Job.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select("title description createdAt");
+
+    res.status(200).json(jobs);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }

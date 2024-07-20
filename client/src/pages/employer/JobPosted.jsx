@@ -50,11 +50,12 @@ const JobPosted = () => {
     "Tutorial",
   ]);
 
-  const truncateDescription = (description, limit = 500) => {
-    if (description.length > limit) {
-      return description.substring(0, limit) + " ....";
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
     }
-    return description;
+    return text;
   };
 
   const handleEditClick = (jobId) => {
@@ -134,8 +135,9 @@ const JobPosted = () => {
                       <Text fontWeight="bold" mb="2">
                         {data.organizationName}
                       </Text>
-                      <Text mb="1">
-                        {truncateDescription(data.description)}
+                      <Text mb="4">{truncateText(data.description, 50)}</Text>
+                      <Text mb="2" fontWeight="bold">
+                        Total Applications: {data.applicationCount || 0}
                       </Text>
                     </Box>
                     <Flex flexDirection={"column"} gap={3}>

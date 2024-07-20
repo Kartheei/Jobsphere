@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -9,15 +9,22 @@ import {
   Text,
   Spinner,
   useToast,
+  Tag,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
+import {
+  applyForJob,
+  getApplicationStatus,
+} from "../../services/applicationService"; // Import the services
 import { fetchJobDetails } from "../../services/jobService";
-import { applyForJob } from "../../services/applicationService"; // Import the service
 
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
+  const [applicationStatus, setApplicationStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
@@ -39,12 +46,23 @@ const JobDetails = () => {
       }
     };
 
+    const getApplicationStatusForJob = async () => {
+      try {
+        const statusData = await getApplicationStatus(id);
+        setApplicationStatus(statusData.status);
+      } catch (error) {
+        console.error("Error fetching application status:", error);
+      }
+    };
+
     getJobDetails();
+    getApplicationStatusForJob();
   }, [id, toast]);
 
   const handleApplyClick = async () => {
     try {
-      await applyForJob(id);
+      const response = await applyForJob(id);
+      setApplicationStatus(response.status); // Set the application status
       toast({
         title: "Application submitted.",
         description: "Your application has been submitted successfully.",
@@ -63,10 +81,22 @@ const JobDetails = () => {
     }
   };
 
+  const getColorScheme = (status) => {
+    switch (status) {
+      case "accepted":
+        return "green";
+      case "rejected":
+        return "red";
+      case "pending":
+      default:
+        return "gray";
+    }
+  };
+
   return (
     <>
       <NavBar />
-      <Center minH="100vh" mt={5}>
+      <Center mt={5}>
         <Box
           width={"80%"}
           display={"flex"}
@@ -94,6 +124,16 @@ const JobDetails = () => {
                   <Box textAlign="left" flex="1" minW="250px">
                     <Heading as="h4" size="md" mb={4}>
                       {job.title}
+                      {applicationStatus && (
+                        <Tag
+                          size="md"
+                          variant="solid"
+                          colorScheme={getColorScheme(applicationStatus)}
+                          ml="5"
+                        >
+                          {applicationStatus}
+                        </Tag>
+                      )}
                     </Heading>
                     <Text fontWeight="bold" mb={4}>
                       {job.userId && job.userId.organizationName
@@ -108,20 +148,14 @@ const JobDetails = () => {
                     mt={{ base: "4", md: "0" }}
                     className="view-button"
                     onClick={handleApplyClick}
+                    isDisabled={applicationStatus !== null}
                   >
-                    Apply
+                    {applicationStatus ? `Applied` : "Apply"}
                   </Button>
                 </Flex>
               </Box>
 
-              <Box
-                p="6"
-                boxShadow="md"
-                className="recent-jobs-box"
-                borderRadius="md"
-                bg="#F7FAFC"
-                mb={6}
-              >
+              <Box p="6" mb={2}>
                 <Flex
                   justify="space-between"
                   alignItems="center"
@@ -136,14 +170,7 @@ const JobDetails = () => {
                 </Flex>
               </Box>
 
-              <Box
-                p="6"
-                boxShadow="md"
-                className="recent-jobs-box"
-                borderRadius="md"
-                bg="#F7FAFC"
-                mb={6}
-              >
+              <Box p="6" mb={6}>
                 <Flex
                   justify="space-between"
                   alignItems="center"

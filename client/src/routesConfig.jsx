@@ -7,6 +7,7 @@ import Profile from "./pages/candidate/Profile";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
+import CandidateProfileView from "./pages/employer/CandidateProfileView";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
 import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate";
@@ -107,7 +108,14 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
-
+  {
+    path: "/employer/candidate/:userId",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <CandidateProfileView />
+      </RoleProtectedRoute>
+    ),
+  },
   // Authentication routes
   {
     path: "/auth/signin",
