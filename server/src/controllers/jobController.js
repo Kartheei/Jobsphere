@@ -1,5 +1,6 @@
 import { jobs as Job } from "../models/job.js";
 import User from "../models/user.js";
+import Application from "../models/Application.js";
 
 // Create a new job
 export async function createJob(req, res, next) {
@@ -87,13 +88,20 @@ export const getEmployerJobs = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Push the organization name into the response for each job
-    const jobsWithOrganization = jobs.map((job) => ({
-      ...job._doc,
-      organizationName: user.organizationName,
-    }));
+    // Push the application count into the response for each job
+    const jobsWithDetails = await Promise.all(
+      jobs.map(async (job) => {
+        const applicationCount = await Application.countDocuments({
+          job_id: job._id,
+        });
+        return {
+          ...job._doc,
+          applicationCount,
+        };
+      })
+    );
 
-    res.status(200).json(jobsWithOrganization);
+    res.status(200).json(jobsWithDetails);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }

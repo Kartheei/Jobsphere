@@ -8,16 +8,22 @@ import {
   Heading,
   Text,
   Spinner,
+  HStack,
   useToast,
+  Tag,
 } from "@chakra-ui/react";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { fetchJobDetails } from "../../services/jobService";
-import { applyForJob } from "../../services/applicationService"; // Import the service
+import {
+  applyForJob,
+  getApplicationStatus,
+} from "../../services/applicationService"; // Import the services
 
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
+  const [applicationStatus, setApplicationStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
@@ -39,12 +45,23 @@ const JobDetails = () => {
       }
     };
 
+    const getApplicationStatusForJob = async () => {
+      try {
+        const statusData = await getApplicationStatus(id);
+        setApplicationStatus(statusData.status);
+      } catch (error) {
+        console.error("Error fetching application status:", error);
+      }
+    };
+
     getJobDetails();
+    getApplicationStatusForJob();
   }, [id, toast]);
 
   const handleApplyClick = async () => {
     try {
-      await applyForJob(id);
+      const response = await applyForJob(id);
+      setApplicationStatus(response.status); // Set the application status
       toast({
         title: "Application submitted.",
         description: "Your application has been submitted successfully.",
@@ -94,6 +111,18 @@ const JobDetails = () => {
                   <Box textAlign="left" flex="1" minW="250px">
                     <Heading as="h4" size="md" mb={4}>
                       {job.title}
+                      {applicationStatus &&
+                        ["md"].map((size) => (
+                          <Tag
+                            size={size}
+                            key={size}
+                            variant="solid"
+                            colorScheme="teal"
+                            ml="5"
+                          >
+                            {applicationStatus}
+                          </Tag>
+                        ))}
                     </Heading>
                     <Text fontWeight="bold" mb={4}>
                       {job.userId && job.userId.organizationName
@@ -108,8 +137,9 @@ const JobDetails = () => {
                     mt={{ base: "4", md: "0" }}
                     className="view-button"
                     onClick={handleApplyClick}
+                    isDisabled={applicationStatus !== null}
                   >
-                    Apply
+                    {applicationStatus ? `Applied` : "Apply"}
                   </Button>
                 </Flex>
               </Box>

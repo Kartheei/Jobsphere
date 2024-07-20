@@ -49,13 +49,6 @@ const JobPostedDetails = () => {
         setApplications(applicationsData);
       } catch (error) {
         console.error("Error fetching applications:", error);
-        toast({
-          title: "Error fetching applications",
-          description: error.message,
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
       }
     };
 
@@ -149,47 +142,53 @@ const JobPostedDetails = () => {
             <Heading as="h4" size="md" mb={4}>
               Candidates Applied
             </Heading>
-            <Flex justify={"center"} flexDirection={"column"}>
-              {applications.map((application) => (
-                <Box
-                  key={application._id}
-                  bg={"#d1e1ec"}
-                  display={"flex"}
-                  flexDirection={"row"}
-                  justifyContent="space-between"
-                  p="5px"
-                  borderRadius="10px"
-                  mb="3px"
-                >
-                  <Text p={2} pr="5px" fontWeight={"bold"}>
-                    {application.user_id.name}
-                  </Text>
-                  <Flex gap={3} mt={1} pr={1}>
-                    <Button
-                      size={"sm"}
-                      mt={{ base: "4", md: "0" }}
-                      className="view-button"
-                    >
-                      View Profile
-                    </Button>
-                    <Button
-                      size={"sm"}
-                      mt={{ base: "4", md: "0" }}
-                      className="btn-approve"
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      size={"sm"}
-                      mt={{ base: "4", md: "0" }}
-                      className="btn-delete"
-                    >
-                      Reject
-                    </Button>
-                  </Flex>
-                </Box>
-              ))}
-            </Flex>
+            {applications.length === 0 ? (
+              <Text fontSize="lg" textAlign="center">
+                No applications found for this job.
+              </Text>
+            ) : (
+              <Flex justify={"center"} flexDirection={"column"}>
+                {applications.map((application) => (
+                  <Box
+                    key={application._id}
+                    bg={"#d1e1ec"}
+                    display={"flex"}
+                    flexDirection={"row"}
+                    justifyContent="space-between"
+                    p="5px"
+                    borderRadius="10px"
+                    mb="3px"
+                  >
+                    <Text p={2} pr="5px" fontWeight={"bold"}>
+                      {application.user_id.name}
+                    </Text>
+                    <Flex gap={3} mt={1} pr={1}>
+                      <Button
+                        size={"sm"}
+                        mt={{ base: "4", md: "0" }}
+                        className="view-button"
+                      >
+                        View Profile
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        mt={{ base: "4", md: "0" }}
+                        className="btn-approve"
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        mt={{ base: "4", md: "0" }}
+                        className="btn-delete"
+                      >
+                        Reject
+                      </Button>
+                    </Flex>
+                  </Box>
+                ))}
+              </Flex>
+            )}
           </Box>
         </Box>
       </Center>
