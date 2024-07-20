@@ -121,6 +121,18 @@ const fetchRecentJobs = async () => {
   }
 };
 
+// Get Applied  Jobs By Candidate
+const fetchJobsApplied = async () => {
+  try {
+    const response = await axios.get("/api/jobs/candidate/appliedJobs", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
 export {
   createJob,
   fetchJobs,
@@ -131,4 +143,5 @@ export {
   updateJobDetails,
   fetchEmployerStats,
   fetchRecentJobs,
+  fetchJobsApplied,
 };

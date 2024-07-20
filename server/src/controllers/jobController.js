@@ -77,12 +77,12 @@ export const getEmployerJobs = async (req, res, next) => {
     }
 
     // Find jobs created by the logged-in employer
-    const jobs = await Job.find({ userId: req.user._id }).select(
-      "title company description"
-    );
+    const jobs = await Job.find({ userId: req.user._id });
+    console.log("Jobs:", jobs);
 
     // Retrieve the organization name from the user's information
     const user = await User.findById(req.user._id).select("organizationName");
+    console.log("User:", user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -106,6 +106,7 @@ export const getEmployerJobs = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
 
 // Fetch all jobs
 export const getAllJobs = async (req, res, next) => {
@@ -144,6 +145,31 @@ export const deleteJob = async (req, res, next) => {
 
     await Job.deleteOne({ _id: id });
     res.status(200).json({ message: "Job deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCandidateAppliedJobs = async (req, res, next) => {
+
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user._id;
+
+    // Find the user's applications and populate job details
+    const userApplications = await Application.find({ user_id: userId }).populate('job_id');
+
+    if (!userApplications) {
+      return res.status(404).json({ message: "No applications found" });
+    }
+
+    // Extract job details from applications
+    const appliedJobs = userApplications.map(app => app.job_id);
+
+    return res.status(200).json(appliedJobs);
   } catch (error) {
     next(error);
   }
