@@ -26,11 +26,12 @@ router.get("/:id", getJobById);
 // Update Job Details
 router.put("/employer/:id", updateJobDetails);
 
-// /Employer Jobs
+// Employer Jobs
 router.get("/employer/jobs", protect, getEmployerJobs);
 
 // Delete Job
 router.delete("/employer/:id", protect, deleteJob);
+
 // Employer Stats
 router.get("/employer/stats", protect, getEmployerStats);
 

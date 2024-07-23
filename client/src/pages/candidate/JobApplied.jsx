@@ -10,7 +10,7 @@ import {
   useToast,
   Tag,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
 import NavBar from "../../components/candidate/NavBar";
@@ -22,6 +22,7 @@ const JobApplied = () => {
   const [jobList, setJobList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -49,6 +50,10 @@ const JobApplied = () => {
 
     getJobs();
   }, [toast]);
+
+  const handleViewClick = (jobId) => {
+    navigate(`/jobs/jobDetails/${jobId}`);
+  };
 
   const getColorScheme = (status) => {
     switch (status) {
@@ -137,8 +142,10 @@ const JobApplied = () => {
                         {truncateDescription(data.description)}
                       </Text>
                     </Box>
-
-                    <Button mt={{ base: "4", md: "0" }} className="view-button">
+                    <Button
+                      className="apply-button"
+                      onClick={() => handleViewClick(data._id)} // Use data._id or data.job_id
+                    >
                       View
                     </Button>
                   </Flex>

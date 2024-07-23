@@ -136,6 +136,26 @@ export const getEmployerJobs = async (req, res, next) => {
   }
 };
 
+// @desc - Get two recent Jobs based on employer login
+export const getRecentJobs = async (req, res, next) => {
+  try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // Find jobs created by the logged-in employer, sorted by creation date
+    const jobs = await Job.find({ userId: req.user._id })
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .select("title description createdAt");
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
+
 // @desc - Update Job details
 export const updateJobDetails = async (req, res, next) => {
   const { id } = req.params;
@@ -220,26 +240,6 @@ export const getEmployerStats = async (req, res, next) => {
     });
 
     res.status(200).json({ totalJobPosts, totalApplicationsReceived });
-  } catch (error) {
-    next(error); // Pass the error to the error handler middleware
-  }
-};
-
-// @desc - Get two recent Jobs based on employer login
-export const getRecentJobs = async (req, res, next) => {
-  try {
-    // Ensure the user is authenticated
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    // Find jobs created by the logged-in employer, sorted by creation date
-    const jobs = await Job.find({ userId: req.user._id })
-      .sort({ createdAt: -1 })
-      .limit(2)
-      .select("title description createdAt");
-
-    res.status(200).json(jobs);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }

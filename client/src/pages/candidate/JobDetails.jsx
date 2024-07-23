@@ -96,9 +96,12 @@ const JobDetails = () => {
     }
   };
 
-  // Convert requirements string to an array
+  // Convert requirements and description string to arrays
   const requirementsArray = job?.requirements
     ? job.requirements.split(/\r?\n/) // Split by newline characters
+    : [];
+  const descriptionArray = job?.description
+    ? job.description.split(/\r?\n/) // Split by newline characters
     : [];
 
   return (
@@ -177,7 +180,11 @@ const JobDetails = () => {
                     <Heading as="h4" size="md" mb={4}>
                       Description
                     </Heading>
-                    <Text mb={4}>{job.description}</Text>
+                    {descriptionArray.map((desc, index) => (
+                      <Text key={index} mb={4}>
+                        {desc}
+                      </Text>
+                    ))}
                   </Box>
                 </Flex>
               </Box>
