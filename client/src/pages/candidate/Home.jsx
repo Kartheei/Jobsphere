@@ -14,6 +14,7 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
@@ -25,6 +26,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -58,6 +60,10 @@ function Home() {
       return words.slice(0, wordLimit).join(" ") + "...";
     }
     return text;
+  };
+
+  const handleViewClick = (jobId) => {
+    navigate(`/jobs/jobDetails/${jobId}`);
   };
 
   return (
@@ -110,10 +116,15 @@ function Home() {
                       {job.title}
                     </Heading>
                     <Text fontWeight="bold">{job.location}</Text>
-                    <Text>{truncateText(job.description, 50)}</Text>
+                    <Text maxWidth="1048px">
+                      {truncateText(job.description, 50)}
+                    </Text>
                   </Box>
-                  <Button className="apply-button" width="120px">
-                    Apply
+                  <Button
+                    className="apply-button"
+                    onClick={() => handleViewClick(job._id)}
+                  >
+                    View
                   </Button>
                 </Flex>
               </Box>

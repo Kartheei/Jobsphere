@@ -10,6 +10,9 @@ import {
   Spinner,
   useToast,
   Tag,
+  List,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
@@ -18,7 +21,7 @@ import Footer from "../../components/common/Footer";
 import {
   applyForJob,
   getApplicationStatus,
-} from "../../services/applicationService"; // Import the services
+} from "../../services/applicationService";
 import { fetchJobDetails } from "../../services/jobService";
 
 const JobDetails = () => {
@@ -93,6 +96,14 @@ const JobDetails = () => {
     }
   };
 
+  // Convert requirements and description string to arrays
+  const requirementsArray = job?.requirements
+    ? job.requirements.split(/\r?\n/) // Split by newline characters
+    : [];
+  const descriptionArray = job?.description
+    ? job.description.split(/\r?\n/) // Split by newline characters
+    : [];
+
   return (
     <>
       <NavBar />
@@ -135,13 +146,17 @@ const JobDetails = () => {
                         </Tag>
                       )}
                     </Heading>
-                    <Text fontWeight="bold" mb={4}>
+                    <Text fontWeight="bold" mb="5">
                       {job.userId && job.userId.organizationName
                         ? job.userId.organizationName
-                        : "Unknown Company"}
+                        : ""}{" "}
+                      | {job.location}
                     </Text>
-                    <Text fontWeight="bold" mb={4}>
-                      {job.location}
+                    <Text mb="1">Salary: {job.salary || "Not specified"}</Text>
+                    <Text>
+                      Job Type:{" "}
+                      {job.job_type.charAt(0).toUpperCase() +
+                        job.job_type.slice(1)}
                     </Text>
                   </Box>
                   <Button
@@ -155,7 +170,7 @@ const JobDetails = () => {
                 </Flex>
               </Box>
 
-              <Box p="6" mb={2}>
+              <Box p="4" mb={2}>
                 <Flex
                   justify="space-between"
                   alignItems="center"
@@ -165,12 +180,16 @@ const JobDetails = () => {
                     <Heading as="h4" size="md" mb={4}>
                       Description
                     </Heading>
-                    <Text mb={4}>{job.description}</Text>
+                    {descriptionArray.map((desc, index) => (
+                      <Text key={index} mb={4}>
+                        {desc}
+                      </Text>
+                    ))}
                   </Box>
                 </Flex>
               </Box>
 
-              <Box p="6" mb={6}>
+              <Box p="4" mb={6}>
                 <Flex
                   justify="space-between"
                   alignItems="center"
@@ -180,7 +199,15 @@ const JobDetails = () => {
                     <Heading as="h4" size="md" mb={4}>
                       Requirements
                     </Heading>
-                    <Text mb={4}>{job.requirements}</Text>
+                    <List spacing={1}>
+                      {requirementsArray.map((req, index) => (
+                        <ListItem key={index}>
+                          <UnorderedList>
+                            <ListItem>{req}</ListItem>
+                          </UnorderedList>
+                        </ListItem>
+                      ))}
+                    </List>
                   </Box>
                 </Flex>
               </Box>

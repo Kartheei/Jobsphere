@@ -119,9 +119,10 @@ function JobDisplay() {
                   <Text fontWeight="bold">
                     {job.userId && job.userId.organizationName
                       ? job.userId.organizationName
-                      : "Unknown Company"}
+                      : ""}{" "}
+                    &#124; {job.location}
                   </Text>
-                  <Text fontWeight="bold">{job.location}</Text>
+                  <Text></Text>
                   <Text mb="4">{truncateText(job.description, 50)}</Text>
                   <Button
                     className="apply-button"
