@@ -100,7 +100,12 @@ const NavBar = () => {
                         </HStack>
                       </MenuButton>
                       <MenuList>
-                        <MenuItem>Profile</MenuItem>
+                        <MenuItem
+                          as={RouterLink}
+                          to="/employer/employer-profile"
+                        >
+                          Profile
+                        </MenuItem>
                         <MenuDivider />
                         <MenuItem onClick={logout}>Logout</MenuItem>
                       </MenuList>
@@ -162,7 +167,9 @@ const NavBar = () => {
                       </HStack>
                     </MenuButton>
                     <MenuList>
-                      <MenuItem>Profile</MenuItem>
+                      <MenuItem as={RouterLink} to="/employer/employer-profile">
+                        Profile
+                      </MenuItem>
                       <MenuDivider />
                       <MenuItem onClick={logout}>Logout</MenuItem>
                     </MenuList>

@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
 import CandidateProfileView from "./pages/employer/CandidateProfileView";
+import EmployerProfile from "./pages/employer/EmployerProfile";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
 import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate";
@@ -67,6 +68,14 @@ const routes = [
       </RoleProtectedRoute>
     ),
     index: true,
+  },
+  {
+    path: "employer/employer-profile",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        <EmployerProfile />
+      </RoleProtectedRoute>
+    ),
   },
   {
     path: "/employer/job-creation",
