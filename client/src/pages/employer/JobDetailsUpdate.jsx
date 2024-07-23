@@ -1,42 +1,48 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Box,
   Button,
   Container,
-  Flex,
   Heading,
   VStack,
-  Text,
   Input,
   Textarea,
   Select,
-  Divider,
-  SimpleGrid,
-  Link,
   useToast,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { fetchJobDetails, updateJobDetails } from "../../services/jobService";
+
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+import { fetchJobDetails, updateJobDetails } from "../../services/jobService";
 
 const JobDetailsUpdate = () => {
   const { id } = useParams();
   const toast = useToast();
   const [jobDetails, setJobDetails] = useState({
-    title: "",
-    companyName: "",
+    jobTitle: "",
     location: "",
-    description: "",
-    requirements: "",
-    job_type: "",
+    salary: "",
+    jobDescription: "",
+    jobRequirements: "",
+    employmentType: "",
   });
 
   useEffect(() => {
     const getJobDetails = async () => {
       try {
         const data = await fetchJobDetails(id);
-        setJobDetails(data);
+        setJobDetails({
+          jobTitle: data.title,
+          location: data.location,
+          salary: data.salary,
+          jobDescription: data.description,
+          jobRequirements: data.requirements,
+          employmentType: data.job_type,
+        });
       } catch (error) {
         toast({
           title: "Error fetching job details.",
@@ -61,7 +67,14 @@ const JobDetailsUpdate = () => {
 
   const handleUpdate = async () => {
     try {
-      await updateJobDetails(id, jobDetails);
+      await updateJobDetails(id, {
+        title: jobDetails.jobTitle,
+        location: jobDetails.location,
+        salary: jobDetails.salary,
+        description: jobDetails.jobDescription,
+        requirements: jobDetails.jobRequirements,
+        job_type: jobDetails.employmentType,
+      });
       toast({
         title: "Job updated.",
         description: "Job details have been updated successfully.",
@@ -83,79 +96,80 @@ const JobDetailsUpdate = () => {
   return (
     <>
       <NavBar />
-      <Container maxW="container.xl" py={6}>
-        <SimpleGrid columns={[1, null, 3]} spacing="40px">
-          <Box boxShadow="md" p="6" rounded="md">
-            <VStack spacing={4} align="stretch">
-              <Link href="#" fontWeight="bold">
-                My Jobs
-              </Link>
-              <Link href="#" fontWeight="bold">
-                Preferences
-              </Link>
-              <Link href="#" fontWeight="bold">
-                My Network
-              </Link>
-              <Link href="#" fontWeight="bold">
-                Tutorial
-              </Link>
-            </VStack>
-          </Box>
-          <Box gridColumn="span 2">
-            <Flex justify="space-between" align="center" mb={4}>
-              <Heading as="h2" size="lg">
-                Edit the Job Posting
-              </Heading>
-            </Flex>
-            <VStack spacing={4} align="stretch">
-              <Text fontWeight="bold"> Job Title</Text>
+      <Container maxW="container.xl" mt="8">
+        <Box>
+          <Heading size="xl" mb="8" textAlign="left">
+            Update Job Details
+          </Heading>
+          <VStack spacing="6" align="start">
+            <FormControl id="jobTitle" isRequired>
+              <FormLabel>Job Title</FormLabel>
               <Input
-                name="title"
+                name="jobTitle"
                 placeholder="Enter job title"
-                value={jobDetails.title}
+                value={jobDetails.jobTitle}
                 onChange={handleChange}
               />
-              <Text fontWeight="bold">Location</Text>
+            </FormControl>
+            <FormControl id="location" isRequired>
+              <FormLabel>Location</FormLabel>
               <Input
                 name="location"
                 placeholder="Enter location"
                 value={jobDetails.location}
                 onChange={handleChange}
               />
-              <Text fontWeight="bold">Job Description</Text>
-              <Textarea
-                name="description"
-                placeholder="Enter description"
-                value={jobDetails.description}
+            </FormControl>
+            <FormControl id="salary" isRequired>
+              <FormLabel>Salary Range</FormLabel>
+              <Input
+                name="salary"
+                placeholder="Enter salary range"
+                value={jobDetails.salary}
                 onChange={handleChange}
               />
-              <Text fontWeight="bold">Job Requirements</Text>
+            </FormControl>
+            <FormControl id="jobDescription" isRequired>
+              <FormLabel>Job Description</FormLabel>
               <Textarea
-                name="requirements"
-                placeholder="Enter requirements"
-                value={jobDetails.requirements}
+                name="jobDescription"
+                placeholder="Enter job description"
+                value={jobDetails.jobDescription}
                 onChange={handleChange}
               />
-              <Text fontWeight="bold">Job Category</Text>
+            </FormControl>
+            <FormControl id="jobRequirements" isRequired>
+              <FormLabel>Job Requirements</FormLabel>
+              <Textarea
+                name="jobRequirements"
+                placeholder="Enter job requirements"
+                value={jobDetails.jobRequirements}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl id="employmentType" isRequired>
+              <FormLabel>Employment Type</FormLabel>
               <Select
-                name="job_type"
-                value={jobDetails.job_type}
+                name="employmentType"
+                value={jobDetails.employmentType}
                 onChange={handleChange}
               >
-                <option value="full_time">Full-time</option>
-                <option value="part_time">Part-time</option>
-                <option value="contract">Contract</option>
-                <option value="internship">Internship</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
               </Select>
-              <Flex justify="space-between" mt={4}>
-                <Button colorScheme="blue" onClick={handleUpdate}>
-                  Update
-                </Button>
-              </Flex>
-            </VStack>
-            <Divider mt="8" />
-          </Box>
-        </SimpleGrid>
+            </FormControl>
+            <Button
+              colorScheme="blue"
+              size="lg"
+              alignSelf="end"
+              onClick={handleUpdate}
+            >
+              Update
+            </Button>
+          </VStack>
+        </Box>
       </Container>
       <Footer contentType="employer" />
     </>

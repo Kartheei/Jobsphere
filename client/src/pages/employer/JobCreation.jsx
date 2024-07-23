@@ -150,15 +150,17 @@ function JobCreation() {
                 value={formData.employmentType}
                 onChange={handleChange}
               >
-                <option value="full_time">Full-time</option>
-                <option value="part_time">Part-time</option>
-                <option value="contract">Contract</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
               </Select>
             </FormControl>
             <Button
               colorScheme="blue"
               size="lg"
               type="submit"
+              alignSelf="end"
               isDisabled={isLoading}
             >
               {isLoading ? <Spinner size="sm" /> : "Submit"}
