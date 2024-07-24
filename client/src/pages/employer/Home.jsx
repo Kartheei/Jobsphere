@@ -49,6 +49,14 @@ const Home = () => {
     navigate("/employer/job-creation");
   };
 
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -118,11 +126,13 @@ const Home = () => {
                   flexWrap="wrap"
                 >
                   <Box textAlign="left" flex="1" minW="250px">
-                    <Heading as="h4" size="md">
+                    <Heading as="h4" size="md" mb="1">
                       {job.title}
                     </Heading>
-                    <Text fontWeight="bold">{job.organizationName}</Text>
-                    <Text mt="4">{job.description}</Text>
+                    <Text fontWeight="bold" mb="2">
+                      {job.organizationName}
+                    </Text>
+                    {truncateText(job.description, 40)}
                   </Box>
                   <Button
                     mt={{ base: "4", md: "0" }}

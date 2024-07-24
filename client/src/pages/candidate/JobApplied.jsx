@@ -73,11 +73,13 @@ const JobApplied = () => {
     "My Network",
     "Interview Prep Tips",
   ]);
-  const truncateDescription = (description, limit = 500) => {
-    if (description.length > limit) {
-      return description.substring(0, limit) + "...";
+
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
     }
-    return description;
+    return text;
   };
 
   return (
@@ -122,7 +124,7 @@ const JobApplied = () => {
                     flexWrap="wrap"
                   >
                     <Box textAlign="left" flex="1" minW="250px">
-                      <Heading as="h4" size="md" mb={4}>
+                      <Heading Heading as="h4" size="md" mb="1">
                         {data.title}
                         {data.applicationStatus && (
                           <Tag
@@ -135,12 +137,8 @@ const JobApplied = () => {
                           </Tag>
                         )}
                       </Heading>
-                      <Text fontWeight="bold" mb={4}>
-                        {data.organizationName}
-                      </Text>
-                      <Text fontWeight="bold" mb={4}>
-                        {truncateDescription(data.description)}
-                      </Text>
+                      <Text mb={4}>{data.organizationName}</Text>
+                      <Text mb={4}>{truncateText(data.description, 40)}</Text>
                     </Box>
                     <Button
                       className="apply-button"

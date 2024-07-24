@@ -244,3 +244,32 @@ export const getEmployerStats = async (req, res, next) => {
     next(error); // Pass the error to the error handler middleware
   }
 };
+
+// @desc - Search jobs by title and location
+// @access - public
+export const searchJobs = async (req, res, next) => {
+  const { title, location } = req.query;
+
+  try {
+    const query = {
+      $or: [],
+    };
+
+    if (title) {
+      query.$or.push({ title: { $regex: title, $options: "i" } });
+    }
+
+    if (location) {
+      query.$or.push({ location: { $regex: location, $options: "i" } });
+    }
+
+    const jobs = await Job.find(query).populate({
+      path: "userId",
+      select: "name organizationName",
+    });
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    next(error); // Pass the error to the error handler middleware
+  }
+};
