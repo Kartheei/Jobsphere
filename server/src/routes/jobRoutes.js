@@ -9,10 +9,14 @@ import {
   getCandidateAppliedJobs,
   getEmployerStats,
   getRecentJobs,
+  searchJobs,
 } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = Router();
+
+// Search jobs by title and location
+router.get("/search", searchJobs);
 
 // Create new job post
 router.post("/createJob", protect, createJob);

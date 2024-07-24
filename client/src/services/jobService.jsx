@@ -133,6 +133,19 @@ const fetchJobsApplied = async () => {
   }
 };
 
+// API call for searching jobs
+const searchJobs = async (title, location) => {
+  try {
+    const response = await axios.get(
+      `/api/jobs/search?title=${title}&location=${location}`,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
 export {
   createJob,
   fetchJobs,
@@ -144,4 +157,5 @@ export {
   fetchEmployerStats,
   fetchRecentJobs,
   fetchJobsApplied,
+  searchJobs,
 };

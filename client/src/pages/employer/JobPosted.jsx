@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
+
 import {
-  ChakraProvider,
   Box,
   Button,
-  Container,
   Flex,
   Heading,
-  CSSReset,
   Text,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -129,13 +128,13 @@ const JobPosted = () => {
                     flexWrap="wrap"
                   >
                     <Box textAlign="left" flex="1" minW="250px">
-                      <Heading as="h4" size="md" mb="2">
+                      <Heading as="h4" size="md" mb="1">
                         {data.title}
                       </Heading>
                       <Text fontWeight="bold" mb="2">
                         {data.organizationName}
                       </Text>
-                      <Text mb="4">{truncateText(data.description, 50)}</Text>
+                      <Text mb="4">{truncateText(data.description, 40)}</Text>
                       <Text mb="2" fontWeight="bold">
                         Total Applications: {data.applicationCount || 0}
                       </Text>
