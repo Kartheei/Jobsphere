@@ -3,6 +3,7 @@ import User from "../models/user.js";
 import UserProfile from "../models/userProfile.js";
 import generateToken from "../utils/generateToken.js";
 import path from 'path';
+import fs from 'fs';
 
 
 // @desc - Register new user
@@ -143,15 +144,21 @@ const updateUserProfile = async (req, res, next) => {
 //     cb(null, `${Date.now()}-${file.originalname}`);
 //   }
 // });
+
 export const uploadResume = async (req, res) => {
   try {
+    if (!req.file) {
+      console.log(req)
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
     const userProfile = await UserProfile.findOne({ userId: req.user._id });
     if (!userProfile) {
       return res.status(404).json({ message: 'User profile not found' });
     }
 
     userProfile.resume = {
-      filename: req.file.originalname,
+      filename: req.file.filename,
       mimeType: req.file.mimetype,
       path: req.file.path,
     };
@@ -160,9 +167,13 @@ export const uploadResume = async (req, res) => {
 
     res.status(200).json({ message: 'Resume uploaded successfully', resume: userProfile.resume });
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    console.error('Upload error:', error);
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ message: 'Validation Error', error: error.message });
+    } else {
+      res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
   }
-
 };
 
 export const getResume = async (req, res) => {
@@ -172,16 +183,25 @@ export const getResume = async (req, res) => {
       return res.status(404).json({ message: 'Resume not found' });
     }
 
-    const resumePath = path.resolve(userProfile.resume.path);
-    res.sendFile(resumePath, (err) => {
-      if (err) {
-        console.error('Error sending file:', err);
-        res.status(500).json({ message: 'Error sending file', error: err.message });
-      }
-    });
+    const filePath = userProfile.resume.path;
+    const fileName = userProfile.resume.filename;
+
+    // Check if file exists
+    if (fs.existsSync(filePath)) {
+      // Set the appropriate Content-Type
+      res.setHeader('Content-Type', userProfile.resume.mimeType);
+      // Set the Content-Disposition to attachment to suggest a file download with the original filename
+      res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+      // Stream the file to the client
+      const readStream = fs.createReadStream(filePath);
+      readStream.pipe(res);
+    } else {
+      return res.status(404).json({ message: 'File not found' });
+    }
   } catch (error) {
     console.error('Error fetching resume:', error);
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };
+
 export { getUserProfile, updateUserProfile };
