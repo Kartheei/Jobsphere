@@ -3,6 +3,7 @@ import {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  getCandidateProfileById,
   uploadResume,
   getResume
 } from "../controllers/userController.js";
