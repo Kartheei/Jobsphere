@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import {
   Flex,
   Heading,
@@ -19,32 +21,34 @@ import {
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-
 import { AuthContext } from "../../context/AuthContext";
-import { loginUser } from "../../services/authService"; // Import the service
+import { loginUser } from "../../services/authService";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
+const schema = yup.object().shape({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
+
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
   const toast = useToast();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext); // Use AuthContext
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const handleShowClick = () => setShowPassword(!showPassword);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (formData) => {
     try {
       // API call from authService to allow user to login
       const response = await loginUser(formData);
@@ -97,23 +101,22 @@ const Signin = () => {
             <Image src="../images/logo_scale.png" boxSize="80px" />
             <Heading>Login to JobSphere</Heading>
           </Stack>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={7}>
-              <FormControl>
+              <FormControl isInvalid={errors.email}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
                     <CFaUserAlt color="white" />
                   </InputLeftElement>
                   <Input
                     type="email"
-                    placeholder="email address"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
+                    placeholder="Email address"
+                    {...register("email")}
                   />
                 </InputGroup>
+                {errors.email && <p>{errors.email.message}</p>}
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={errors.password}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" color="white">
                     <CFaLock color="white" />
@@ -121,9 +124,7 @@ const Signin = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
+                    {...register("password")}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -131,6 +132,7 @@ const Signin = () => {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+                {errors.password && <p>{errors.password.message}</p>}
                 <FormHelperText textAlign="right">
                   <Link
                     color="white"
