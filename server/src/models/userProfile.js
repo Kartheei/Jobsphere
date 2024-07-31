@@ -51,8 +51,9 @@ const userProfileSchema = new mongoose.Schema({
         }
     }],
     resume: {
-        type: String,
-        required: true,
+        filename: String,
+        mimeType: String,
+        path: String,
     },
     createdAt: {
         type: Date,
@@ -76,6 +77,6 @@ userProfileSchema.pre('findOneAndUpdate', function (next) {
     next();
 });
 
-const UserProfile = mongoose.model('userProfile', userProfileSchema);
+const UserProfile = mongoose.model('UserProfile', userProfileSchema);
 
 export default UserProfile;
