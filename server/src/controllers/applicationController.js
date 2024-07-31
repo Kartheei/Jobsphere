@@ -14,9 +14,10 @@ export const createApplication = async (req, res, next) => {
       user_id: userId,
     });
     if (existingApplication) {
-      return res
-        .status(400)
-        .json({ message: "You have already applied for this job" });
+      return res.status(200).json({
+        message: "You have already applied for this job",
+        status: existingApplication.status,
+      });
     }
 
     // Create a new application
@@ -30,9 +31,11 @@ export const createApplication = async (req, res, next) => {
     // Add the job ID to the user's appliedJobs array
     await User.findByIdAndUpdate(userId, { $push: { appliedJobs: jobId } });
 
-    res
-      .status(201)
-      .json({ message: "Application submitted successfully", newApplication });
+    res.status(201).json({
+      message: "Application submitted successfully",
+      newApplication,
+      status: newApplication.status,
+    });
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
   }
@@ -43,7 +46,6 @@ export const createApplication = async (req, res, next) => {
 export const getApplicationsByJobId = async (req, res, next) => {
   try {
     const { jobId } = req.params;
-    console.log("Fetching applications for job ID:", jobId);
 
     const applications = await Application.find({ job_id: jobId }).populate({
       path: "user_id",
@@ -60,5 +62,50 @@ export const getApplicationsByJobId = async (req, res, next) => {
   } catch (error) {
     console.error("Error fetching applications:", error.message, error.stack);
     next(error); // Pass the error to the error handler middleware
+  }
+};
+
+// @desc - Get the application status for a job
+// @access - private
+export const getApplicationStatus = async (req, res, next) => {
+  try {
+    const { jobId } = req.params;
+    const userId = req.user._id;
+
+    const application = await Application.findOne({
+      job_id: jobId,
+      user_id: userId,
+    });
+
+    if (application) {
+      return res.status(200).json({ status: application.status });
+    }
+
+    res.status(404).json({ message: "No application found for this job" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc - Update the application status
+export const updateApplicationStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const application = await Application.findById(id);
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    application.status = status;
+    await application.save();
+
+    res
+      .status(200)
+      .json({ message: "Application status updated", application });
+  } catch (error) {
+    next(error);
   }
 };

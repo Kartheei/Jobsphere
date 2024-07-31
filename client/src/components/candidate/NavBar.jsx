@@ -60,9 +60,6 @@ const NavBar = () => {
                 <Link as={RouterLink} className="nav-link" to="/contact">
                   Contact
                 </Link>
-                <Link as={RouterLink} className="nav-link" to="/jobApplied">
-                  Applied Jobs
-                </Link>
               </HStack>
               <HStack spacing="4">
                 <SearchBar />
@@ -103,6 +100,9 @@ const NavBar = () => {
                       <MenuList>
                         <MenuItem as={RouterLink} to="/profile">
                           Profile
+                        </MenuItem>
+                        <MenuItem as={RouterLink} to="/jobApplied">
+                          Applied Jobs
                         </MenuItem>
                         <MenuDivider />
                         <MenuItem onClick={logout}>Logout</MenuItem>
@@ -167,6 +167,9 @@ const NavBar = () => {
                     <MenuList>
                       <MenuItem as={RouterLink} to="/profile">
                         Profile
+                      </MenuItem>
+                      <MenuItem as={RouterLink} to="/jobApplied">
+                        Applied Jobs
                       </MenuItem>
                       <MenuDivider />
                       <MenuItem onClick={logout}>Logout</MenuItem>

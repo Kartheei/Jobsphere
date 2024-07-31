@@ -10,7 +10,7 @@ const jobSchema = new Schema({
   job_type: {
     type: String,
     required: true,
-    enum: ["full_time", "part_time", "contract", "internship"],
+    enum: ["Full-time", "Part-time", "Contract", "Internship"],
   },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },

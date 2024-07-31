@@ -21,9 +21,9 @@ router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+router.route("/profile/:userId").get(protect, getCandidateProfileById);
 
 router.post('/uploadResume', protect, upload.single('resume'), uploadResume);
-
 
 router.get('/getResume', protect, getResume);
 export default router;

@@ -97,12 +97,49 @@ const updateJobDetails = async (jobId, jobData) => {
   }
 };
 
+// Fetch employer stats (total jobs and applications received)
+const fetchEmployerStats = async () => {
+  try {
+    const response = await axios.get("/api/jobs/employer/stats", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// Fetch recent jobs
+const fetchRecentJobs = async () => {
+  try {
+    const response = await axios.get("/api/jobs/employer/recent", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
 // Get Applied  Jobs By Candidate
 const fetchJobsApplied = async () => {
   try {
     const response = await axios.get("/api/jobs/candidate/appliedJobs", {
       withCredentials: true,
     });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
+// API call for searching jobs
+const searchJobs = async (title, location) => {
+  try {
+    const response = await axios.get(
+      `/api/jobs/search?title=${title}&location=${location}`,
+      { withCredentials: true }
+    );
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || error.message);
@@ -117,5 +154,8 @@ export {
   deleteJob,
   fetchJobDetails,
   updateJobDetails,
+  fetchEmployerStats,
+  fetchRecentJobs,
   fetchJobsApplied,
+  searchJobs,
 };

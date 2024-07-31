@@ -6,11 +6,17 @@ import {
   getEmployerJobs,
   deleteJob,
   getJobById,
-  getCandidateAppliedJobs
+  getCandidateAppliedJobs,
+  getEmployerStats,
+  getRecentJobs,
+  searchJobs,
 } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = Router();
+
+// Search jobs by title and location
+router.get("/search", searchJobs);
 
 // Create new job post
 router.post("/createJob", protect, createJob);
@@ -24,13 +30,19 @@ router.get("/:id", getJobById);
 // Update Job Details
 router.put("/employer/:id", updateJobDetails);
 
-// /Employer Jobs
+// Employer Jobs
 router.get("/employer/jobs", protect, getEmployerJobs);
 
 // Delete Job
 router.delete("/employer/:id", protect, deleteJob);
 
+// Employer Stats
+router.get("/employer/stats", protect, getEmployerStats);
+
+// Recent Jobs
+router.get("/employer/recent", protect, getRecentJobs);
+
 // Get candidate Applied Jobs
-router.get('/candidate/appliedJobs', protect, getCandidateAppliedJobs);
+router.get("/candidate/appliedJobs", protect, getCandidateAppliedJobs);
 
 export default router;

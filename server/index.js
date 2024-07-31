@@ -11,12 +11,14 @@ import jobRoutes from "./src/routes/jobRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import applicationRoutes from "./src/routes/applicationRoutes.js";
+import employerRoutes from "./src/routes/employerRoutes.js";
 // Middleware
 const app = express();
 app.use(cors());
 app.use(express.json());
 dotenv.config();
 app.use(cookieParser());
+app.use(express.static("public"));
 
 // Custom middleware
 import { errorHandler } from "./src/middlewares/errorHandler.js"; // middleware for error handel
@@ -29,6 +31,7 @@ app.use("/api/jobs", jobRoutes); // jobRoutes
 app.use("/api/users", userRoutes); // registration route
 app.use("/api/auth", authRoutes); // authentication routes
 app.use("/api/applications", applicationRoutes); //New Application
+app.use("/api/employers", employerRoutes); //New Application
 
 // Error handling middleware
 app.use(errorHandler);

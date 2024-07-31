@@ -14,6 +14,7 @@ import {
   Spinner,
   useToast,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
@@ -24,7 +25,10 @@ function Home() {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTitle, setSearchTitle] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getJobs = async () => {
@@ -60,6 +64,18 @@ function Home() {
     return text;
   };
 
+  const handleViewClick = (jobId) => {
+    navigate(`/jobs/jobDetails/${jobId}`);
+  };
+
+  const handleSearch = () => {
+    navigate(
+      `/jobs?title=${encodeURIComponent(searchTitle)}&location=${encodeURIComponent(
+        searchLocation
+      )}`
+    );
+  };
+
   return (
     <ChakraProvider>
       <CSSReset />
@@ -77,14 +93,20 @@ function Home() {
                 mr="2"
                 bg="white"
                 className="search-input"
+                value={searchTitle}
+                onChange={(e) => setSearchTitle(e.target.value)}
               />
               <Input
                 placeholder="Location"
                 mr="2"
                 bg="white"
                 className="search-input"
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
               />
-              <Button className="search-button">Search</Button>
+              <Button className="search-button" onClick={handleSearch}>
+                Search
+              </Button>
             </Flex>
           </Box>
         </Container>
@@ -106,14 +128,21 @@ function Home() {
               <Box key={job._id} className="job-card">
                 <Flex justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Heading as="h4" size="md" mb="2">
+                    <Heading as="h4" size="md" mb="1">
                       {job.title}
                     </Heading>
-                    <Text fontWeight="bold">{job.location}</Text>
-                    <Text>{truncateText(job.description, 50)}</Text>
+                    <Text fontWeight="bold" mb="2">
+                      {job.location}
+                    </Text>
+                    <Text maxWidth="1048px">
+                      {truncateText(job.description, 40)}
+                    </Text>
                   </Box>
-                  <Button className="apply-button" width="120px">
-                    Apply
+                  <Button
+                    className="apply-button"
+                    onClick={() => handleViewClick(job._id)}
+                  >
+                    View
                   </Button>
                 </Flex>
               </Box>
