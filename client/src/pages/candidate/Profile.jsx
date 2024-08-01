@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box, Container, Flex, Heading, Text, VStack, Image, Input, Textarea, Divider, Button,
   FormControl, FormLabel, Menu, MenuButton, MenuList, MenuItem, useToast, Spinner,
 } from "@chakra-ui/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFile } from '@fortawesome/free-solid-svg-icons';
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
 import {
   fetchUserProfile,
   updateUserProfile,
-  // uploadResume,
+  fetchCandidateResume,
 } from "../../services/userService";
-
+import { DragAndDropUpload } from '../../components/candidate/DragandDropUpload';
+import "../../assets/styles/style.css";
 function Profile() {
   const { user } = useContext(AuthContext);
   const [profileData, setProfileData] = useState({
@@ -24,7 +26,6 @@ function Profile() {
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [resumeFile, setResumeFile] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -48,14 +49,13 @@ function Profile() {
         setIsLoading(false);
       }
     };
-
     getUserProfile();
   }, [toast]);
 
   const handleEditToggle = async () => {
     if (editMode) {
       await updateProfile();
-      await refreshProfileData(); // Refresh profile data after update
+      await refreshProfileData();
     }
     setEditMode(!editMode);
   };
@@ -177,49 +177,23 @@ function Profile() {
     }));
   };
 
-  const handleViewResume = () => {
-    console.log("View Resume");
-    window.open('http://localhost:5000/api/users/getResume', '_blank');
-  };
-
-  const handleFileChange = (e) => {
-    setResumeFile(e.target.files[0]);
-  };
-
-  const handleUploadResume = async () => {
-    if (!resumeFile) {
+  const downloadResume = async () => {
+    debugger;
+    try {
+      const data = await fetchCandidateResume();
+      console.log("dasdasd", data)
+    } catch (error) {
       toast({
-        title: "No file selected.",
-        description: "Please select a file to upload.",
-        status: "warning",
+        title: "Error fetching profile.",
+        description: error.message,
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    const formData = new FormData();
-    formData.append("resume", resumeFile);
-
-    // try {
-    //   await uploadResume(formData);
-    //   toast({
-    //     title: "Resume uploaded.",
-    //     description: "Your resume has been uploaded successfully.",
-    //     status: "success",
-    //     duration: 5000,
-    //     isClosable: true,
-    //   });
-    // } catch (error) {
-    //   toast({
-    //     title: "Error uploading resume.",
-    //     description: error.message,
-    //     status: "error",
-    //     duration: 5000,
-    //     isClosable: true,
-    //   });
-    // }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -234,6 +208,7 @@ function Profile() {
       </div>
     );
   }
+
 
   return (
     <>
@@ -298,31 +273,22 @@ function Profile() {
                 </>
               )}
             </FormControl>
+
           </VStack>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              colorScheme="blue"
-              size="lg"
-              ml="6"
-            >
-              Resume
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={handleViewResume}>View</MenuItem>
-              <MenuItem>
-                <Input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
-                  display="none"
-                />
-                <label htmlFor="fileInput">Upload</label>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <Box alignContent={'center'} alignItems={'center'} display={'flex'} justifyContent={'center'} flexDirection={'column'}>
+            <Flex onClick={downloadResume} >
+              <FontAwesomeIcon icon={faFile} size="2xl" style={{ color: "#215e8c", }} width={'150px'} height={'75px'} />
+            </Flex>
+            <Text fontSize={"small"}>Download Resume</Text>
+          </Box>
         </Flex>
+
+        <Divider mb="8" />
+
+        <Box mb="8">
+          <DragAndDropUpload />
+        </Box>
+
 
         <Divider mb="8" />
 
@@ -334,7 +300,7 @@ function Profile() {
             <Textarea
               id="about"
               value={profileData.about}
-              onChange={handleChange}
+              onChange={handleChange()}
               size="lg"
             />
           ) : (
