@@ -1,9 +1,28 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Box, Container, Flex, Heading, Text, VStack, Image, Input, Textarea, Divider, Button,
-  FormControl, FormLabel, Menu, MenuButton, MenuList, MenuItem, useToast, Spinner,
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  Image,
+  Input,
+  Textarea,
+  Divider,
+  Button,
+  FormControl,
+  FormLabel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
+
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
@@ -21,6 +40,14 @@ function Profile() {
     about: "",
     experience: [],
     education: [],
+    address: {
+      streetName: "",
+      city: "",
+      postalCode: "",
+      country: "",
+    },
+    contact: "",
+    dateOfBirth: "",
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +62,14 @@ function Profile() {
           ...data,
           experience: data.experience || [],
           education: data.education || [],
+          address: data.address || {
+            streetName: "",
+            city: "",
+            postalCode: "",
+            country: "",
+          },
+          contact: data.contact || "",
+          dateOfBirth: data.dateOfBirth || "",
         });
       } catch (error) {
         toast({
@@ -100,6 +135,9 @@ function Profile() {
         about: profileData.about,
         experiences: nonEmptyExperience,
         education: nonEmptyEducation,
+        address: profileData.address,
+        contact: profileData.contact,
+        dateOfBirth: profileData.dateOfBirth,
       });
       toast({
         title: "Profile updated.",
@@ -147,6 +185,17 @@ function Profile() {
     });
   };
 
+  const handleAddressChange = (e, field) => {
+    const value = e.target.value;
+    setProfileData((prevData) => ({
+      ...prevData,
+      address: {
+        ...prevData.address,
+        [field]: value,
+      },
+    }));
+  };
+
   const addNewExperience = () => {
     setProfileData((prevData) => ({
       ...prevData,
@@ -177,9 +226,14 @@ function Profile() {
     }));
   };
 
+  const handleCancel = () => {
+    setEditMode(false);
+    refreshProfileData(); // Revert profile data to original state before editing
+  };
+
   const handleViewResume = () => {
     console.log("View Resume");
-    window.open('http://localhost:5000/api/users/getResume', '_blank');
+    window.open("http://localhost:5000/api/users/getResume", "_blank");
   };
 
   const handleFileChange = (e) => {
@@ -277,7 +331,6 @@ function Profile() {
                 <Text fontSize="lg">{profileData.name}</Text>
               )}
             </FormControl>
-
             <FormControl>
               <FormLabel fontSize="lg" fontWeight="bold">
                 Email
@@ -296,6 +349,106 @@ function Profile() {
                 <>
                   <Text fontSize="lg">{profileData.email}</Text>
                 </>
+              )}
+            </FormControl>
+
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Date of Birth
+              </FormLabel>
+              {editMode ? (
+                profileData.dateOfBirth ? (
+                  <Text fontSize="lg">
+                    {
+                      new Date(profileData.dateOfBirth)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </Text>
+                ) : (
+                  <Input
+                    id="dateOfBirth"
+                    type="date"
+                    value={profileData.dateOfBirth}
+                    onChange={handleChange}
+                    size="lg"
+                  />
+                )
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.dateOfBirth
+                    ? new Date(profileData.dateOfBirth)
+                        .toISOString()
+                        .split("T")[0]
+                    : "Enter your date of birth..."}
+                </Text>
+              )}
+            </FormControl>
+
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Contact
+              </FormLabel>
+              {editMode ? (
+                <Input
+                  id="contact"
+                  placeholder="+1 123 123 1234"
+                  value={profileData.contact}
+                  onChange={handleChange}
+                  size="lg"
+                />
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.contact || "Enter your contact..."}
+                </Text>
+              )}
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Address
+              </FormLabel>
+              {editMode ? (
+                <>
+                  <Input
+                    id="streetName"
+                    placeholder="Street"
+                    value={profileData.address.streetName}
+                    onChange={(e) => handleAddressChange(e, "streetName")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="city"
+                    placeholder="City"
+                    value={profileData.address.city}
+                    onChange={(e) => handleAddressChange(e, "city")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="postalCode"
+                    placeholder="Postal Code"
+                    value={profileData.address.postalCode}
+                    onChange={(e) => handleAddressChange(e, "postalCode")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="country"
+                    placeholder="Country"
+                    value={profileData.address.country}
+                    onChange={(e) => handleAddressChange(e, "country")}
+                    size="lg"
+                    mb="2"
+                  />
+                </>
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.address?.streetName || "Street not provided"}
+                  {profileData.address?.city || "City not provided"},
+                  {profileData.address?.postalCode ?? "Postal Code"},
+                  {profileData.address?.country || "Country"}
+                </Text>
               )}
             </FormControl>
           </VStack>
@@ -498,9 +651,17 @@ function Profile() {
 
         <Divider mb="8" />
 
-        <Button onClick={handleEditToggle} colorScheme="blue" mb="8" mt="8">
-          {editMode ? "Save" : "Edit"}
-        </Button>
+        <Box display="flex" justifyContent="flex-end" gap="2">
+          <Button onClick={handleEditToggle} colorScheme="blue">
+            {editMode ? "Save" : "Edit"}
+          </Button>
+
+          {editMode && (
+            <Button onClick={handleCancel} colorScheme="red">
+              Cancel
+            </Button>
+          )}
+        </Box>
       </Container>
       <Footer contentType="candidate" />
     </>

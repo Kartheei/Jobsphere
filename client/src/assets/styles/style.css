@@ -13,3 +13,39 @@
   background-size: cover;
   background-position: center;
 }
+
+.profile-header {
+  position: relative;
+  background-color: #2b6cb0; /* Chakra UI blue.600 */
+  color: white;
+  border-radius: 0.375rem; /* Chakra UI lg */
+  padding: 15px 0;
+  margin-bottom: 2rem; /* Chakra UI mb="8" */
+  text-align: center;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Chakra UI boxShadow="lg" */
+}
+
+.profile-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: #2c5282; /* Chakra UI blue.700 */
+  transform: translateX(-50%) rotate(0.5deg);
+  border-radius: 0.375rem; /* Chakra UI lg */
+  z-index: -1;
+}
+
+.profile-header h2 {
+  font-weight: bold;
+  letter-spacing: 0.025em;
+}
+
+.profile-header p {
+  font-size: 1.125rem; /* Chakra UI fontSize="lg" */
+  margin-top: 1rem;
+}
