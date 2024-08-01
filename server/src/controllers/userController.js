@@ -100,13 +100,18 @@ const updateUserProfile = async (req, res, next) => {
     // Validate that experiences and education are not empty arrays
     const experiences = req.body.experiences.filter(
       (exp) =>
-        exp.jobTitle && exp.companyName && exp.duration && exp.description
+        exp.jobTitle &&
+        exp.companyName &&
+        exp.durationFrom &&
+        exp.durationTo &&
+        exp.description
     );
     const education = req.body.education.filter(
       (edu) =>
         edu.degree &&
         edu.institutionName &&
-        edu.yearsAttended &&
+        edu.yearsAttendedFrom &&
+        edu.yearsAttendedTo &&
         edu.description
     );
 

@@ -117,14 +117,19 @@ function Profile() {
   const updateProfile = async () => {
     const nonEmptyExperience = profileData.experience.filter(
       (exp) =>
-        exp.jobTitle && exp.companyName && exp.duration && exp.description
+        exp.jobTitle &&
+        exp.companyName &&
+        exp.durationFrom &&
+        exp.durationTo &&
+        exp.description
     );
 
     const nonEmptyEducation = profileData.education.filter(
       (edu) =>
         edu.degree &&
         edu.institutionName &&
-        edu.yearsAttended &&
+        edu.yearsAttendedFrom &&
+        edu.yearsAttendedTo &&
         edu.description
     );
 
@@ -204,7 +209,8 @@ function Profile() {
         {
           jobTitle: "",
           companyName: "",
-          duration: "",
+          durationFrom: "",
+          durationTo: "",
           description: "",
         },
       ],
@@ -219,7 +225,8 @@ function Profile() {
         {
           degree: "",
           institutionName: "",
-          yearsAttended: "",
+          yearsAttendedFrom: "",
+          yearsAttendedTo: "",
           description: "",
         },
       ],
@@ -534,13 +541,27 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Duration</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="duration"
-                        value={exp.duration}
-                        onChange={(e) => handleExperienceChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="durationFrom"
+                          type="month"
+                          value={exp.durationFrom}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                        <Input
+                          name="durationTo"
+                          type="month"
+                          value={exp.durationTo}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{exp.duration}</Text>
+                      <Text>
+                        From{" "}
+                        {new Date(exp.durationFrom).toISOString().split("T")[0]}{" "}
+                        To{" "}
+                        {new Date(exp.durationTo).toISOString().split("T")[0]}
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>
@@ -610,13 +631,37 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Years Attended</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="yearsAttended"
-                        value={edu.yearsAttended}
-                        onChange={(e) => handleEducationChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="yearsAttendedFrom"
+                          type="month"
+                          value={edu.yearsAttendedFrom}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <Input
+                          name="yearsAttendedTo"
+                          type="month"
+                          value={edu.yearsAttendedTo}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{edu.yearsAttended}</Text>
+                      <Text>
+                        <Text>
+                          From{" "}
+                          {
+                            new Date(edu.yearsAttendedFrom)
+                              .toISOString()
+                              .split("T")[0]
+                          }{" "}
+                          To{" "}
+                          {
+                            new Date(edu.yearsAttendedTo)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                        </Text>
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>

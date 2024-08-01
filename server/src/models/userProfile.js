@@ -24,8 +24,12 @@ const userProfileSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      duration: {
-        type: String,
+      durationFrom: {
+        type: Date,
+        required: true,
+      },
+      durationTo: {
+        type: Date,
         required: true,
       },
       description: {
@@ -44,8 +48,12 @@ const userProfileSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      yearsAttended: {
-        type: String,
+      yearsAttendedFrom: {
+        type: Date,
+        required: true,
+      },
+      yearsAttendedTo: {
+        type: Date,
         required: true,
       },
       description: {
