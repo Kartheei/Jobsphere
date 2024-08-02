@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -22,8 +21,10 @@ import {
   useToast,
   Spinner,
 } from "@chakra-ui/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile } from '@fortawesome/free-solid-svg-icons';
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
@@ -32,7 +33,6 @@ import {
   updateUserProfile,
   fetchCandidateResume,
 } from "../../services/userService";
-import { DragAndDropUpload } from '../../components/candidate/DragandDropUpload';
 import "../../assets/styles/style.css";
 function Profile() {
   const { user } = useContext(AuthContext);
@@ -239,10 +239,9 @@ function Profile() {
   };
 
   const downloadResume = async () => {
-    debugger;
     try {
       const data = await fetchCandidateResume();
-      console.log("dasdasd", data)
+      console.log("dasdasd", data);
     } catch (error) {
       toast({
         title: "Error fetching profile.",
@@ -254,7 +253,7 @@ function Profile() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -269,7 +268,6 @@ function Profile() {
       </div>
     );
   }
-
 
   return (
     <>
@@ -433,9 +431,21 @@ function Profile() {
               )}
             </FormControl>
           </VStack>
-          <Box alignContent={'center'} alignItems={'center'} display={'flex'} justifyContent={'center'} flexDirection={'column'}>
-            <Flex onClick={downloadResume} >
-              <FontAwesomeIcon icon={faFile} size="2xl" style={{ color: "#215e8c", }} width={'150px'} height={'75px'} />
+          <Box
+            alignContent={"center"}
+            alignItems={"center"}
+            display={"flex"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+          >
+            <Flex onClick={downloadResume}>
+              <FontAwesomeIcon
+                icon={faFile}
+                size="2xl"
+                style={{ color: "#215e8c" }}
+                width={"150px"}
+                height={"75px"}
+              />
             </Flex>
             <Text fontSize={"small"}>Download Resume</Text>
           </Box>
@@ -446,7 +456,6 @@ function Profile() {
         <Box mb="8">
           <DragAndDropUpload />
         </Box>
-
 
         <Divider mb="8" />
 
