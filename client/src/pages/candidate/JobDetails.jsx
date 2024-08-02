@@ -139,6 +139,7 @@ const JobDetails = () => {
                         <Tag
                           size="md"
                           variant="solid"
+                          textTransform="capitalize"
                           colorScheme={getColorScheme(applicationStatus)}
                           ml="5"
                         >
@@ -159,14 +160,21 @@ const JobDetails = () => {
                         job.job_type.slice(1)}
                     </Text>
                   </Box>
-                  <Button
-                    mt={{ base: "4", md: "0" }}
-                    className="view-button"
-                    onClick={handleApplyClick}
-                    isDisabled={applicationStatus !== null}
-                  >
-                    {applicationStatus ? `Applied` : "Apply"}
-                  </Button>
+                  <Flex direction="column" gap="2">
+                    <Button
+                      mt={{ base: "4", md: "0" }}
+                      className="view-button"
+                      onClick={handleApplyClick}
+                      isDisabled={applicationStatus !== null}
+                    >
+                      {applicationStatus ? `Applied` : "Apply"}
+                    </Button>
+                    {job.status === "inactive" && (
+                      <Text color="red.500" fontWeight="bold">
+                        Job is expired.
+                      </Text>
+                    )}
+                  </Flex>
                 </Flex>
               </Box>
 

@@ -30,11 +30,14 @@ const JobApplied = () => {
         const jobsData = await fetchJobsApplied();
         const jobsWithStatus = await Promise.all(
           jobsData.map(async (job) => {
-            const statusData = await getApplicationStatus(job._id);
-            return { ...job, applicationStatus: statusData.status };
+            if (job && job._id) {
+              const statusData = await getApplicationStatus(job._id);
+              return { ...job, applicationStatus: statusData.status };
+            }
+            return null;
           })
         );
-        setJobList(jobsWithStatus);
+        setJobList(jobsWithStatus.filter((job) => job !== null));
       } catch (error) {
         toast({
           title: "Error.",
@@ -117,6 +120,7 @@ const JobApplied = () => {
                   bg="#F7FAFC"
                   mb={6}
                   key={index}
+                  opacity={data.status === "inactive" ? 0.5 : 1}
                 >
                   <Flex
                     justify="space-between"
@@ -124,12 +128,13 @@ const JobApplied = () => {
                     flexWrap="wrap"
                   >
                     <Box textAlign="left" flex="1" minW="250px">
-                      <Heading Heading as="h4" size="md" mb="1">
+                      <Heading as="h4" size="md" mb="1">
                         {data.title}
                         {data.applicationStatus && (
                           <Tag
                             size="md"
                             variant="solid"
+                            textTransform="capitalize"
                             colorScheme={getColorScheme(data.applicationStatus)}
                             ml="5"
                           >
@@ -139,10 +144,16 @@ const JobApplied = () => {
                       </Heading>
                       <Text mb={4}>{data.organizationName}</Text>
                       <Text mb={4}>{truncateText(data.description, 40)}</Text>
+                      {data.status === "inactive" && (
+                        <Text color="red.500" fontWeight="bold">
+                          Job is expired.
+                        </Text>
+                      )}
                     </Box>
+
                     <Button
                       className="apply-button"
-                      onClick={() => handleViewClick(data._id)} // Use data._id or data.job_id
+                      onClick={() => handleViewClick(data._id)}
                     >
                       View
                     </Button>

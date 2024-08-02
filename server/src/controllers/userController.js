@@ -2,9 +2,8 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import UserProfile from "../models/userProfile.js";
 import generateToken from "../utils/generateToken.js";
-import path from 'path';
-import fs from 'fs';
-
+import path from "path";
+import fs from "fs";
 
 // @desc - Register new user
 // @access - public
@@ -70,6 +69,9 @@ const getUserProfile = async (req, res, next) => {
         about: userProfile?.about || "",
         experience: userProfile?.experiences || [],
         education: userProfile?.education || [],
+        address: userProfile?.address || {},
+        contact: userProfile?.contact || "",
+        dateOfBirth: userProfile?.dateOfBirth || null,
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -98,13 +100,18 @@ const updateUserProfile = async (req, res, next) => {
     // Validate that experiences and education are not empty arrays
     const experiences = req.body.experiences.filter(
       (exp) =>
-        exp.jobTitle && exp.companyName && exp.duration && exp.description
+        exp.jobTitle &&
+        exp.companyName &&
+        exp.durationFrom &&
+        exp.durationTo &&
+        exp.description
     );
     const education = req.body.education.filter(
       (edu) =>
         edu.degree &&
         edu.institutionName &&
-        edu.yearsAttended &&
+        edu.yearsAttendedFrom &&
+        edu.yearsAttendedTo &&
         edu.description
     );
 
@@ -112,6 +119,9 @@ const updateUserProfile = async (req, res, next) => {
       about: req.body.about || "",
       experiences: experiences.length > 0 ? experiences : undefined,
       education: education.length > 0 ? education : undefined,
+      address: req.body.address || {},
+      contact: req.body.contact || "",
+      dateOfBirth: req.body.dateOfBirth || null,
     };
 
     let profile = await UserProfile.findOneAndUpdate(
@@ -134,27 +144,16 @@ const updateUserProfile = async (req, res, next) => {
   }
 };
 
-
-// // Configure multer for file uploads
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'uploads/resumes');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   }
-// });
-
 export const uploadResume = async (req, res) => {
   try {
     if (!req.file) {
-      console.log(req)
-      return res.status(400).json({ message: 'No file uploaded' });
+      console.log(req);
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
     const userProfile = await UserProfile.findOne({ userId: req.user._id });
     if (!userProfile) {
-      return res.status(404).json({ message: 'User profile not found' });
+      return res.status(404).json({ message: "User profile not found" });
     }
 
     userProfile.resume = {
@@ -165,13 +164,20 @@ export const uploadResume = async (req, res) => {
 
     await userProfile.save();
 
-    res.status(200).json({ message: 'Resume uploaded successfully', resume: userProfile.resume });
+    res.status(200).json({
+      message: "Resume uploaded successfully",
+      resume: userProfile.resume,
+    });
   } catch (error) {
-    console.error('Upload error:', error);
-    if (error.name === 'ValidationError') {
-      res.status(400).json({ message: 'Validation Error', error: error.message });
+    console.error("Upload error:", error);
+    if (error.name === "ValidationError") {
+      res
+        .status(400)
+        .json({ message: "Validation Error", error: error.message });
     } else {
-      res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
     }
   }
 };
@@ -180,7 +186,7 @@ export const getResume = async (req, res) => {
   try {
     const userProfile = await UserProfile.findOne({ userId: req.user._id });
     if (!userProfile || !userProfile.resume) {
-      return res.status(404).json({ message: 'Resume not found' });
+      return res.status(404).json({ message: "Resume not found" });
     }
 
     const filePath = userProfile.resume.path;
@@ -189,18 +195,20 @@ export const getResume = async (req, res) => {
     // Check if file exists
     if (fs.existsSync(filePath)) {
       // Set the appropriate Content-Type
-      res.setHeader('Content-Type', userProfile.resume.mimeType);
+      res.setHeader("Content-Type", userProfile.resume.mimeType);
       // Set the Content-Disposition to attachment to suggest a file download with the original filename
-      res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+      res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
       // Stream the file to the client
       const readStream = fs.createReadStream(filePath);
       readStream.pipe(res);
     } else {
-      return res.status(404).json({ message: 'File not found' });
+      return res.status(404).json({ message: "File not found" });
     }
   } catch (error) {
-    console.error('Error fetching resume:', error);
-    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    console.error("Error fetching resume:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
@@ -223,6 +231,9 @@ const getCandidateProfileById = async (req, res, next) => {
         about: userProfile?.about || "",
         experience: userProfile?.experiences || [],
         education: userProfile?.education || [],
+        address: userProfile?.address || {},
+        contact: userProfile?.contact || "",
+        dateOfBirth: userProfile?.dateOfBirth || null,
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -231,4 +242,5 @@ const getCandidateProfileById = async (req, res, next) => {
     next(error); // Pass the error to the next middleware (error handler)
   }
 };
+
 export { getUserProfile, updateUserProfile, getCandidateProfileById };

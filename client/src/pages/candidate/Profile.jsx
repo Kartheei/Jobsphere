@@ -1,10 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import {
-  Box, Container, Flex, Heading, Text, VStack, Image, Input, Textarea, Divider, Button,
-  FormControl, FormLabel, Menu, MenuButton, MenuList, MenuItem, useToast, Spinner,
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  Image,
+  Input,
+  Textarea,
+  Divider,
+  Button,
+  FormControl,
+  FormLabel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile } from '@fortawesome/free-solid-svg-icons';
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
@@ -13,7 +33,6 @@ import {
   updateUserProfile,
   fetchCandidateResume,
 } from "../../services/userService";
-import { DragAndDropUpload } from '../../components/candidate/DragandDropUpload';
 import "../../assets/styles/style.css";
 function Profile() {
   const { user } = useContext(AuthContext);
@@ -23,6 +42,14 @@ function Profile() {
     about: "",
     experience: [],
     education: [],
+    address: {
+      streetName: "",
+      city: "",
+      postalCode: "",
+      country: "",
+    },
+    contact: "",
+    dateOfBirth: "",
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +63,14 @@ function Profile() {
           ...data,
           experience: data.experience || [],
           education: data.education || [],
+          address: data.address || {
+            streetName: "",
+            city: "",
+            postalCode: "",
+            country: "",
+          },
+          contact: data.contact || "",
+          dateOfBirth: data.dateOfBirth || "",
         });
       } catch (error) {
         toast({
@@ -82,14 +117,19 @@ function Profile() {
   const updateProfile = async () => {
     const nonEmptyExperience = profileData.experience.filter(
       (exp) =>
-        exp.jobTitle && exp.companyName && exp.duration && exp.description
+        exp.jobTitle &&
+        exp.companyName &&
+        exp.durationFrom &&
+        exp.durationTo &&
+        exp.description
     );
 
     const nonEmptyEducation = profileData.education.filter(
       (edu) =>
         edu.degree &&
         edu.institutionName &&
-        edu.yearsAttended &&
+        edu.yearsAttendedFrom &&
+        edu.yearsAttendedTo &&
         edu.description
     );
 
@@ -100,6 +140,9 @@ function Profile() {
         about: profileData.about,
         experiences: nonEmptyExperience,
         education: nonEmptyEducation,
+        address: profileData.address,
+        contact: profileData.contact,
+        dateOfBirth: profileData.dateOfBirth,
       });
       toast({
         title: "Profile updated.",
@@ -147,6 +190,17 @@ function Profile() {
     });
   };
 
+  const handleAddressChange = (e, field) => {
+    const value = e.target.value;
+    setProfileData((prevData) => ({
+      ...prevData,
+      address: {
+        ...prevData.address,
+        [field]: value,
+      },
+    }));
+  };
+
   const addNewExperience = () => {
     setProfileData((prevData) => ({
       ...prevData,
@@ -155,7 +209,8 @@ function Profile() {
         {
           jobTitle: "",
           companyName: "",
-          duration: "",
+          durationFrom: "",
+          durationTo: "",
           description: "",
         },
       ],
@@ -170,18 +225,23 @@ function Profile() {
         {
           degree: "",
           institutionName: "",
-          yearsAttended: "",
+          yearsAttendedFrom: "",
+          yearsAttendedTo: "",
           description: "",
         },
       ],
     }));
   };
 
+  const handleCancel = () => {
+    setEditMode(false);
+    refreshProfileData(); // Revert profile data to original state before editing
+  };
+
   const downloadResume = async () => {
-    debugger;
     try {
       const data = await fetchCandidateResume();
-      console.log("dasdasd", data)
+      console.log("dasdasd", data);
     } catch (error) {
       toast({
         title: "Error fetching profile.",
@@ -193,7 +253,7 @@ function Profile() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -208,7 +268,6 @@ function Profile() {
       </div>
     );
   }
-
 
   return (
     <>
@@ -252,7 +311,6 @@ function Profile() {
                 <Text fontSize="lg">{profileData.name}</Text>
               )}
             </FormControl>
-
             <FormControl>
               <FormLabel fontSize="lg" fontWeight="bold">
                 Email
@@ -273,11 +331,121 @@ function Profile() {
                 </>
               )}
             </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Date of Birth
+              </FormLabel>
+              {editMode ? (
+                profileData.dateOfBirth ? (
+                  <Text fontSize="lg">
+                    {
+                      new Date(profileData.dateOfBirth)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </Text>
+                ) : (
+                  <Input
+                    id="dateOfBirth"
+                    type="date"
+                    value={profileData.dateOfBirth}
+                    onChange={handleChange}
+                    size="lg"
+                  />
+                )
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.dateOfBirth
+                    ? new Date(profileData.dateOfBirth)
+                        .toISOString()
+                        .split("T")[0]
+                    : "Enter your date of birth..."}
+                </Text>
+              )}
+            </FormControl>
 
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Contact
+              </FormLabel>
+              {editMode ? (
+                <Input
+                  id="contact"
+                  placeholder="+1 123 123 1234"
+                  value={profileData.contact}
+                  onChange={handleChange}
+                  size="lg"
+                />
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.contact || "Enter your contact..."}
+                </Text>
+              )}
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" fontWeight="bold">
+                Address
+              </FormLabel>
+              {editMode ? (
+                <>
+                  <Input
+                    id="streetName"
+                    placeholder="Street"
+                    value={profileData.address.streetName}
+                    onChange={(e) => handleAddressChange(e, "streetName")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="city"
+                    placeholder="City"
+                    value={profileData.address.city}
+                    onChange={(e) => handleAddressChange(e, "city")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="postalCode"
+                    placeholder="Postal Code"
+                    value={profileData.address.postalCode}
+                    onChange={(e) => handleAddressChange(e, "postalCode")}
+                    size="lg"
+                    mb="2"
+                  />
+                  <Input
+                    id="country"
+                    placeholder="Country"
+                    value={profileData.address.country}
+                    onChange={(e) => handleAddressChange(e, "country")}
+                    size="lg"
+                    mb="2"
+                  />
+                </>
+              ) : (
+                <Text fontSize="lg">
+                  {profileData.address?.streetName || "Street not provided"}
+                  {profileData.address?.city || "City not provided"},
+                  {profileData.address?.postalCode ?? "Postal Code"},
+                  {profileData.address?.country || "Country"}
+                </Text>
+              )}
+            </FormControl>
           </VStack>
-          <Box alignContent={'center'} alignItems={'center'} display={'flex'} justifyContent={'center'} flexDirection={'column'}>
-            <Flex onClick={downloadResume} >
-              <FontAwesomeIcon icon={faFile} size="2xl" style={{ color: "#215e8c", }} width={'150px'} height={'75px'} />
+          <Box
+            alignContent={"center"}
+            alignItems={"center"}
+            display={"flex"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+          >
+            <Flex onClick={downloadResume}>
+              <FontAwesomeIcon
+                icon={faFile}
+                size="2xl"
+                style={{ color: "#215e8c" }}
+                width={"150px"}
+                height={"75px"}
+              />
             </Flex>
             <Text fontSize={"small"}>Download Resume</Text>
           </Box>
@@ -288,7 +456,6 @@ function Profile() {
         <Box mb="8">
           <DragAndDropUpload />
         </Box>
-
 
         <Divider mb="8" />
 
@@ -347,13 +514,27 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Duration</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="duration"
-                        value={exp.duration}
-                        onChange={(e) => handleExperienceChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="durationFrom"
+                          type="month"
+                          value={exp.durationFrom}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                        <Input
+                          name="durationTo"
+                          type="month"
+                          value={exp.durationTo}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{exp.duration}</Text>
+                      <Text>
+                        From{" "}
+                        {new Date(exp.durationFrom).toISOString().split("T")[0]}{" "}
+                        To{" "}
+                        {new Date(exp.durationTo).toISOString().split("T")[0]}
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>
@@ -423,13 +604,37 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Years Attended</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="yearsAttended"
-                        value={edu.yearsAttended}
-                        onChange={(e) => handleEducationChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="yearsAttendedFrom"
+                          type="month"
+                          value={edu.yearsAttendedFrom}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <Input
+                          name="yearsAttendedTo"
+                          type="month"
+                          value={edu.yearsAttendedTo}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{edu.yearsAttended}</Text>
+                      <Text>
+                        <Text>
+                          From{" "}
+                          {
+                            new Date(edu.yearsAttendedFrom)
+                              .toISOString()
+                              .split("T")[0]
+                          }{" "}
+                          To{" "}
+                          {
+                            new Date(edu.yearsAttendedTo)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                        </Text>
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>
@@ -464,9 +669,17 @@ function Profile() {
 
         <Divider mb="8" />
 
-        <Button onClick={handleEditToggle} colorScheme="blue" mb="8" mt="8">
-          {editMode ? "Save" : "Edit"}
-        </Button>
+        <Box display="flex" justifyContent="flex-end" gap="2">
+          <Button onClick={handleEditToggle} colorScheme="blue">
+            {editMode ? "Save" : "Edit"}
+          </Button>
+
+          {editMode && (
+            <Button onClick={handleCancel} colorScheme="red">
+              Cancel
+            </Button>
+          )}
+        </Box>
       </Container>
       <Footer contentType="candidate" />
     </>

@@ -11,7 +11,11 @@ import {
   Divider,
   Spinner,
   useToast,
+  Grid,
+  GridItem,
+  Icon,
 } from "@chakra-ui/react";
+import { FaBriefcase, FaGraduationCap, FaUser } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 
 import Footer from "../../components/common/Footer";
@@ -77,48 +81,118 @@ const CandidateProfileView = () => {
     <>
       <NavBar />
       <Container maxW="container.xl" mt="8">
-        <Box
-          bg="blue.500"
-          color="white"
-          borderRadius="md"
-          p="6"
+        <Box className="profile-header">
+          <Heading size="2xl" fontWeight="bold" letterSpacing="wide">
+            Profile
+          </Heading>
+          <Text fontSize="lg" mt="4">
+            Candidate Information and Details
+          </Text>
+        </Box>
+
+        <Grid
+          templateColumns={{ base: "1fr", md: "1fr 2fr" }}
+          gap={6}
           mb="8"
-          textAlign="center"
+          bg="white"
+          p="6"
+          borderRadius="lg"
+          boxShadow="md"
+          borderLeft="6px solid"
+          borderColor="blue.500"
         >
-          <Heading size="xl">Profile</Heading>
-        </Box>
-
-        <Box mr="6" mb="8">
-          <Image
-            src={profileData.profilePicture || "./images/profile.png"}
-            alt="Profile"
-            borderRadius="full"
-            boxSize="150px"
-            objectFit="cover"
-          />
-        </Box>
-
-        <Flex alignItems="center" mb="8" bg="gray.50" p="6" borderRadius="md">
-          <VStack spacing="4" align="flex-start" flex="1">
-            <Box>
-              <Heading size="md">Name</Heading>
-              <Text>{profileData.name}</Text>
+          <GridItem>
+            <Box textAlign="center">
+              <Image
+                src={"../../images/profile.png" || profileData.profilePicture}
+                alt="Profile"
+                borderRadius="full"
+                boxSize="150px"
+                objectFit="cover"
+                mx="auto"
+                mb="4"
+                boxShadow="md"
+              />
+              <Heading size="lg">{profileData.name}</Heading>
+              <Text fontSize="lg" color="gray.600">
+                {profileData.email}
+              </Text>
             </Box>
+          </GridItem>
 
+          <GridItem my="auto">
             <Box>
-              <Heading size="md">Email</Heading>
-              <Text>{profileData.email}</Text>
+              <VStack spacing="4" align="flex-start">
+                <Box>
+                  <Heading size="md" color="blue.700">
+                    Date of Birth
+                  </Heading>
+                  <Text fontSize="lg">
+                    {profileData.dateOfBirth
+                      ? new Date(profileData.dateOfBirth)
+                          .toISOString()
+                          .split("T")[0]
+                      : "Not provided"}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Heading size="md" color="blue.700">
+                    Contact
+                  </Heading>
+                  <Text fontSize="lg">
+                    {profileData.contact || "Not provided"}
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Heading size="md" color="blue.700">
+                    Address
+                  </Heading>
+                  <Text fontSize="lg">
+                    {profileData.address &&
+                    profileData.address.streetName &&
+                    profileData.address.city &&
+                    profileData.address.postalCode &&
+                    profileData.address.country ? (
+                      <>
+                        {profileData.address.streetName},{" "}
+                        {profileData.address.city},{" "}
+                        {profileData.address.postalCode},{" "}
+                        {profileData.address.country}.
+                      </>
+                    ) : (
+                      "Address is not available"
+                    )}
+                  </Text>
+                </Box>
+              </VStack>
             </Box>
-          </VStack>
-        </Flex>
+          </GridItem>
+        </Grid>
 
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
+            <Icon as={FaUser} w={5} h={5} mr="2" />
             About
           </Heading>
-          <Text fontSize="lg">
+          <Text
+            fontSize="lg"
+            bg="white"
+            p="6"
+            borderRadius="lg"
+            boxShadow="md"
+            borderLeft="6px solid"
+            borderColor="blue.500"
+          >
             {profileData.about || "Tell us about yourself..."}
           </Text>
         </Box>
@@ -126,17 +200,36 @@ const CandidateProfileView = () => {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading size="lg" mb="4" color="blue.700">
             Experience
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.experience && profileData.experience.length > 0 ? (
               profileData.experience.map((exp, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
-                  <Text fontWeight="bold">Job Title: {exp.jobTitle}</Text>
-                  <Text>Company Name: {exp.companyName}</Text>
-                  <Text>Duration: {exp.duration}</Text>
-                  <Text>Description: {exp.description}</Text>
+                <Box
+                  key={index}
+                  p="6"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                  borderLeft="6px solid"
+                  borderColor="blue.500"
+                >
+                  <Flex alignItems="center" mb="2">
+                    <Icon as={FaBriefcase} w={5} h={5} color="blue.500" />
+                    <Text ml="2" fontWeight="bold" fontSize="lg">
+                      {exp.jobTitle}
+                    </Text>
+                  </Flex>
+                  <Text fontSize="md">
+                    <strong>Company:</strong> {exp.companyName}
+                  </Text>
+                  <Text fontSize="md">
+                    <strong>Duration:</strong> {exp.duration}
+                  </Text>
+                  <Text fontSize="md">
+                    <strong>Description:</strong> {exp.description}
+                  </Text>
                 </Box>
               ))
             ) : (
@@ -148,17 +241,36 @@ const CandidateProfileView = () => {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading size="lg" mb="4" color="blue.700">
             Education
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.education && profileData.education.length > 0 ? (
               profileData.education.map((edu, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
-                  <Text fontWeight="bold">Degree: {edu.degree}</Text>
-                  <Text>Institution Name: {edu.institutionName}</Text>
-                  <Text>Years Attended: {edu.yearsAttended}</Text>
-                  <Text>Description: {edu.description}</Text>
+                <Box
+                  key={index}
+                  p="6"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                  borderLeft="6px solid"
+                  borderColor="green.500"
+                >
+                  <Flex alignItems="center" mb="2">
+                    <Icon as={FaGraduationCap} w={5} h={5} color="green.500" />
+                    <Text ml="2" fontWeight="bold" fontSize="lg">
+                      {edu.degree}
+                    </Text>
+                  </Flex>
+                  <Text fontSize="md">
+                    <strong>Institution:</strong> {edu.institutionName}
+                  </Text>
+                  <Text fontSize="md">
+                    <strong>Years Attended:</strong> {edu.yearsAttended}
+                  </Text>
+                  <Text fontSize="md">
+                    <strong>Description:</strong> {edu.description}
+                  </Text>
                 </Box>
               ))
             ) : (
