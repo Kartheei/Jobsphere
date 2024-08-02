@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -21,6 +20,10 @@ import {
   MenuItem,
   useToast,
   Spinner,
+  Stack,
+  Tag,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { faFile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -284,181 +287,186 @@ function Profile() {
     <>
       <NavBar />
       <Container maxW="container.xl" mt="8">
-        <Box
-          bg="blue.500"
-          color="white"
-          borderRadius="md"
-          p="6"
-          mb="8"
-          textAlign="center"
-        >
-          <Heading size="xl">Profile</Heading>
+        <Box className="profile-header">
+          <Heading size="2xl" fontWeight="bold" letterSpacing="wide">
+            Profile
+          </Heading>
+          <Text fontSize="lg" mt="4">
+            Candidate Information and Details
+          </Text>
         </Box>
 
-        <Box mr="6" mb="8">
+        <Flex align="center" direction="column" mb="8">
           <Image
             src={profileData.profilePicture || "./images/profile.png"}
             alt="Profile"
             borderRadius="full"
             boxSize="150px"
             objectFit="cover"
+            mb="4"
+            boxShadow="md"
           />
-        </Box>
-
-        <Flex alignItems="center" mb="8" bg="gray.50" p="6" borderRadius="md">
-          <VStack spacing="4" align="flex-start" flex="1">
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Name
-              </FormLabel>
-              {editMode ? (
-                <Input
-                  id="name"
-                  value={profileData.name}
-                  onChange={handleChange}
-                  size="lg"
-                />
-              ) : (
-                <Text fontSize="lg">{profileData.name}</Text>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Email
-              </FormLabel>
-              {editMode ? (
-                <Input
-                  id="email"
-                  value={profileData.email}
-                  onChange={handleChange}
-                  size="lg"
-                  mb="2"
-                />
-              ) : (
-                <Text fontSize="lg">{profileData.email}</Text>
-              )}
-            </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Date of Birth
-              </FormLabel>
-              {editMode ? (
-                <Input
-                  id="dateOfBirth"
-                  type="date"
-                  value={profileData.dateOfBirth}
-                  onChange={handleChange}
-                  size="lg"
-                />
-              ) : (
-                <Text fontSize="lg">
-                  {profileData.dateOfBirth
-                    ? new Date(profileData.dateOfBirth)
-                        .toISOString()
-                        .split("T")[0]
-                    : "Enter your date of birth..."}
-                </Text>
-              )}
-            </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Contact
-              </FormLabel>
-              {editMode ? (
-                <Input
-                  id="contact"
-                  placeholder="+1 123 123 1234"
-                  value={profileData.contact}
-                  onChange={handleChange}
-                  size="lg"
-                />
-              ) : (
-                <Text fontSize="lg">
-                  {profileData.contact || "Enter your contact..."}
-                </Text>
-              )}
-            </FormControl>
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Address
-              </FormLabel>
-              {editMode ? (
-                <>
-                  <Input
-                    id="streetName"
-                    placeholder="Street"
-                    value={profileData.address.streetName}
-                    onChange={(e) => handleAddressChange(e, "streetName")}
-                    size="lg"
-                    mb="2"
-                  />
-                  <Input
-                    id="city"
-                    placeholder="City"
-                    value={profileData.address.city}
-                    onChange={(e) => handleAddressChange(e, "city")}
-                    size="lg"
-                    mb="2"
-                  />
-                  <Input
-                    id="postalCode"
-                    placeholder="Postal Code"
-                    value={profileData.address.postalCode}
-                    onChange={(e) => handleAddressChange(e, "postalCode")}
-                    size="lg"
-                    mb="2"
-                  />
-                  <Input
-                    id="country"
-                    placeholder="Country"
-                    value={profileData.address.country}
-                    onChange={(e) => handleAddressChange(e, "country")}
-                    size="lg"
-                    mb="2"
-                  />
-                </>
-              ) : (
-                <Text fontSize="lg">
-                  {profileData.address?.streetName || "Street not provided"}
-                  {profileData.address?.city || "City not provided"},
-                  {profileData.address?.postalCode ?? "Postal Code"},
-                  {profileData.address?.country || "Country"}
-                </Text>
-              )}
-            </FormControl>
-          </VStack>
-          <Box
-            alignContent={"center"}
-            alignItems={"center"}
-            display={"flex"}
-            justifyContent={"center"}
-            flexDirection={"column"}
-          >
-            <Flex onClick={downloadResume}>
-              <FontAwesomeIcon
-                icon={faFile}
-                size="2xl"
-                style={{ color: "#215e8c" }}
-                width={"150px"}
-                height={"75px"}
-              />
-            </Flex>
-            <Text fontSize={"small"}>Download Resume</Text>
-          </Box>
+          <Text fontSize="2xl" fontWeight="bold">
+            {profileData.name}
+          </Text>
+          <Text fontSize="lg" color="gray.500">
+            {profileData.email}
+          </Text>
         </Flex>
 
+        <Grid templateColumns="repeat(2, 1fr)" gap={6} mb="8">
+          <GridItem>
+            <Box bg="gray.50" p="6" borderRadius="lg" boxShadow="md">
+              <VStack spacing="4" align="flex-start">
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Date of Birth
+                  </FormLabel>
+                  {editMode ? (
+                    <Input
+                      id="dateOfBirth"
+                      type="date"
+                      value={profileData.dateOfBirth}
+                      onChange={handleChange}
+                      size="lg"
+                    />
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.dateOfBirth
+                        ? new Date(profileData.dateOfBirth)
+                            .toISOString()
+                            .split("T")[0]
+                        : "Enter your date of birth..."}
+                    </Text>
+                  )}
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Contact
+                  </FormLabel>
+                  {editMode ? (
+                    <Input
+                      id="contact"
+                      placeholder="+1 123 123 1234"
+                      value={profileData.contact}
+                      onChange={handleChange}
+                      size="lg"
+                    />
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.contact || "Enter your contact..."}
+                    </Text>
+                  )}
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Address
+                  </FormLabel>
+                  {editMode ? (
+                    <>
+                      <Input
+                        id="streetName"
+                        placeholder="Street"
+                        value={profileData.address.streetName}
+                        onChange={(e) => handleAddressChange(e, "streetName")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="city"
+                        placeholder="City"
+                        value={profileData.address.city}
+                        onChange={(e) => handleAddressChange(e, "city")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="postalCode"
+                        placeholder="Postal Code"
+                        value={profileData.address.postalCode}
+                        onChange={(e) => handleAddressChange(e, "postalCode")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="country"
+                        placeholder="Country"
+                        value={profileData.address.country}
+                        onChange={(e) => handleAddressChange(e, "country")}
+                        size="lg"
+                        mb="2"
+                      />
+                    </>
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.address &&
+                      profileData.address.streetName &&
+                      profileData.address.city &&
+                      profileData.address.postalCode &&
+                      profileData.address.country ? (
+                        <>
+                          {profileData.address.streetName},{" "}
+                          {profileData.address.city},{" "}
+                          {profileData.address.postalCode},{" "}
+                          {profileData.address.country}.
+                        </>
+                      ) : (
+                        "Provide your address."
+                      )}
+                    </Text>
+                  )}
+                </FormControl>
+              </VStack>
+            </Box>
+          </GridItem>
+          <GridItem>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+              bg="gray.50"
+              p="6"
+              borderRadius="lg"
+              boxShadow="md"
+              height="100%"
+            >
+              <Flex
+                onClick={downloadResume}
+                cursor="pointer"
+                align="center"
+                justify="center"
+              >
+                <FontAwesomeIcon
+                  icon={faFile}
+                  size="2xl"
+                  style={{ color: "#215e8c" }}
+                  width={"50px"}
+                  height={"50px"}
+                />
+              </Flex>
+              <Text fontSize="sm" mt="2" textAlign="center">
+                Download Resume
+              </Text>
+              <Box mt="4" width="100%">
+                <DragAndDropUpload />
+              </Box>
+            </Box>
+          </GridItem>
+        </Grid>
+
         <Divider mb="8" />
 
         <Box mb="8">
-          <DragAndDropUpload />
-        </Box>
-
-        <Divider mb="8" />
-
-        <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             About
           </Heading>
           {editMode ? (
@@ -478,13 +486,25 @@ function Profile() {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             Experience
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.experience && profileData.experience.length > 0 ? (
               profileData.experience.map((exp, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
+                <Box
+                  key={index}
+                  p="4"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                >
                   <FormControl>
                     <FormLabel fontWeight="bold">Job Title</FormLabel>
                     {editMode ? (
@@ -568,13 +588,25 @@ function Profile() {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             Education
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.education && profileData.education.length > 0 ? (
               profileData.education.map((edu, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
+                <Box
+                  key={index}
+                  p="4"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                >
                   <FormControl>
                     <FormLabel fontWeight="bold">Degree</FormLabel>
                     {editMode ? (
