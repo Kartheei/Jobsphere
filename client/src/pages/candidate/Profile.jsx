@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -34,6 +35,7 @@ import {
   fetchCandidateResume,
 } from "../../services/userService";
 import "../../assets/styles/style.css";
+
 function Profile() {
   const { user } = useContext(AuthContext);
   const [profileData, setProfileData] = useState({
@@ -53,6 +55,7 @@ function Profile() {
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [resumeFile, setResumeFile] = useState(null); // Added state for resume file
   const toast = useToast();
 
   useEffect(() => {
@@ -238,13 +241,21 @@ function Profile() {
     refreshProfileData(); // Revert profile data to original state before editing
   };
 
+  const handleViewResume = () => {
+    window.open("http://localhost:5000/api/users/getResume", "_blank");
+  };
+
+  const handleFileChange = (e) => {
+    setResumeFile(e.target.files[0]);
+  };
+
   const downloadResume = async () => {
     try {
       const data = await fetchCandidateResume();
-      console.log("dasdasd", data);
+      console.log("Resume data", data);
     } catch (error) {
       toast({
-        title: "Error fetching profile.",
+        title: "Error fetching resume.",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -316,43 +327,30 @@ function Profile() {
                 Email
               </FormLabel>
               {editMode ? (
-                <>
-                  <Input
-                    id="email"
-                    value={profileData.email}
-                    onChange={handleChange}
-                    size="lg"
-                    mb="2"
-                  />
-                </>
+                <Input
+                  id="email"
+                  value={profileData.email}
+                  onChange={handleChange}
+                  size="lg"
+                  mb="2"
+                />
               ) : (
-                <>
-                  <Text fontSize="lg">{profileData.email}</Text>
-                </>
+                <Text fontSize="lg">{profileData.email}</Text>
               )}
             </FormControl>
+
             <FormControl>
               <FormLabel fontSize="lg" fontWeight="bold">
                 Date of Birth
               </FormLabel>
               {editMode ? (
-                profileData.dateOfBirth ? (
-                  <Text fontSize="lg">
-                    {
-                      new Date(profileData.dateOfBirth)
-                        .toISOString()
-                        .split("T")[0]
-                    }
-                  </Text>
-                ) : (
-                  <Input
-                    id="dateOfBirth"
-                    type="date"
-                    value={profileData.dateOfBirth}
-                    onChange={handleChange}
-                    size="lg"
-                  />
-                )
+                <Input
+                  id="dateOfBirth"
+                  type="date"
+                  value={profileData.dateOfBirth}
+                  onChange={handleChange}
+                  size="lg"
+                />
               ) : (
                 <Text fontSize="lg">
                   {profileData.dateOfBirth
@@ -467,7 +465,7 @@ function Profile() {
             <Textarea
               id="about"
               value={profileData.about}
-              onChange={handleChange()}
+              onChange={handleChange}
               size="lg"
             />
           ) : (
