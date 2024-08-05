@@ -54,11 +54,11 @@ const NavBar = () => {
                 <Link as={RouterLink} className="nav-link" to="/jobs">
                   Find a Job
                 </Link>
-                <Link as={RouterLink} className="nav-link" to="/about">
-                  About
+                <Link as={RouterLink} className="nav-link" to="/AboutUs">
+                  AboutUs
                 </Link>
-                <Link as={RouterLink} className="nav-link" to="/contact">
-                  Contact
+                <Link as={RouterLink} className="nav-link" to="/contactus">
+                  ContactUs
                 </Link>
               </HStack>
               <HStack spacing="4">

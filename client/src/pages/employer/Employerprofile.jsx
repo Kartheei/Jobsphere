@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   ChakraProvider,
   Box,
@@ -17,8 +16,8 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-
 import NavBar from "../../components/employer/NavBar";
+import Footer from "../../components/common/Footer";
 import "../../assets/styles/Employerprofile.css";
 
 const ProfilePage = () => {
@@ -112,47 +111,7 @@ const ProfilePage = () => {
         </SimpleGrid>
       </Container>
 
-      <Box as="footer" className="footer">
-        <Container maxW="100%" px="8">
-          <Flex
-            flexDirection={{ base: "column", md: "row" }}
-            justify="space-between"
-          >
-            <Box className="footer-section" mb={{ base: "8", md: "0" }}>
-              <Heading as="h5" size="md" mb="4">
-                About Us
-              </Heading>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-              </Text>
-            </Box>
-            <Box className="footer-section" mb={{ base: "8", md: "0" }}>
-              <Heading as="h5" size="md" mb="4">
-                Contact
-              </Heading>
-              <Text>Address: 123 Main St. Waterloo, On, Canada 85486</Text>
-              <Text>Email: info@jobsphere.com</Text>
-              <Text>Contact: +1 (254) 265-5555</Text>
-            </Box>
-            <Box className="footer-section">
-              <Heading as="h5" size="md" mb="4">
-                Important Links
-              </Heading>
-              <Stack spacing="2">
-                {/* <Link as={RouterLink} to="/post-job">Post a Job</Link>
-                <Link as={RouterLink} to="/find-employees">Find Employees</Link>
-                <Link as={RouterLink} to="/support">Support</Link> */}
-              </Stack>
-            </Box>
-          </Flex>
-          <Text textAlign="center" mt="8">
-            &copy; 2024 All rights reserved by JobSphere
-          </Text>
-        </Container>
-      </Box>
+      <Footer contentType="employer" />
     </ChakraProvider>
   );
 };

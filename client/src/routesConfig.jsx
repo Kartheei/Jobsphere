@@ -9,23 +9,28 @@ import Employerprofile from "./pages/employer/Employerprofile";
 import EmployerHome from "./pages/employer/Home";
 import JobCreation from "./pages/employer/JobCreation";
 import JobListing from "./pages/employer/JobListing";
+import Aboutus from "./pages/common/AboutUs";
+import Contactus from "./pages/common/ContactUs";
 
 const routes = [
+  // Common routes
+  {
+    path: "/aboutus",
+    element: <Aboutus />,
+    index: true,
+  },
+  {
+    path: "/contactus",
+    element: <Contactus />,
+    index: true,
+  },
+
   // Candidate routes
   {
     path: "/",
     element: (
       <RoleProtectedRoute allowedRoles={["Candidate"]}>
         <CandidateHome />
-      </RoleProtectedRoute>
-    ),
-    index: true,
-  },
-  {
-    path: "/Employerprofile",
-    element: (
-      <RoleProtectedRoute allowedRoles={["Employer"]}>
-        <Employerprofile />
       </RoleProtectedRoute>
     ),
     index: true,
@@ -56,6 +61,14 @@ const routes = [
       </RoleProtectedRoute>
     ),
     index: true,
+  },
+  {
+    path: "/employerprofile",
+    element: (
+      <RoleProtectedRoute allowedRoles={["Employer"]}>
+        < Employerprofile   />
+      </RoleProtectedRoute>
+    ),
   },
   {
     path: "/employer/job-creation",
