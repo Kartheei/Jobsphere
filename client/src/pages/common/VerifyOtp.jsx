@@ -11,42 +11,46 @@ import {
   Box,
   Link,
   FormControl,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt } from "react-icons/fa";
+import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { forgotPassword } from "../../services/authService";
+import { verifyOtp } from "../../services/authService";
 
 const CFaUserAlt = chakra(FaUserAlt);
+const CFaKey = chakra(FaKey);
 
-const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+const VerifyOtp = () => {
+  const [formData, setFormData] = useState({ email: "", otp: "" });
 
   const toast = useToast();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setEmail(e.target.value)
-  }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API call from authService for forgot password
-      const response = await forgotPassword(email);
+      // API call from authService to verify OTP
+      const response = await verifyOtp(formData);
 
-      if(response){
+      if (response) {
         toast({
-          title: "OTP sent successfully.",
+          title: "OTP verified.",
           status: "success",
           duration: 5000,
           isClosable: true,
         });
-        navigate("/auth/verify-otp");
+        navigate("/auth/reset-password");
       }
     } catch (error) {
       toast({
-        title: "Error sending OTP.",
+        title: "Invalid or expired OTP.",
         description: error.message,
         status: "error",
         duration: 5000,
@@ -79,7 +83,7 @@ const ForgotPassword = () => {
           borderRadius={10}
         >
           <Stack align={"center"} mb={10}>
-            <Heading>Forgot your password?</Heading>
+            <Heading>Verify OTP</Heading>
           </Stack>
           <form onSubmit={handleSubmit}>
             <Stack spacing={7}>
@@ -88,10 +92,27 @@ const ForgotPassword = () => {
                   <InputLeftElement pointerEvents="none">
                     <CFaUserAlt color="white" />
                   </InputLeftElement>
-                  <Input type="email" 
-                  placeholder="Enter email address." 
-                  onChange={handleChange}
-                  value={email}/>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Enter email address."
+                    onChange={handleChange}
+                    value={formData.email}
+                  />
+                </InputGroup>
+              </FormControl>
+
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none" color="white">
+                    <CFaKey color="white" />
+                  </InputLeftElement>
+                  <Input 
+                    type="text"
+                    name="otp"
+                    placeholder="Enter OTP."
+                    onChange={handleChange}
+                    value={formData.otp} />
                 </InputGroup>
               </FormControl>
 
@@ -104,7 +125,7 @@ const ForgotPassword = () => {
                 color="white"
                 className="loginButton"
               >
-                Send OTP
+                Verify
               </Button>
             </Stack>
           </form>
@@ -119,4 +140,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default VerifyOtp;

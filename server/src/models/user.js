@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema({
       ref: "Application",
     },
   ],
+  otp: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
