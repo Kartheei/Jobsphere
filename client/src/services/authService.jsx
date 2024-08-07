@@ -47,4 +47,34 @@ const loginUser = async (formData) => {
   }
 };
 
-export { registerCandidate, registerEmployer, loginUser };
+// API call for forgot password.
+const forgotPassword = async (email) => {
+  try {
+    const response = await axios.post("/api/auth/forgot-password", {email});
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || error.message);
+  }
+};
+
+// API call to verify OTP
+const verifyOtp = async (formData) => {
+  try {
+    const response = await axios.post("/api/auth/verfiy-otp", formData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || error.message);
+  }
+};
+
+// API call for reset password
+const resetPassword = async (formData) => {
+  try {
+    const response = await axios.post("/api/auth/reset-password", formData);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || error.message);
+  }
+};
+
+export { registerCandidate, registerEmployer, loginUser, forgotPassword, verifyOtp, resetPassword };

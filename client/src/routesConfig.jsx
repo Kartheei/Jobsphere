@@ -16,6 +16,8 @@ import JobCreation from "./pages/employer/JobCreation";
 import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate";
 import JobPosted from "./pages/employer/JobPosted";
 import JobPostedDetails from "./pages/employer/JobPostedDetails";
+import ResetPassword from "./pages/common/ResetPassword.jsx";
+import VerifyOtp from "./pages/common/VerifyOtp";
 
 const routes = [
   // Candidate routes
@@ -127,6 +129,7 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
+    
   // Authentication routes
   {
     path: "/auth/signin",
@@ -140,6 +143,15 @@ const routes = [
     path: "/auth/forgot-password",
     element: <ForgotPassword />,
   },
+  {
+    path: "/auth/verify-otp",
+    element: <VerifyOtp />,
+  },
+  {
+    path: "/auth/reset-password",
+    element: <ResetPassword />,
+  },
+
   // AboutUs and Contact
   {
     path: "/about",
