@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import {
   Box,
   Button,
@@ -12,6 +14,7 @@ import {
   useToast,
   FormControl,
   FormLabel,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
@@ -19,30 +22,38 @@ import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
 import { fetchJobDetails, updateJobDetails } from "../../services/jobService";
 
+const schema = yup.object().shape({
+  jobTitle: yup.string().required("Job title is required"),
+  location: yup.string().required("Location is required"),
+  salary: yup.string().required("Salary is required"),
+  jobDescription: yup.string().required("Job description is required"),
+  jobRequirements: yup.string().required("Job requirements are required"),
+  employmentType: yup.string().required("Employment type is required"),
+});
+
 const JobDetailsUpdate = () => {
   const { id } = useParams();
   const toast = useToast();
-  const [jobDetails, setJobDetails] = useState({
-    jobTitle: "",
-    location: "",
-    salary: "",
-    jobDescription: "",
-    jobRequirements: "",
-    employmentType: "",
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     const getJobDetails = async () => {
       try {
         const data = await fetchJobDetails(id);
-        setJobDetails({
-          jobTitle: data.title,
-          location: data.location,
-          salary: data.salary,
-          jobDescription: data.description,
-          jobRequirements: data.requirements,
-          employmentType: data.job_type,
-        });
+        setValue("jobTitle", data.title);
+        setValue("location", data.location);
+        setValue("salary", data.salary);
+        setValue("jobDescription", data.description);
+        setValue("jobRequirements", data.requirements);
+        setValue("employmentType", data.job_type);
       } catch (error) {
         toast({
           title: "Error fetching job details.",
@@ -55,25 +66,17 @@ const JobDetailsUpdate = () => {
     };
 
     getJobDetails();
-  }, [id, toast]);
+  }, [id, toast, setValue]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setJobDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
-
-  const handleUpdate = async () => {
+  const onSubmit = async (data) => {
     try {
       await updateJobDetails(id, {
-        title: jobDetails.jobTitle,
-        location: jobDetails.location,
-        salary: jobDetails.salary,
-        description: jobDetails.jobDescription,
-        requirements: jobDetails.jobRequirements,
-        job_type: jobDetails.employmentType,
+        title: data.jobTitle,
+        location: data.location,
+        salary: data.salary,
+        description: data.jobDescription,
+        requirements: data.jobRequirements,
+        job_type: data.employmentType,
       });
       toast({
         title: "Job updated.",
@@ -101,70 +104,85 @@ const JobDetailsUpdate = () => {
           <Heading size="xl" mb="8" textAlign="left">
             Update Job Details
           </Heading>
-          <VStack spacing="6" align="start">
-            <FormControl id="jobTitle" isRequired>
+          <VStack
+            spacing="6"
+            align="start"
+            as="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <FormControl id="jobTitle" isInvalid={errors.jobTitle}>
               <FormLabel>Job Title</FormLabel>
               <Input
                 name="jobTitle"
                 placeholder="Enter job title"
-                value={jobDetails.jobTitle}
-                onChange={handleChange}
+                {...register("jobTitle")}
               />
+              <FormErrorMessage>{errors.jobTitle?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl id="location" isRequired>
+            <FormControl id="location" isInvalid={errors.location}>
               <FormLabel>Location</FormLabel>
               <Input
                 name="location"
                 placeholder="Enter location"
-                value={jobDetails.location}
-                onChange={handleChange}
+                {...register("location")}
               />
+              <FormErrorMessage>{errors.location?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl id="salary" isRequired>
+            <FormControl id="salary" isInvalid={errors.salary}>
               <FormLabel>Salary Range</FormLabel>
               <Input
                 name="salary"
                 placeholder="Enter salary range"
-                value={jobDetails.salary}
-                onChange={handleChange}
+                {...register("salary")}
               />
+              <FormErrorMessage>{errors.salary?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl id="jobDescription" isRequired>
+            <FormControl id="jobDescription" isInvalid={errors.jobDescription}>
               <FormLabel>Job Description</FormLabel>
               <Textarea
                 name="jobDescription"
                 placeholder="Enter job description"
-                value={jobDetails.jobDescription}
-                onChange={handleChange}
+                {...register("jobDescription")}
               />
+              <FormErrorMessage>{errors.jobDescription?.message}</FormErrorMessage>
             </FormControl>
-            <FormControl id="jobRequirements" isRequired>
+            <FormControl
+              id="jobRequirements"
+              isInvalid={errors.jobRequirements}
+            >
               <FormLabel>Job Requirements</FormLabel>
               <Textarea
                 name="jobRequirements"
                 placeholder="Enter job requirements"
-                value={jobDetails.jobRequirements}
-                onChange={handleChange}
+                {...register("jobRequirements")}
               />
+              <FormErrorMessage>
+                {errors.jobRequirements?.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl id="employmentType" isRequired>
+            <FormControl
+              id="employmentType"
+              isInvalid={errors.employmentType}
+            >
               <FormLabel>Employment Type</FormLabel>
               <Select
                 name="employmentType"
-                value={jobDetails.employmentType}
-                onChange={handleChange}
+                {...register("employmentType")}
               >
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
                 <option value="Internship">Internship</option>
               </Select>
+              <FormErrorMessage>
+                {errors.employmentType?.message}
+              </FormErrorMessage>
             </FormControl>
             <Button
               colorScheme="blue"
               size="lg"
               alignSelf="end"
-              onClick={handleUpdate}
+              type="submit"
             >
               Update
             </Button>
