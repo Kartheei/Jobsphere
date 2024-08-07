@@ -4,6 +4,8 @@ import JobApplied from "./pages/candidate/JobApplied";
 import JobDetails from "./pages/candidate/JobDetails";
 import JobDisplay from "./pages/candidate/JobDisplay";
 import Profile from "./pages/candidate/Profile";
+import AboutUs from "./pages/common/About";
+import ContactUs from "./pages/common/Contact";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
@@ -127,6 +129,7 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
+    
   // Authentication routes
   {
     path: "/auth/signin",
@@ -147,6 +150,16 @@ const routes = [
   {
     path: "/auth/reset-password",
     element: <ResetPassword />,
+  },
+
+  // AboutUs and Contact
+  {
+    path: "/about",
+    element: <AboutUs />,
+  },
+  {
+    path: "/contact",
+    element: <ContactUs />,
   },
 ];
 
