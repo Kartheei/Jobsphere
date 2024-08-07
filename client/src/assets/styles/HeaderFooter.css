@@ -1,8 +1,8 @@
-/* Header Styles */
 .header {
   background-color: #f8f9fa;
   padding: 1rem 0;
 }
+
 .emp-header {
   background-color: #010b1d;
   padding: 1rem 0;
@@ -25,7 +25,6 @@
   color: #f8f9fa;
 }
 
-/* Navigation Link Styles */
 .navLink .nav-link {
   color: #28395a;
   text-decoration: none;
@@ -33,9 +32,7 @@
   border-radius: 10px;
   margin: 5px;
   padding: 0px 8px;
-  transition:
-    color 0.3s ease,
-    outline 0.3s ease;
+  transition: color 0.3s ease, outline 0.3s ease;
 }
 
 .emp-navLink .nav-link {
@@ -45,9 +42,7 @@
   border-radius: 10px;
   margin: 5px;
   padding: 0px 8px;
-  transition:
-    color 0.3s ease,
-    outline 0.3s ease;
+  transition: color 0.3s ease, outline 0.3s ease;
 }
 
 .navLink .nav-link:hover {
@@ -63,22 +58,21 @@
 }
 
 .jobSearch:hover {
-  background-color: #2f4269 !important;
+  background-color: #2f4269;
 }
 
 .login-button,
 .sign-up-button {
-  background-color: #28395a !important;
-  color: white !important;
+  background-color: #28395a;
+  color: white;
 }
 
 .emp-login-button,
 .emp-sign-up-button {
-  background-color: #f8f9fa !important;
-  color: #28395a !important;
+  background-color: #f8f9fa;
+  color: #28395a;
 }
 
-/* Footer Styles */
 .footer {
   background-color: #010b1d;
   color: white;
@@ -100,4 +94,23 @@
 
 .footer-section:last-child {
   margin-bottom: 0;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .header, .emp-header {
+    padding: 0.5rem 0;
+  }
+
+  .navLink .nav-link, .emp-navLink .nav-link {
+    padding: 5px;
+  }
+
+  .footer {
+    padding: 1rem 0;
+  }
+
+  .footer-section {
+    margin-bottom: 1rem;
+  }
 }

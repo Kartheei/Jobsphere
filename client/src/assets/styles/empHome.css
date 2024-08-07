@@ -1,10 +1,10 @@
 .emp-hero-section {
-  background-image: url("/images/Hero_Candidate.png"); /* Ensure the path is correct */
-  background-size: cover !important;
-  background-position: center !important;
-  height: 500px !important;
-  display: flex !important;
-  align-items: center !important;
+  background-image: url("/images/Hero_Candidate.png");
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  align-items: center;
 }
 
 .emp-hero-content {
@@ -16,9 +16,9 @@
 }
 
 .emp-hero-heading {
-  width: auto !important;
+  width: auto;
   color: #28395a;
-  line-height: 4rem !important;
+  line-height: 4rem;
 }
 
 .post-job-button {
@@ -47,31 +47,34 @@
 
 .view-button {
   background-color: #28395a !important;
-  color: white !important;
+  color: white;
 }
-.btn-disable{
-  background-color: #E5737A !important;
-  color: white !important ;
+
+.btn-disable {
+  background-color: #e5737a;
+  color: white;
 }
+
 /* Styles for the buttons */
 .btn-delete {
-  background-color: #e53e3e !important; 
-  color: #fff !important; 
+  background-color: #e53e3e;
+  color: #fff;
 }
 
 .btn-delete:hover {
-  background-color: #c53030 !important; 
+  background-color: #c53030;
 }
 
 .btn-approve {
-  background-color: #38a169 !important; 
-  color: #fff !important; 
+  background-color: #38a169;
+  color: #fff;
 }
 
 .btn-approve:hover {
-  background-color: #2f855a !important  ; 
+  background-color: #2f855a;
 }
-.candidate-box{
+
+.candidate-box {
   height: 40px;
   width: 100%;
   border-radius: 5px;
@@ -81,9 +84,35 @@
   gap: 700px;
   margin-bottom: 12px;
 }
-.candidate-name{
+
+.candidate-name {
   padding: 8px;
   padding-left: 100px;
   width: 60%;
   font-weight: bold;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .emp-hero-section {
+    height: 300px;
+  }
+
+  .emp-hero-heading {
+    line-height: 2rem;
+  }
+
+  .stat-box, .recent-jobs-box, .info-box {
+    padding: 12px;
+  }
+
+  .candidate-box {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .candidate-name {
+    width: 100%;
+    padding-left: 0;
+  }
 }
