@@ -43,3 +43,14 @@
   border-radius: 8px;
   padding: 16px;
 }
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .cover-image {
+    height: 200px;
+  }
+
+  .insight-card, .testimonial-card {
+    padding: 12px;
+  }
+}

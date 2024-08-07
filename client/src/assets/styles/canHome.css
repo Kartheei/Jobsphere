@@ -3,36 +3,36 @@
   background-size: cover;
   background-position: center;
   height: 500px;
-  display: flex !important;
-  align-items: center !important;
+  display: flex;
+  align-items: center;
 }
 
 .hero-content {
-  text-align: left !important;
-  max-width: md !important;
+  text-align: left;
+  max-width: md;
 }
 
 .hero-heading {
   width: 420px;
   color: #28395a;
-  line-height: 4rem !important;
+  line-height: 4rem;
 }
 
 .search-container {
-  display: flex !important;
-  margin-bottom: 4rem !important;
+  display: flex;
+  margin-bottom: 4rem;
 }
 
 .search-input {
-  width: auto !important;
-  background-color: white !important;
-  margin-right: 0.5rem !important;
+  width: auto;
+  background-color: white;
+  margin-right: 0.5rem;
 }
 
 .search-button {
   width: 150px;
-  background-color: #28395a !important;
-  color: white !important;
+  background-color: #28395a;
+  color: white;
 }
 
 .job-card {
@@ -43,6 +43,36 @@
 }
 
 .apply-button {
-  background-color: #28395a !important;
-  color: white !important;
+  background-color: #28395a;
+  color: white;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 300px;
+  }
+
+  .hero-heading {
+    width: 100%;
+    line-height: 2rem;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .job-card {
+    padding: 1rem;
+  }
 }
