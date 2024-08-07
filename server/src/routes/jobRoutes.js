@@ -10,6 +10,7 @@ import {
   getEmployerStats,
   getRecentJobs,
   searchJobs,
+  updateJobStatus,
 } from "../controllers/jobController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -44,5 +45,8 @@ router.get("/employer/recent", protect, getRecentJobs);
 
 // Get candidate Applied Jobs
 router.get("/candidate/appliedJobs", protect, getCandidateAppliedJobs);
+
+// Route to update job status
+router.patch("/employer/:id/active", protect, updateJobStatus);
 
 export default router;

@@ -1,17 +1,43 @@
 import React, { useState, useEffect, useContext } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+
 import {
-  Box, Container, Flex, Heading, Text, VStack, Image, Input, Textarea, Divider, Button,
-  FormControl, FormLabel, Menu, MenuButton, MenuList, MenuItem, useToast, Spinner,
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  Image,
+  Input,
+  Textarea,
+  Divider,
+  Button,
+  FormControl,
+  FormLabel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
+  Spinner,
+  Stack,
+  Tag,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
 import {
   fetchUserProfile,
   updateUserProfile,
-  // uploadResume,
+  fetchCandidateResume,
 } from "../../services/userService";
+import "../../assets/styles/style.css";
 
 function Profile() {
   const { user } = useContext(AuthContext);
@@ -21,10 +47,18 @@ function Profile() {
     about: "",
     experience: [],
     education: [],
+    address: {
+      streetName: "",
+      city: "",
+      postalCode: "",
+      country: "",
+    },
+    contact: "",
+    dateOfBirth: "",
   });
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [resumeFile, setResumeFile] = useState(null);
+  const [resumeFile, setResumeFile] = useState(null); // Added state for resume file
   const toast = useToast();
 
   useEffect(() => {
@@ -35,6 +69,14 @@ function Profile() {
           ...data,
           experience: data.experience || [],
           education: data.education || [],
+          address: data.address || {
+            streetName: "",
+            city: "",
+            postalCode: "",
+            country: "",
+          },
+          contact: data.contact || "",
+          dateOfBirth: data.dateOfBirth || "",
         });
       } catch (error) {
         toast({
@@ -48,14 +90,13 @@ function Profile() {
         setIsLoading(false);
       }
     };
-
     getUserProfile();
   }, [toast]);
 
   const handleEditToggle = async () => {
     if (editMode) {
       await updateProfile();
-      await refreshProfileData(); // Refresh profile data after update
+      await refreshProfileData();
     }
     setEditMode(!editMode);
   };
@@ -82,14 +123,19 @@ function Profile() {
   const updateProfile = async () => {
     const nonEmptyExperience = profileData.experience.filter(
       (exp) =>
-        exp.jobTitle && exp.companyName && exp.duration && exp.description
+        exp.jobTitle &&
+        exp.companyName &&
+        exp.durationFrom &&
+        exp.durationTo &&
+        exp.description
     );
 
     const nonEmptyEducation = profileData.education.filter(
       (edu) =>
         edu.degree &&
         edu.institutionName &&
-        edu.yearsAttended &&
+        edu.yearsAttendedFrom &&
+        edu.yearsAttendedTo &&
         edu.description
     );
 
@@ -100,6 +146,9 @@ function Profile() {
         about: profileData.about,
         experiences: nonEmptyExperience,
         education: nonEmptyEducation,
+        address: profileData.address,
+        contact: profileData.contact,
+        dateOfBirth: profileData.dateOfBirth,
       });
       toast({
         title: "Profile updated.",
@@ -147,6 +196,17 @@ function Profile() {
     });
   };
 
+  const handleAddressChange = (e, field) => {
+    const value = e.target.value;
+    setProfileData((prevData) => ({
+      ...prevData,
+      address: {
+        ...prevData.address,
+        [field]: value,
+      },
+    }));
+  };
+
   const addNewExperience = () => {
     setProfileData((prevData) => ({
       ...prevData,
@@ -155,7 +215,8 @@ function Profile() {
         {
           jobTitle: "",
           companyName: "",
-          duration: "",
+          durationFrom: "",
+          durationTo: "",
           description: "",
         },
       ],
@@ -170,55 +231,42 @@ function Profile() {
         {
           degree: "",
           institutionName: "",
-          yearsAttended: "",
+          yearsAttendedFrom: "",
+          yearsAttendedTo: "",
           description: "",
         },
       ],
     }));
   };
 
+  const handleCancel = () => {
+    setEditMode(false);
+    refreshProfileData(); // Revert profile data to original state before editing
+  };
+
   const handleViewResume = () => {
-    console.log("View Resume");
-    window.open('http://localhost:5000/api/users/getResume', '_blank');
+    window.open("http://localhost:5000/api/users/getResume", "_blank");
   };
 
   const handleFileChange = (e) => {
     setResumeFile(e.target.files[0]);
   };
 
-  const handleUploadResume = async () => {
-    if (!resumeFile) {
+  const downloadResume = async () => {
+    try {
+      const data = await fetchCandidateResume();
+      console.log("Resume data", data);
+    } catch (error) {
       toast({
-        title: "No file selected.",
-        description: "Please select a file to upload.",
-        status: "warning",
+        title: "Error fetching resume.",
+        description: error.message,
+        status: "error",
         duration: 5000,
         isClosable: true,
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    const formData = new FormData();
-    formData.append("resume", resumeFile);
-
-    // try {
-    //   await uploadResume(formData);
-    //   toast({
-    //     title: "Resume uploaded.",
-    //     description: "Your resume has been uploaded successfully.",
-    //     status: "success",
-    //     duration: 5000,
-    //     isClosable: true,
-    //   });
-    // } catch (error) {
-    //   toast({
-    //     title: "Error uploading resume.",
-    //     description: error.message,
-    //     status: "error",
-    //     duration: 5000,
-    //     isClosable: true,
-    //   });
-    // }
   };
 
   if (isLoading) {
@@ -239,95 +287,186 @@ function Profile() {
     <>
       <NavBar />
       <Container maxW="container.xl" mt="8">
-        <Box
-          bg="blue.500"
-          color="white"
-          borderRadius="md"
-          p="6"
-          mb="8"
-          textAlign="center"
-        >
-          <Heading size="xl">Profile</Heading>
+        <Box className="profile-header">
+          <Heading size="2xl" fontWeight="bold" letterSpacing="wide">
+            Profile
+          </Heading>
+          <Text fontSize="lg" mt="4">
+            Candidate Information and Details
+          </Text>
         </Box>
 
-        <Box mr="6" mb="8">
+        <Flex align="center" direction="column" mb="8">
           <Image
             src={profileData.profilePicture || "./images/profile.png"}
             alt="Profile"
             borderRadius="full"
             boxSize="150px"
             objectFit="cover"
+            mb="4"
+            boxShadow="md"
           />
-        </Box>
-
-        <Flex alignItems="center" mb="8" bg="gray.50" p="6" borderRadius="md">
-          <VStack spacing="4" align="flex-start" flex="1">
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Name
-              </FormLabel>
-              {editMode ? (
-                <Input
-                  id="name"
-                  value={profileData.name}
-                  onChange={handleChange}
-                  size="lg"
-                />
-              ) : (
-                <Text fontSize="lg">{profileData.name}</Text>
-              )}
-            </FormControl>
-
-            <FormControl>
-              <FormLabel fontSize="lg" fontWeight="bold">
-                Email
-              </FormLabel>
-              {editMode ? (
-                <>
-                  <Input
-                    id="email"
-                    value={profileData.email}
-                    onChange={handleChange}
-                    size="lg"
-                    mb="2"
-                  />
-                </>
-              ) : (
-                <>
-                  <Text fontSize="lg">{profileData.email}</Text>
-                </>
-              )}
-            </FormControl>
-          </VStack>
-          <Menu>
-            <MenuButton
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-              colorScheme="blue"
-              size="lg"
-              ml="6"
-            >
-              Resume
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={handleViewResume}>View</MenuItem>
-              <MenuItem>
-                <Input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
-                  display="none"
-                />
-                <label htmlFor="fileInput">Upload</label>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <Text fontSize="2xl" fontWeight="bold">
+            {profileData.name}
+          </Text>
+          <Text fontSize="lg" color="gray.500">
+            {profileData.email}
+          </Text>
         </Flex>
+
+        <Grid templateColumns="repeat(2, 1fr)" gap={6} mb="8">
+          <GridItem>
+            <Box bg="gray.50" p="6" borderRadius="lg" boxShadow="md">
+              <VStack spacing="4" align="flex-start">
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Date of Birth
+                  </FormLabel>
+                  {editMode ? (
+                    <Input
+                      id="dateOfBirth"
+                      type="date"
+                      value={profileData.dateOfBirth}
+                      onChange={handleChange}
+                      size="lg"
+                    />
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.dateOfBirth
+                        ? new Date(profileData.dateOfBirth)
+                            .toISOString()
+                            .split("T")[0]
+                        : "Enter your date of birth..."}
+                    </Text>
+                  )}
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Contact
+                  </FormLabel>
+                  {editMode ? (
+                    <Input
+                      id="contact"
+                      placeholder="+1 123 123 1234"
+                      value={profileData.contact}
+                      onChange={handleChange}
+                      size="lg"
+                    />
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.contact || "Enter your contact..."}
+                    </Text>
+                  )}
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="lg" fontWeight="bold">
+                    Address
+                  </FormLabel>
+                  {editMode ? (
+                    <>
+                      <Input
+                        id="streetName"
+                        placeholder="Street"
+                        value={profileData.address.streetName}
+                        onChange={(e) => handleAddressChange(e, "streetName")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="city"
+                        placeholder="City"
+                        value={profileData.address.city}
+                        onChange={(e) => handleAddressChange(e, "city")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="postalCode"
+                        placeholder="Postal Code"
+                        value={profileData.address.postalCode}
+                        onChange={(e) => handleAddressChange(e, "postalCode")}
+                        size="lg"
+                        mb="2"
+                      />
+                      <Input
+                        id="country"
+                        placeholder="Country"
+                        value={profileData.address.country}
+                        onChange={(e) => handleAddressChange(e, "country")}
+                        size="lg"
+                        mb="2"
+                      />
+                    </>
+                  ) : (
+                    <Text fontSize="lg">
+                      {profileData.address &&
+                      profileData.address.streetName &&
+                      profileData.address.city &&
+                      profileData.address.postalCode &&
+                      profileData.address.country ? (
+                        <>
+                          {profileData.address.streetName},{" "}
+                          {profileData.address.city},{" "}
+                          {profileData.address.postalCode},{" "}
+                          {profileData.address.country}.
+                        </>
+                      ) : (
+                        "Provide your address."
+                      )}
+                    </Text>
+                  )}
+                </FormControl>
+              </VStack>
+            </Box>
+          </GridItem>
+          <GridItem>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+              bg="gray.50"
+              p="6"
+              borderRadius="lg"
+              boxShadow="md"
+              height="100%"
+            >
+              <Flex
+                onClick={downloadResume}
+                cursor="pointer"
+                align="center"
+                justify="center"
+              >
+                <FontAwesomeIcon
+                  icon={faFile}
+                  size="2xl"
+                  style={{ color: "#215e8c" }}
+                  width={"50px"}
+                  height={"50px"}
+                />
+              </Flex>
+              <Text fontSize="sm" mt="2" textAlign="center">
+                Download Resume
+              </Text>
+              <Box mt="4" width="100%">
+                <DragAndDropUpload />
+              </Box>
+            </Box>
+          </GridItem>
+        </Grid>
 
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             About
           </Heading>
           {editMode ? (
@@ -347,13 +486,25 @@ function Profile() {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             Experience
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.experience && profileData.experience.length > 0 ? (
               profileData.experience.map((exp, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
+                <Box
+                  key={index}
+                  p="4"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                >
                   <FormControl>
                     <FormLabel fontWeight="bold">Job Title</FormLabel>
                     {editMode ? (
@@ -381,13 +532,27 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Duration</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="duration"
-                        value={exp.duration}
-                        onChange={(e) => handleExperienceChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="durationFrom"
+                          type="month"
+                          value={exp.durationFrom}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                        <Input
+                          name="durationTo"
+                          type="month"
+                          value={exp.durationTo}
+                          onChange={(e) => handleExperienceChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{exp.duration}</Text>
+                      <Text>
+                        From{" "}
+                        {new Date(exp.durationFrom).toISOString().split("T")[0]}{" "}
+                        To{" "}
+                        {new Date(exp.durationTo).toISOString().split("T")[0]}
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>
@@ -423,13 +588,25 @@ function Profile() {
         <Divider mb="8" />
 
         <Box mb="8">
-          <Heading size="lg" mb="4">
+          <Heading
+            size="lg"
+            mb="4"
+            color="blue.700"
+            display="flex"
+            alignItems="center"
+          >
             Education
           </Heading>
           <VStack spacing="4" align="stretch">
             {profileData.education && profileData.education.length > 0 ? (
               profileData.education.map((edu, index) => (
-                <Box key={index} p="4" bg="gray.100" borderRadius="md">
+                <Box
+                  key={index}
+                  p="4"
+                  bg="white"
+                  borderRadius="lg"
+                  boxShadow="md"
+                >
                   <FormControl>
                     <FormLabel fontWeight="bold">Degree</FormLabel>
                     {editMode ? (
@@ -457,13 +634,37 @@ function Profile() {
                   <FormControl>
                     <FormLabel fontWeight="bold">Years Attended</FormLabel>
                     {editMode ? (
-                      <Input
-                        name="yearsAttended"
-                        value={edu.yearsAttended}
-                        onChange={(e) => handleEducationChange(e, index)}
-                      />
+                      <>
+                        <Input
+                          name="yearsAttendedFrom"
+                          type="month"
+                          value={edu.yearsAttendedFrom}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                        <Input
+                          name="yearsAttendedTo"
+                          type="month"
+                          value={edu.yearsAttendedTo}
+                          onChange={(e) => handleEducationChange(e, index)}
+                        />
+                      </>
                     ) : (
-                      <Text>{edu.yearsAttended}</Text>
+                      <Text>
+                        <Text>
+                          From{" "}
+                          {
+                            new Date(edu.yearsAttendedFrom)
+                              .toISOString()
+                              .split("T")[0]
+                          }{" "}
+                          To{" "}
+                          {
+                            new Date(edu.yearsAttendedTo)
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                        </Text>
+                      </Text>
                     )}
                   </FormControl>
                   <FormControl>
@@ -498,9 +699,17 @@ function Profile() {
 
         <Divider mb="8" />
 
-        <Button onClick={handleEditToggle} colorScheme="blue" mb="8" mt="8">
-          {editMode ? "Save" : "Edit"}
-        </Button>
+        <Box display="flex" justifyContent="flex-end" gap="2">
+          <Button onClick={handleEditToggle} colorScheme="blue">
+            {editMode ? "Save" : "Edit"}
+          </Button>
+
+          {editMode && (
+            <Button onClick={handleCancel} colorScheme="red">
+              Cancel
+            </Button>
+          )}
+        </Box>
       </Container>
       <Footer contentType="candidate" />
     </>

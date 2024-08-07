@@ -146,6 +146,20 @@ const searchJobs = async (title, location) => {
   }
 };
 
+// API call for updating job status
+const updateJobStatus = async (jobId, isActive) => {
+  try {
+    const response = await axios.patch(
+      `/api/jobs/employer/${jobId}/active`,
+      { status: isActive ? "active" : "inactive" },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
+};
+
 export {
   createJob,
   fetchJobs,
@@ -158,4 +172,5 @@ export {
   fetchRecentJobs,
   fetchJobsApplied,
   searchJobs,
+  updateJobStatus,
 };

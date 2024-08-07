@@ -8,13 +8,27 @@ import {
   Text,
   Spinner,
   useToast,
+  VStack,
+  Icon,
+  Stack,
+  Container,
+  Grid,
+  GridItem,
+  Checkbox,
 } from "@chakra-ui/react";
+import { FaRegEdit, FaRegTrashAlt, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
-import { fetchJoblistbyEmployer, deleteJob } from "../../services/jobService";
+import {
+  fetchJoblistbyEmployer,
+  deleteJob,
+  updateJobStatus,
+} from "../../services/jobService";
+
+import "./JobPosted.css";
 
 const JobPosted = () => {
   const [jobList, setJobList] = useState([]);
@@ -87,87 +101,138 @@ const JobPosted = () => {
     navigate(`/employer/jobs/${jobId}`);
   };
 
+  const handleStatusChange = async (jobId, isActive) => {
+    try {
+      await updateJobStatus(jobId, isActive);
+      setJobList((prevJobs) =>
+        prevJobs.map((job) =>
+          job._id === jobId
+            ? { ...job, status: isActive ? "active" : "inactive" }
+            : job
+        )
+      );
+      toast({
+        title: "Job status updated.",
+        description: "The job status has been updated successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
       <NavBar />
-      <Flex p={5} justifyContent={"center"} columnGap={5}>
-        <Box
-          p="6"
-          boxShadow="md"
-          className="recent-jobs-box"
-          borderRadius="md"
-          bg="#F7FAFC"
-          mb={6}
-          width={"20%"}
-        >
-          {rightNav &&
-            rightNav.map((data, index) => (
-              <Text key={index} fontWeight="bold" mb={4} textAlign={"center"}>
-                {data}
-              </Text>
-            ))}
-        </Box>
-        {isLoading ? (
-          <Spinner size="xl" />
-        ) : (
-          <Box width={"70%"}>
-            {jobList &&
-              jobList.map((data, index) => (
-                <Box
-                  p="6"
-                  boxShadow="md"
-                  className="recent-jobs-box"
-                  borderRadius="md"
-                  bg="#F7FAFC"
-                  mb={6}
-                  key={index}
-                >
-                  <Flex
-                    justify="space-between"
-                    alignItems="center"
-                    flexWrap="wrap"
-                  >
-                    <Box textAlign="left" flex="1" minW="250px">
-                      <Heading as="h4" size="md" mb="1">
-                        {data.title}
-                      </Heading>
-                      <Text fontWeight="bold" mb="2">
-                        {data.organizationName}
-                      </Text>
-                      <Text mb="4">{truncateText(data.description, 40)}</Text>
-                      <Text mb="2" fontWeight="bold">
-                        Total Applications: {data.applicationCount || 0}
-                      </Text>
+      <Container maxW="container.xl" mt={8} mb={8}>
+        <Grid templateColumns={{ base: "1fr", md: "1fr 3fr" }} gap={6}>
+          <GridItem>
+            <Box
+              p={6}
+              boxShadow="md"
+              borderRadius="lg"
+              bg="white"
+              className="right-nav-box"
+            >
+              <VStack spacing={4} align="center">
+                {rightNav &&
+                  rightNav.map((data, index) => (
+                    <Button key={index} variant="ghost" justifyContent="center">
+                      {data}
+                    </Button>
+                  ))}
+              </VStack>
+            </Box>
+          </GridItem>
+          <GridItem>
+            {isLoading ? (
+              <Spinner size="xl" />
+            ) : (
+              <Stack spacing={6}>
+                {jobList &&
+                  jobList.map((data, index) => (
+                    <Box
+                      key={index}
+                      p={6}
+                      boxShadow="md"
+                      borderRadius="lg"
+                      bg="white"
+                      className="job-box"
+                    >
+                      <Flex justify="space-between" alignItems="center">
+                        <Box flex="1" mr={4}>
+                          <Heading as="h4" size="md" mb={2} color="blue.700">
+                            {data.title}
+                          </Heading>
+                          <Text fontWeight="bold" mb={2} color="gray.600">
+                            {data.organizationName}
+                          </Text>
+                          <Text mb={4} color="gray.500">
+                            {truncateText(data.description, 40)}
+                          </Text>
+                          <Text fontWeight="bold" color="gray.600">
+                            Total Applications: {data.applicationCount || 0}
+                          </Text>
+                        </Box>
+                      </Flex>
+                      <Flex
+                        direction="row"
+                        mt="5"
+                        justifyContent="space-between"
+                      >
+                        <Checkbox
+                          size="lg"
+                          colorScheme="blue"
+                          isChecked={data.status === "active"}
+                          onChange={(e) =>
+                            handleStatusChange(data._id, e.target.checked)
+                          }
+                        >
+                          Active
+                        </Checkbox>
+
+                        <Flex gap="2">
+                          <Button
+                            size="sm"
+                            colorScheme="blue"
+                            leftIcon={<Icon as={FaEye} />}
+                            onClick={() => handleViewClick(data._id)}
+                          >
+                            View
+                          </Button>
+                          <Button
+                            size="sm"
+                            colorScheme="teal"
+                            leftIcon={<Icon as={FaRegEdit} />}
+                            onClick={() => handleEditClick(data._id)}
+                          >
+                            Update
+                          </Button>
+                          <Button
+                            size="sm"
+                            colorScheme="red"
+                            leftIcon={<Icon as={FaRegTrashAlt} />}
+                            onClick={() => handleDeleteClick(data._id)}
+                          >
+                            Delete
+                          </Button>
+                        </Flex>
+                      </Flex>
                     </Box>
-                    <Flex flexDirection={"column"} gap={3}>
-                      <Button
-                        mt={{ base: "4", md: "0" }}
-                        className="view-button"
-                        onClick={() => handleViewClick(data._id)}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        mt={{ base: "4", md: "0" }}
-                        className="view-button"
-                        onClick={() => handleEditClick(data._id)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        mt={{ base: "4", md: "0" }}
-                        className="btn-delete"
-                        onClick={() => handleDeleteClick(data._id)}
-                      >
-                        Delete
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </Box>
-              ))}
-          </Box>
-        )}
-      </Flex>
+                  ))}
+              </Stack>
+            )}
+          </GridItem>
+        </Grid>
+      </Container>
       <Footer contentType="employer" />
     </>
   );

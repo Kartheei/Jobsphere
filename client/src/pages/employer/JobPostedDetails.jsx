@@ -15,8 +15,17 @@ import {
   MenuItem,
   Tag,
   MenuButton,
+  IconButton,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
 } from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { FaRegEdit, FaRegTrashAlt, FaEye } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
@@ -25,10 +34,11 @@ import {
   updateApplicationStatus,
 } from "../../services/applicationService";
 import { fetchJobDetails } from "../../services/jobService";
+import "./JobPostedDetails.css"; // Import external CSS file for additional styling
 
 const JobPostedDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // Use navigate hook
+  const navigate = useNavigate();
   const [job, setJob] = useState(null);
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -110,21 +120,8 @@ const JobPostedDetails = () => {
     <>
       <NavBar />
       <Center mt={5}>
-        <Box
-          width={"80%"}
-          display={"flex"}
-          justifyContent={"center"}
-          alignContent={"center"}
-          flexDirection={"column"}
-        >
-          <Box
-            p="6"
-            boxShadow="md"
-            className="recent-jobs-box"
-            borderRadius="md"
-            bg="#F7FAFC"
-            mb={6}
-          >
+        <Box width={"80%"} display={"flex"} flexDirection={"column"}>
+          <Box p="6" boxShadow="md" borderRadius="md" bg="#F7FAFC" mb={6}>
             <Flex justify="space-between" alignItems="center" flexWrap="wrap">
               <Box textAlign="left" flex="1" minW="250px">
                 <Heading as="h4" size="md" mb={4}>
@@ -171,71 +168,79 @@ const JobPostedDetails = () => {
                 No applications found for this job.
               </Text>
             ) : (
-              <Flex justify={"center"} flexDirection={"column"}>
-                {applications.map((application) => (
-                  <Box
-                    key={application._id}
-                    bg={"#d1e1ec"}
-                    display={"flex"}
-                    flexDirection={"row"}
-                    justifyContent="space-between"
-                    p="5px"
-                    borderRadius="10px"
-                    mb="3px"
-                  >
-                    <Text p={2} pr="5px" fontWeight={"bold"}>
-                      {application.user_id.name}
-                    </Text>
-                    <Flex gap={3} mt={1} pr={1}>
-                      <Button
-                        size={"sm"}
-                        mt={{ base: "4", md: "0" }}
-                        className="view-button"
-                        onClick={() =>
-                          navigate(
-                            `/employer/candidate/${application.user_id._id}`
-                          )
-                        } // Navigate to candidate profile
-                      >
-                        View Profile
-                      </Button>
-                      <Tag
-                        size="md"
-                        height="31px"
-                        variant="solid"
-                        colorScheme={getColorScheme(application.status)}
-                      >
-                        {application.status}
-                      </Tag>
-                      <Menu>
-                        <MenuButton
-                          as={Button}
-                          rightIcon={<ChevronDownIcon />}
-                          size={"sm"}
-                        >
-                          Actions
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusUpdate(application._id, "accepted")
-                            }
+              <TableContainer>
+                <Table variant="simple" size="md">
+                  <Thead bg="blue.500">
+                    <Tr>
+                      <Th color="white">Candidate Name</Th>
+                      <Th color="white">Status</Th>
+                      <Th color="white">Profile</Th>
+                      <Th color="white">Actions</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {applications.map((application) => (
+                      <Tr key={application._id}>
+                        <Td>{application.user_id.name}</Td>
+                        <Td>
+                          <Tag
+                            size="md"
+                            variant="solid"
+                            textTransform="capitalize"
+                            colorScheme={getColorScheme(application.status)}
                           >
-                            Accept
-                          </MenuItem>
-                          <MenuItem
+                            {application.status}
+                          </Tag>
+                        </Td>
+                        <Td>
+                          <IconButton
+                            aria-label="View Profile"
+                            icon={<FaEye />}
                             onClick={() =>
-                              handleStatusUpdate(application._id, "rejected")
+                              navigate(
+                                `/employer/candidate/${application.user_id._id}`
+                              )
                             }
-                          >
-                            Reject
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Flex>
-                  </Box>
-                ))}
-              </Flex>
+                          />
+                        </Td>
+                        <Td>
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              rightIcon={<ChevronDownIcon />}
+                              size="sm"
+                            >
+                              Actions
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem
+                                onClick={() =>
+                                  handleStatusUpdate(
+                                    application._id,
+                                    "accepted"
+                                  )
+                                }
+                              >
+                                Accept
+                              </MenuItem>
+                              <MenuItem
+                                onClick={() =>
+                                  handleStatusUpdate(
+                                    application._id,
+                                    "rejected"
+                                  )
+                                }
+                              >
+                                Reject
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
             )}
           </Box>
         </Box>

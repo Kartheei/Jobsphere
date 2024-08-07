@@ -12,9 +12,14 @@ const jobSchema = new Schema({
     required: true,
     enum: ["Full-time", "Part-time", "Contract", "Internship"],
   },
+  status: {
+    type: String,
+    required: true,
+    enum: ["active", "inactive"],
+    default: "active",
+  },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  // companyId: { type: Schema.Types.ObjectId, ref: "company" },
   userId: { type: Schema.Types.ObjectId, ref: "user" },
 });
 

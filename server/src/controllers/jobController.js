@@ -11,7 +11,7 @@ export async function createJob(req, res, next) {
     salary,
     requirements,
     job_type,
-    // companyId,
+    status = "active", // Default to active if not specified
   } = req.body;
 
   try {
@@ -28,7 +28,7 @@ export async function createJob(req, res, next) {
       salary,
       requirements,
       job_type,
-      // companyId,
+      status, // Set the status
       userId: req.user._id, // Save the logged-in user ID
     });
 
@@ -271,5 +271,32 @@ export const searchJobs = async (req, res, next) => {
     res.status(200).json(jobs);
   } catch (error) {
     next(error); // Pass the error to the error handler middleware
+  }
+};
+
+// @desc - Update job status
+export const updateJobStatus = async (req, res, next) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const job = await Job.findById(id);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    if (job.userId.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this job" });
+    }
+
+    job.status = status;
+    await job.save();
+
+    res.status(200).json({ message: "Job status updated successfully", job });
+  } catch (error) {
+    next(error);
   }
 };

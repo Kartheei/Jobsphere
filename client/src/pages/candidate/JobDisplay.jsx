@@ -11,6 +11,7 @@ import {
   VStack,
   Spinner,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -21,6 +22,7 @@ import { fetchJobs, searchJobs } from "../../services/jobService";
 function JobDisplay() {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,8 +37,10 @@ function JobDisplay() {
         let jobsData;
         if (title || locationParam) {
           jobsData = await searchJobs(title, locationParam);
+          setIsSearch(true);
         } else {
           jobsData = await fetchJobs();
+          setIsSearch(false);
         }
 
         setJobs(jobsData);
@@ -74,7 +78,9 @@ function JobDisplay() {
       <NavBar />
       <Container maxW="container.xl" mt={{ base: 4, md: 8 }}>
         <Heading size="lg" mb="4">
-          Job Search Results
+          {isSearch
+            ? "Job Search Results"
+            : "Top Picks for You Based on Your Profile"}
         </Heading>
         {isLoading ? (
           <Spinner size="xl" />
@@ -92,6 +98,7 @@ function JobDisplay() {
                 boxShadow="md"
                 borderRadius="md"
                 bg="white"
+                opacity={job.status === "inactive" ? 0.5 : 1}
               >
                 <Heading as="h4" size="md" mb="1">
                   {job.title}
@@ -103,13 +110,20 @@ function JobDisplay() {
                   | {job.location}
                 </Text>
                 <Text mb="4">{truncateText(job.description, 50)}</Text>
-                <Button
-                  colorScheme="blue"
-                  onClick={() => handleViewClick(job._id)}
-                  className="view-button"
-                >
-                  View
-                </Button>
+                <Flex gap="2" justifyContent="flex-end" alignItems="center">
+                  {job.status === "inactive" && (
+                    <Text color="red.500" fontWeight="bold">
+                      Job is expired.
+                    </Text>
+                  )}
+                  <Button
+                    colorScheme="blue"
+                    onClick={() => handleViewClick(job._id)}
+                    className="view-button"
+                  >
+                    View
+                  </Button>
+                </Flex>
               </Box>
             ))}
           </VStack>
