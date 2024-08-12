@@ -24,7 +24,9 @@ import { AuthContext } from "../../context/AuthContext";
 import { createJob } from "../../services/jobService";
 
 const schema = yup.object().shape({
-  jobTitle: yup.string().required("Job title is required"),
+  jobTitle: yup.string()
+  .matches(/^[A-Za-z\s]+$/, "Job title must only contain alphabets")
+  .required("Job title is required"),
   location: yup.string().required("Location is required"),
   salary: yup.string().required("Salary is required"),
   jobDescription: yup.string().required("Job description is required"),

@@ -71,10 +71,10 @@ const JobApplied = () => {
   };
 
   const [rightNav, setRightNav] = useState([
-    "My Jobs",
-    "Preferences",
-    "My Network",
-    "Interview Prep Tips",
+    // "My Jobs",
+    // "Preferences",
+    // "My Network",
+    // "Interview Prep Tips",
   ]);
 
   const truncateText = (text, wordLimit) => {
@@ -91,13 +91,13 @@ const JobApplied = () => {
       <Flex p={5} justifyContent={"center"} columnGap={5}>
         <Box
           p="6"
-          boxShadow="md"
+          // boxShadow="md"
           className="recent-jobs-box"
           borderRadius="md"
-          bg="#F7FAFC"
+          bg="#ffffff"
           mb={6}
           width={"20%"}
-          height={"310px"}
+          height={"400px"}
         >
           {rightNav &&
             rightNav.map((data, index) => (
