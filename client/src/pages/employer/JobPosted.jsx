@@ -57,10 +57,10 @@ const JobPosted = () => {
   }, [toast]);
 
   const [rightNav, setRightNav] = useState([
-    "My Jobs",
-    "Preferences",
-    "My Network",
-    "Tutorial",
+    // "My Jobs",
+    // "Preferences",
+    // "My Network",
+    // "Tutorial",
   ]);
 
   const truncateText = (text, wordLimit) => {
@@ -133,14 +133,14 @@ const JobPosted = () => {
     <>
       <NavBar />
       <Container maxW="container.xl" mt={8} mb={8}>
-        <Grid templateColumns={{ base: "1fr", md: "1fr 3fr" }} gap={6}>
+        <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={6}>
           <GridItem>
             <Box
-              p={6}
-              boxShadow="md"
-              borderRadius="lg"
-              bg="white"
-              className="right-nav-box"
+              // p={6}
+              // boxShadow="md"
+              // borderRadius="lg"
+              // bg="white"
+              // className="right-nav-box"
             >
               <VStack spacing={4} align="center">
                 {rightNav &&

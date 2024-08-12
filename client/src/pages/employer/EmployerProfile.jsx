@@ -255,37 +255,6 @@ const EmployerProfile = () => {
           </Button>
         </Box>
 
-        <Box mb="8">
-          <Heading size="md" mb="4">
-            Recent Job Openings
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-            {[1, 2].map((_, index) => (
-              <Box
-                key={index}
-                className="job-card"
-                p="4"
-                borderWidth="1px"
-                borderRadius="md"
-              >
-                <Heading size="sm" mb="2">
-                  Job Title {index + 1}
-                </Heading>
-                <Text mb="2">Job Description</Text>
-                <Text mb="2">Job Category</Text>
-                <HStack spacing="4">
-                  <Button className="apply-button" colorScheme="blue">
-                    Apply
-                  </Button>
-                  <Button className="save-button" colorScheme="gray">
-                    Save
-                  </Button>
-                </HStack>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
-
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
           <Box
             className="insight-card"
