@@ -30,7 +30,7 @@ function ContactUs() {
             alignItems="center"
           >
             <Image
-              src="../../../public/images/Contact.png"
+              src="../../../public/images/Contact.webp"
               alt="Contact Us"
               boxSize="300px"
               objectFit="cover"

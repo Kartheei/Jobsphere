@@ -298,7 +298,7 @@ function Profile() {
 
         <Flex align="center" direction="column" mb="8">
           <Image
-            src={profileData.profilePicture || "./images/profile.png"}
+            src={profileData.profilePicture || "./images/profile.webp"}
             alt="Profile"
             borderRadius="full"
             boxSize="150px"

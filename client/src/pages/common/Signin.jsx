@@ -98,7 +98,7 @@ const Signin = () => {
           borderRadius={10}
         >
           <Stack align={"center"} mb={10}>
-            <Image src="../images/logo_scale.png" boxSize="80px" />
+            <Image src="../images/logo_scale.webp" boxSize="80px" />
             <Heading>Login to JobSphere</Heading>
           </Stack>
           <form onSubmit={handleSubmit(onSubmit)}>

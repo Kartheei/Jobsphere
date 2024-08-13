@@ -67,15 +67,15 @@ function AboutUs() {
     {
       name: "Jack John",
       role: "Managing Director",
-      image: "/images/Jack.png",
+      image: "/images/Jack.webp",
     },
     {
       name: "Krista John",
       role: "Hiring manager",
-      image: "/images/Krista.png",
+      image: "/images/Krista.webp",
     },
     { name: "Roger Jackson", role: "Marketing", image: "/images/Roger.webp" },
-    { name: "Johnny English", role: "Ceo", image: "/images/Johnny.jpg" },
+    { name: "Johnny English", role: "Ceo", image: "/images/Johnny.webp" },
   ];
 
   return (
@@ -84,7 +84,7 @@ function AboutUs() {
       <Box
         w="100%"
         h="300px"
-        bgImage="url('/images/Hero_Candidate.png')"
+        bgImage="url('/images/Hero_Candidate.webp')"
         bgPosition="center"
         bgRepeat="no-repeat"
         bgSize="cover"
@@ -99,7 +99,7 @@ function AboutUs() {
       <Container maxW="container.xl" mt="8">
         <Box display="flex" alignItems="center" justifyContent="center">
           <Image
-            src="/images/image5.png"
+            src="/images/image5.webp"
             boxSize="300px"
             objectFit="cover"
             mr="8"

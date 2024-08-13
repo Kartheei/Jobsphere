@@ -143,7 +143,7 @@ const EmployerProfile = () => {
       <NavBar />
       <Box className="cover-image" mb="4" textAlign="center" bg="gray.100">
         <Image
-          src="/images/registration.jpg"
+          src="/images/registration.webp"
           alt="Cover"
           w="100%"
           h="100%"
@@ -155,7 +155,7 @@ const EmployerProfile = () => {
         <Flex alignItems="center" mb="8">
           <Box className="profile-picture" mr="4">
             <Image
-              src="/images/profile.png"
+              src="/images/profile.webp"
               alt="Profile"
               borderRadius="full"
               boxSize="150px"

@@ -8,7 +8,7 @@ const userProfileSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default: "./images/profile.png",
+    default: "./images/profile.webp",
   },
   about: {
     type: String,

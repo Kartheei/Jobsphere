@@ -89,12 +89,12 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
         <Image
           alt={"Login Image"}
           objectFit={"cover"}
-          src="../images/registration1.jpg"
+          src="../images/registration1.webp"
         />
       </Flex>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Image src="../images/logo_scale.png" boxSize="80px" />
+          <Image src="../images/logo_scale.webp" boxSize="80px" />
           <Heading fontSize={"2xl"}>Sign in to your account</Heading>
           <Stack direction="row" spacing={4} align="center" justify="center">
             <Button

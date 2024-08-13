@@ -104,7 +104,7 @@ const CandidateProfileView = () => {
           <GridItem>
             <Box textAlign="center">
               <Image
-                src={"../../images/profile.png" || profileData.profilePicture}
+                src={"../../images/profile.webp" || profileData.profilePicture}
                 alt="Profile"
                 borderRadius="full"
                 boxSize="150px"
