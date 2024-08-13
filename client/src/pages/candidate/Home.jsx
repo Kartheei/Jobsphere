@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   ChakraProvider,
@@ -18,8 +18,9 @@ import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+// import Footer from "../../components/common/Footer";
 import { fetchRandomJobs } from "../../services/jobService";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 function Home() {
   const [jobs, setJobs] = useState([]);
@@ -151,7 +152,7 @@ function Home() {
         )}
       </Container>
 
-      <Footer contentType="candidate" />
+      <LazyFooter contentType="candidate" />
     </ChakraProvider>
   );
 }

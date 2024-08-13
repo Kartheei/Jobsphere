@@ -14,9 +14,10 @@ import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+// import Footer from "../../components/common/Footer";
 import { getApplicationStatus } from "../../services/applicationService";
 import { fetchJobsApplied } from "../../services/jobService";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 const JobApplied = () => {
   const [jobList, setJobList] = useState([]);
@@ -163,7 +164,7 @@ const JobApplied = () => {
           </Box>
         )}
       </Flex>
-      <Footer contentType="employer" />
+      <LazyFooter contentType="employer" />
     </>
   );
 };
