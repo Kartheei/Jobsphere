@@ -17,12 +17,14 @@ import {
 import { useParams } from "react-router-dom";
 
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+// import Footer from "../../components/common/Footer";
+
 import {
   applyForJob,
   getApplicationStatus,
 } from "../../services/applicationService";
 import { fetchJobDetails } from "../../services/jobService";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -228,7 +230,7 @@ const JobDetails = () => {
         </Box>
       </Center>
 
-      <Footer contentType="candidate" />
+      <LazyFooter contentType="candidate" />
     </>
   );
 };

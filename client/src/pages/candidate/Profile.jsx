@@ -14,14 +14,8 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   useToast,
   Spinner,
-  Stack,
-  Tag,
   Grid,
   GridItem,
 } from "@chakra-ui/react";
@@ -30,7 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+// import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
 import {
   fetchUserProfile,
@@ -38,6 +32,7 @@ import {
   fetchCandidateResume,
 } from "../../services/userService";
 import "../../assets/styles/style.css";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 function Profile() {
   const { user } = useContext(AuthContext);
@@ -244,14 +239,6 @@ function Profile() {
     refreshProfileData(); // Revert profile data to original state before editing
   };
 
-  const handleViewResume = () => {
-    window.open("http://localhost:5000/api/users/getResume", "_blank");
-  };
-
-  const handleFileChange = (e) => {
-    setResumeFile(e.target.files[0]);
-  };
-
   const downloadResume = async () => {
     try {
       const data = await fetchCandidateResume();
@@ -298,13 +285,15 @@ function Profile() {
 
         <Flex align="center" direction="column" mb="8">
           <Image
-            src={profileData.profilePicture || "./images/profile.webp"}
+            src={"./images/profile.webp"}
             alt="Profile"
             borderRadius="full"
             boxSize="150px"
             objectFit="cover"
             mb="4"
             boxShadow="md"
+          // loading="lazy"
+          // decoding="async"
           />
           <Text fontSize="2xl" fontWeight="bold">
             {profileData.name}
@@ -334,8 +323,8 @@ function Profile() {
                     <Text fontSize="lg">
                       {profileData.dateOfBirth
                         ? new Date(profileData.dateOfBirth)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : "Enter your date of birth..."}
                     </Text>
                   )}
@@ -402,10 +391,10 @@ function Profile() {
                   ) : (
                     <Text fontSize="lg">
                       {profileData.address &&
-                      profileData.address.streetName &&
-                      profileData.address.city &&
-                      profileData.address.postalCode &&
-                      profileData.address.country ? (
+                        profileData.address.streetName &&
+                        profileData.address.city &&
+                        profileData.address.postalCode &&
+                        profileData.address.country ? (
                         <>
                           {profileData.address.streetName},{" "}
                           {profileData.address.city},{" "}
@@ -711,7 +700,7 @@ function Profile() {
           )}
         </Box>
       </Container>
-      <Footer contentType="candidate" />
+      <LazyFooter contentType="candidate" />
     </>
   );
 }
