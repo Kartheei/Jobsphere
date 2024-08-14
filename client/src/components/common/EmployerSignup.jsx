@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 
 import {
@@ -89,12 +88,12 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
         <Image
           alt={"Login Image"}
           objectFit={"cover"}
-          src="../images/registration1.webp"
+          src="/images/registration1.webp"
         />
       </Flex>
       <Flex p={8} flex={1} align={"center"} justify={"center"}>
         <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Image src="../images/logo_scale.webp" boxSize="80px" />
+          <Image src="/images/logo_scale.webp" boxSize="80px" />
           <Heading fontSize={"2xl"}>Sign in to your account</Heading>
           <Stack direction="row" spacing={4} align="center" justify="center">
             <Button
@@ -170,11 +169,16 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
                           <InputRightElement h={"full"}>
                             <Button
                               variant={"ghost"}
+                              p={0}
                               onClick={() =>
                                 setShowPassword((showPassword) => !showPassword)
                               }
                             >
-                              {showPassword ? <Eye /> : <EyeOff />}
+                              {showPassword ? (
+                                <Eye size={20} />
+                              ) : (
+                                <EyeOff size={20} strokeWidth={1} />
+                              )}
                             </Button>
                           </InputRightElement>
                         </InputGroup>
@@ -192,11 +196,16 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
                           <InputRightElement h={"full"}>
                             <Button
                               variant={"ghost"}
+                              p={0}
                               onClick={() =>
                                 setShowCnfPassword((prev) => !prev)
                               }
                             >
-                              {showCnfPassword ? <Eye /> : <EyeOff />}
+                              {showCnfPassword ? (
+                                <Eye size={20} />
+                              ) : (
+                                <EyeOff size={20} strokeWidth={1} />
+                              )}
                             </Button>
                           </InputRightElement>
                         </InputGroup>

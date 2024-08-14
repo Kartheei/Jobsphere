@@ -7,8 +7,10 @@ import Profile from "./pages/candidate/Profile";
 import AboutUs from "./pages/common/About";
 import ContactUs from "./pages/common/Contact";
 import ForgotPassword from "./pages/common/ForgotPassword";
+import ResetPassword from "./pages/common/ResetPassword.jsx";
 import Signin from "./pages/common/Signin";
 import Signup from "./pages/common/Signup";
+import VerifyOtp from "./pages/common/VerifyOtp";
 import CandidateProfileView from "./pages/employer/CandidateProfileView";
 import EmployerProfile from "./pages/employer/EmployerProfile";
 import EmployerHome from "./pages/employer/Home";
@@ -16,8 +18,6 @@ import JobCreation from "./pages/employer/JobCreation";
 import JobDetailsUpdate from "./pages/employer/JobDetailsUpdate";
 import JobPosted from "./pages/employer/JobPosted";
 import JobPostedDetails from "./pages/employer/JobPostedDetails";
-import ResetPassword from "./pages/common/ResetPassword.jsx";
-import VerifyOtp from "./pages/common/VerifyOtp";
 
 const routes = [
   // Candidate routes
@@ -129,7 +129,7 @@ const routes = [
       </RoleProtectedRoute>
     ),
   },
-    
+
   // Authentication routes
   {
     path: "/auth/signin",

@@ -9,7 +9,7 @@ import {
   Heading,
   CSSReset,
   Text,
-  HStack,
+  Spinner,
   Image,
   SimpleGrid,
   Input,
@@ -19,8 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
 import "../../assets/styles/Employerprofile.css";
 import {
   fetchEmployerProfileData,
@@ -330,7 +330,9 @@ const EmployerProfile = () => {
         </SimpleGrid>
       </Container>
 
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </ChakraProvider>
   );
 };

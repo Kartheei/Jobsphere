@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+
 import {
   Box,
   Button,
@@ -11,21 +9,26 @@ import {
   Input,
   Textarea,
   Select,
+  Spinner,
   useToast,
   FormControl,
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import * as yup from "yup";
 
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
 import { fetchJobDetails, updateJobDetails } from "../../services/jobService";
 
 const schema = yup.object().shape({
-  jobTitle: yup.string()
-  .matches(/^[A-Za-z\s]+$/, "Job title must only contain alphabets")
-  .required("Job title is required"),
+  jobTitle: yup
+    .string()
+    .matches(/^[A-Za-z\s]+$/, "Job title must only contain alphabets")
+    .required("Job title is required"),
   location: yup.string().required("Location is required"),
   salary: yup.string().required("Salary is required"),
   jobDescription: yup.string().required("Job description is required"),
@@ -146,7 +149,9 @@ const JobDetailsUpdate = () => {
                 placeholder="Enter job description"
                 {...register("jobDescription")}
               />
-              <FormErrorMessage>{errors.jobDescription?.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.jobDescription?.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl
               id="jobRequirements"
@@ -162,15 +167,9 @@ const JobDetailsUpdate = () => {
                 {errors.jobRequirements?.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl
-              id="employmentType"
-              isInvalid={errors.employmentType}
-            >
+            <FormControl id="employmentType" isInvalid={errors.employmentType}>
               <FormLabel>Employment Type</FormLabel>
-              <Select
-                name="employmentType"
-                {...register("employmentType")}
-              >
+              <Select name="employmentType" {...register("employmentType")}>
                 <option value="Full-time">Full-time</option>
                 <option value="Part-time">Part-time</option>
                 <option value="Contract">Contract</option>
@@ -180,18 +179,15 @@ const JobDetailsUpdate = () => {
                 {errors.employmentType?.message}
               </FormErrorMessage>
             </FormControl>
-            <Button
-              colorScheme="blue"
-              size="lg"
-              alignSelf="end"
-              type="submit"
-            >
+            <Button colorScheme="blue" size="lg" alignSelf="end" type="submit">
               Update
             </Button>
           </VStack>
         </Box>
       </Container>
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </>
   );
 };

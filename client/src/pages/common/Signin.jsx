@@ -18,13 +18,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-// Lazy load lucide-react icons
-const UserRound = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.UserRound }))
-);
-const Lock = lazy(() =>
-  import("lucide-react").then((module) => ({ default: module.Lock }))
-);
+import { UserRound, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";

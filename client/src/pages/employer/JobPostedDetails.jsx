@@ -26,8 +26,8 @@ import {
 import { Pencil, Trash2, Eye, ChevronDown } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
 import {
   fetchApplicationsByJobId,
   updateApplicationStatus,
@@ -106,11 +106,9 @@ const JobPostedDetails = () => {
   if (isLoading) {
     return (
       <>
-        <NavBar />
         <Center minH="100vh" mt={5}>
           <Spinner size="xl" />
         </Center>
-        <Footer contentType="employer" />
       </>
     );
   }
@@ -194,7 +192,7 @@ const JobPostedDetails = () => {
                         <Td>
                           <IconButton
                             aria-label="View Profile"
-                            icon={<Eye />}
+                            icon={<Eye size={20} strokeWidth={1} />}
                             onClick={() =>
                               navigate(
                                 `/employer/candidate/${application.user_id._id}`
@@ -244,7 +242,9 @@ const JobPostedDetails = () => {
           </Box>
         </Box>
       </Center>
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </>
   );
 };

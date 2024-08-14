@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Suspense } from "react";
 
 import {
   Box,
@@ -23,7 +23,6 @@ import { CloudUpload } from "lucide-react";
 
 import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
-// import Footer from "../../components/common/Footer";
 import { AuthContext } from "../../context/AuthContext";
 import {
   fetchUserProfile,
@@ -291,8 +290,8 @@ function Profile() {
             objectFit="cover"
             mb="4"
             boxShadow="md"
-          // loading="lazy"
-          // decoding="async"
+            // loading="lazy"
+            // decoding="async"
           />
           <Text fontSize="2xl" fontWeight="bold">
             {profileData.name}
@@ -322,8 +321,8 @@ function Profile() {
                     <Text fontSize="lg">
                       {profileData.dateOfBirth
                         ? new Date(profileData.dateOfBirth)
-                          .toISOString()
-                          .split("T")[0]
+                            .toISOString()
+                            .split("T")[0]
                         : "Enter your date of birth..."}
                     </Text>
                   )}
@@ -390,10 +389,10 @@ function Profile() {
                   ) : (
                     <Text fontSize="lg">
                       {profileData.address &&
-                        profileData.address.streetName &&
-                        profileData.address.city &&
-                        profileData.address.postalCode &&
-                        profileData.address.country ? (
+                      profileData.address.streetName &&
+                      profileData.address.city &&
+                      profileData.address.postalCode &&
+                      profileData.address.country ? (
                         <>
                           {profileData.address.streetName},{" "}
                           {profileData.address.city},{" "}
@@ -704,7 +703,9 @@ function Profile() {
           )}
         </Box>
       </Container>
-      <LazyFooter contentType="candidate" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="candidate" />
+      </Suspense>
     </>
   );
 }

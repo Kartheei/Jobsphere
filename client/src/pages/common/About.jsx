@@ -1,3 +1,5 @@
+import React, { Suspense } from "react";
+
 import {
   Box,
   Container,
@@ -22,7 +24,7 @@ import {
 } from "lucide-react";
 
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 function AboutUs() {
   const features = [
@@ -92,7 +94,7 @@ function AboutUs() {
         alignItems="center"
         justifyContent="center"
       >
-        <Heading color="white" fontSize="4xl">
+        <Heading color="#28395a" fontSize="4xl">
           About Us
         </Heading>
       </Box>
@@ -239,7 +241,9 @@ function AboutUs() {
           </VStack>
         </Box>
       </Container>
-      <Footer contentType="employer" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="employer" />
+      </Suspense>
     </>
   );
 }

@@ -9,7 +9,7 @@ export const saveUserProfile = async () => {
   } catch (error) {
     throw new Error(error.response?.data?.message || error.message);
   }
-}
+};
 
 // Function to fetch the profile of the logged-in user
 const fetchUserProfile = async () => {
@@ -51,10 +51,10 @@ const fetchCandidateProfile = async (userId) => {
 const uploadCandidateResume = async (formData) => {
   debugger;
   try {
-    const response = await axios.post('/api/users/uploadResume', formData, {
+    const response = await axios.post("/api/users/uploadResume", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   } catch (error) {
@@ -67,28 +67,33 @@ const fetchCandidateResume = async (userId) => {
   debugger;
   try {
     const response = await axios.get(`/api/users/getResume`, {
-      responseType: 'blob',
+      responseType: "blob",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
 
     const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
+    const link = document.createElement("a");
 
     link.href = url;
-    link.setAttribute('download', 'resume.pdf');
+    link.setAttribute("download", "resume.pdf");
     document.body.appendChild(link);
     link.click();
 
     link.parentNode.removeChild(link);
     window.URL.revokeObjectURL(url);
     return response.data;
-
   } catch (error) {
-    console.error('Error fetching the resume:', error);
+    console.error("Error fetching the resume:", error);
     throw error;
   }
 };
 
-export { fetchUserProfile, updateUserProfile, fetchCandidateProfile, uploadCandidateResume, fetchCandidateResume };
+export {
+  fetchUserProfile,
+  updateUserProfile,
+  fetchCandidateProfile,
+  uploadCandidateResume,
+  fetchCandidateResume,
+};
