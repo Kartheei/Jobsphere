@@ -20,7 +20,7 @@ const Footer = ({ contentType }) => {
     contentType === "employer" ? footerContentEmployer : footerContent;
 
   return (
-    <Box as="footer" className="footer" py={{ base: "8", md: "8" }} mt="16">
+    <Box as="footer" className="footer" py={{ base: "8", md: "8" }} mt='auto'>
       <Container maxW="100%" px={{ base: "4", md: "8" }}>
         <Flex
           flexDirection={{ base: "column", md: "row" }}

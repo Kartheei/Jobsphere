@@ -132,7 +132,7 @@ const JobPosted = () => {
               <Spinner size="xl" />
             ) : (
               <Stack spacing={6}>
-                {jobList &&
+                {jobList && jobList.length > 0 ? (
                   jobList.map((data, index) => (
                     <Box
                       key={index}
@@ -202,7 +202,23 @@ const JobPosted = () => {
                         </Flex>
                       </Flex>
                     </Box>
-                  ))}
+                  ))) : (
+                  <Box
+                    p={6}
+                    boxShadow="md"
+                    borderRadius="lg"
+                    bg="white"
+                    className="job-box"
+                    h={'250px'}
+                    bgColor={'#E2E8F0'}>
+                    <Flex justifyContent={'center'} pt={20}>
+                      <Heading as="h5" size="md" mb={2} >
+                        No jobs posted yet ...!!!
+                      </Heading>
+                    </Flex>
+                  </Box>
+                )
+                }
               </Stack>
             )}
           </GridItem>
