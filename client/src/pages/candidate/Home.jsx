@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 import {
   ChakraProvider,
@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/canHome.css";
 import NavBar from "../../components/candidate/NavBar";
-// import Footer from "../../components/common/Footer";
 import { fetchRandomJobs } from "../../services/jobService";
 const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
@@ -151,8 +150,9 @@ function Home() {
           </VStack>
         )}
       </Container>
-
-      <LazyFooter contentType="candidate" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="candidate" />
+      </Suspense>
     </ChakraProvider>
   );
 }

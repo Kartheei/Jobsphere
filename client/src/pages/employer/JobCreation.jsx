@@ -1,7 +1,5 @@
-import { useContext, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import React, { useContext, useState, useEffect } from "react";
+
 import {
   Box,
   Button,
@@ -17,16 +15,20 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
 import { AuthContext } from "../../context/AuthContext";
 import { createJob } from "../../services/jobService";
 
 const schema = yup.object().shape({
-  jobTitle: yup.string()
-  .matches(/^[A-Za-z\s]+$/, "Job title must only contain alphabets")
-  .required("Job title is required"),
+  jobTitle: yup
+    .string()
+    .matches(/^[A-Za-z\s]+$/, "Job title must only contain alphabets")
+    .required("Job title is required"),
   location: yup.string().required("Location is required"),
   salary: yup.string().required("Salary is required"),
   jobDescription: yup.string().required("Job description is required"),
@@ -99,7 +101,12 @@ function JobCreation() {
           <Heading size="xl" mb="8" textAlign="left">
             Create new job
           </Heading>
-          <VStack spacing="6" align="start" as="form" onSubmit={handleSubmit(onSubmit)}>
+          <VStack
+            spacing="6"
+            align="start"
+            as="form"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <FormControl isInvalid={errors.jobTitle}>
               <FormLabel htmlFor="jobTitle">Job Title</FormLabel>
               <Input
@@ -171,7 +178,9 @@ function JobCreation() {
           </VStack>
         </Box>
       </Container>
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </>
   );
 }

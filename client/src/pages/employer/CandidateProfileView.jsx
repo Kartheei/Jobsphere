@@ -10,6 +10,7 @@ import {
   Image,
   Divider,
   Spinner,
+  Center,
   useToast,
   Grid,
   GridItem,
@@ -18,8 +19,8 @@ import {
 import { BriefcaseBusiness, GraduationCap, User } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
 import { fetchCandidateProfile } from "../../services/userService";
 
 const CandidateProfileView = () => {
@@ -66,13 +67,9 @@ const CandidateProfileView = () => {
   if (!profileData) {
     return (
       <>
-        <NavBar />
-        <Container maxW="container.xl" mt="8">
-          <Text fontSize="xl" color="red.500">
-            Profile not found.
-          </Text>
-        </Container>
-        <Footer contentType="employer" />
+        <Center minH="100vh" mt={5}>
+          <Spinner size="xl" />
+        </Center>
       </>
     );
   }
@@ -181,7 +178,7 @@ const CandidateProfileView = () => {
             display="flex"
             alignItems="center"
           >
-            <Icon as={User} w={5} h={5} mr="2" />
+            <Icon as={User} size={30} mr="2" />
             About
           </Heading>
           <Text
@@ -279,7 +276,9 @@ const CandidateProfileView = () => {
           </VStack>
         </Box>
       </Container>
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </>
   );
 };

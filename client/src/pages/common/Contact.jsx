@@ -1,3 +1,5 @@
+import React, { Suspense } from "react";
+
 import {
   Box,
   Container,
@@ -15,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import NavBar from "../../components/candidate/NavBar";
-import Footer from "../../components/common/Footer";
+const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 function ContactUs() {
   return (
@@ -30,7 +32,7 @@ function ContactUs() {
             alignItems="center"
           >
             <Image
-              src="../../../public/images/Contact.webp"
+              src="/images/Contact.webp"
               alt="Contact Us"
               boxSize="300px"
               objectFit="cover"
@@ -113,7 +115,9 @@ function ContactUs() {
           ></iframe>
         </Box>
       </Container>
-      <Footer contentType="employer" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="employer" />
+      </Suspense>
     </>
   );
 }

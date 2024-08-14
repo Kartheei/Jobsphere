@@ -50,7 +50,7 @@ const loginUser = async (formData) => {
 // API call for forgot password.
 const forgotPassword = async (email) => {
   try {
-    const response = await axios.post("/api/auth/forgot-password", {email});
+    const response = await axios.post("/api/auth/forgot-password", { email });
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || error.message);
@@ -77,4 +77,11 @@ const resetPassword = async (formData) => {
   }
 };
 
-export { registerCandidate, registerEmployer, loginUser, forgotPassword, verifyOtp, resetPassword };
+export {
+  registerCandidate,
+  registerEmployer,
+  loginUser,
+  forgotPassword,
+  verifyOtp,
+  resetPassword,
+};

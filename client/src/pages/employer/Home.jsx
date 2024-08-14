@@ -12,13 +12,12 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // Lazy load components for better performance
-const NavBar = React.lazy(() => import("../../components/employer/NavBar"));
+import NavBar from "../../components/employer/NavBar";
 const Footer = React.lazy(() => import("../../components/common/Footer"));
 const RecentJobs = React.lazy(
   () => import("../../components/employer/RecentJobs")
 );
 const Stats = React.lazy(() => import("../../components/employer/Stats"));
-
 import "../../assets/styles/empHome.css";
 import { fetchEmployerStats, fetchRecentJobs } from "../../services/jobService";
 
@@ -67,9 +66,7 @@ const Home = () => {
 
   return (
     <>
-      <React.Suspense fallback={<Spinner size="xl" />}>
-        <NavBar />
-      </React.Suspense>
+      <NavBar />
 
       <Box className="emp-hero-section">
         <Container maxW="container.md">

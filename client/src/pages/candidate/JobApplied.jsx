@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 
 import {
   Box,
@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
 import NavBar from "../../components/candidate/NavBar";
-// import Footer from "../../components/common/Footer";
 import { getApplicationStatus } from "../../services/applicationService";
 import { fetchJobsApplied } from "../../services/jobService";
 const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
@@ -164,7 +163,10 @@ const JobApplied = () => {
           </Box>
         )}
       </Flex>
-      <LazyFooter contentType="employer" />
+
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="employer" />
+      </Suspense>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 import {
   ChakraProvider,
@@ -16,7 +16,6 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 
 import NavBar from "../../components/candidate/NavBar";
-// import Footer from "../../components/common/Footer";
 import { fetchJobs, searchJobs } from "../../services/jobService";
 const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
@@ -130,7 +129,9 @@ function JobDisplay() {
           </VStack>
         )}
       </Container>
-      <LazyFooter contentType="candidate" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="candidate" />
+      </Suspense>
     </ChakraProvider>
   );
 }

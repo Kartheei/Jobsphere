@@ -19,9 +19,9 @@ import {
 import { Pencil, Trash2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import "../../assets/styles/empHome.css";
-import Footer from "../../components/common/Footer";
 import NavBar from "../../components/employer/NavBar";
+const Footer = React.lazy(() => import("../../components/common/Footer"));
+import "../../assets/styles/empHome.css";
 import {
   fetchJoblistbyEmployer,
   deleteJob,
@@ -55,13 +55,6 @@ const JobPosted = () => {
     };
     getJobs();
   }, [toast]);
-
-  const [rightNav, setRightNav] = useState([
-    // "My Jobs",
-    // "Preferences",
-    // "My Network",
-    // "Tutorial",
-  ]);
 
   const truncateText = (text, wordLimit) => {
     const words = text.split(" ");
@@ -134,24 +127,6 @@ const JobPosted = () => {
       <NavBar />
       <Container maxW="container.xl" mt={8} mb={8}>
         <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={6}>
-          <GridItem>
-            <Box
-            // p={6}
-            // boxShadow="md"
-            // borderRadius="lg"
-            // bg="white"
-            // className="right-nav-box"
-            >
-              <VStack spacing={4} align="center">
-                {rightNav &&
-                  rightNav.map((data, index) => (
-                    <Button key={index} variant="ghost" justifyContent="center">
-                      {data}
-                    </Button>
-                  ))}
-              </VStack>
-            </Box>
-          </GridItem>
           <GridItem>
             {isLoading ? (
               <Spinner size="xl" />
@@ -233,7 +208,9 @@ const JobPosted = () => {
           </GridItem>
         </Grid>
       </Container>
-      <Footer contentType="employer" />
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
     </>
   );
 };

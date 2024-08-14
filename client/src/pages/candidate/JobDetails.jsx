@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 import {
   Box,
@@ -17,8 +17,6 @@ import {
 import { useParams } from "react-router-dom";
 
 import NavBar from "../../components/candidate/NavBar";
-// import Footer from "../../components/common/Footer";
-
 import {
   applyForJob,
   getApplicationStatus,
@@ -231,8 +229,9 @@ const JobDetails = () => {
           )}
         </Box>
       </Center>
-
-      <LazyFooter contentType="candidate" />
+      <Suspense fallback={<Spinner size="xl" />}>
+        <LazyFooter contentType="candidate" />
+      </Suspense>
     </>
   );
 };
