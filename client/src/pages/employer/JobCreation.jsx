@@ -96,7 +96,7 @@ function JobCreation() {
   return (
     <>
       <NavBar />
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" my="10">
         <Box>
           <Heading size="xl" mb="8" textAlign="left">
             Create new job
@@ -168,7 +168,7 @@ function JobCreation() {
             </FormControl>
             <Button
               colorScheme="blue"
-              size="lg"
+              size="md"
               type="submit"
               alignSelf="end"
               isDisabled={isLoading}

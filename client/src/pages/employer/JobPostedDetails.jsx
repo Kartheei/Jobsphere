@@ -116,7 +116,7 @@ const JobPostedDetails = () => {
   return (
     <>
       <NavBar />
-      <Center mt={5}>
+      <Center my="10">
         <Box width={"80%"} display={"flex"} flexDirection={"column"}>
           <Box p="6" boxShadow="md" borderRadius="md" bg="#F7FAFC" mb={6}>
             <Flex justify="space-between" alignItems="center" flexWrap="wrap">

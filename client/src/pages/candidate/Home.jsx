@@ -112,7 +112,7 @@ function Home() {
         </Container>
       </Box>
 
-      <Container maxW="container.xl" mt="16" mb={20}>
+      <Container maxW="container.xl" my="12">
         <Heading as="h3" size="xl" mb="8" textAlign="center">
           Get Your Job
         </Heading>
