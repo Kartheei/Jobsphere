@@ -9,6 +9,7 @@ import {
   Image,
   Spinner,
   Grid,
+  Button,
   GridItem,
   Link,
   Icon,
@@ -22,11 +23,18 @@ import {
   CircleCheck,
   CircleHelp,
 } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import NavBar from "../../components/candidate/NavBar";
 const LazyFooter = React.lazy(() => import("../../components/common/Footer"));
 
 function AboutUs() {
+  const navigate = useNavigate();
+
+  const handleContactClick = () => {
+    navigate(`/contact`);
+  };
+
   const features = [
     {
       title: "24/7 Support",
@@ -98,7 +106,7 @@ function AboutUs() {
           About Us
         </Heading>
       </Box>
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" my="10">
         <Box display="flex" alignItems="center" justifyContent="center">
           <Image
             src="/images/image5.webp"
@@ -237,7 +245,14 @@ function AboutUs() {
               Start working with Jobsphere that can provide everything you need
               to generate awareness, drive traffic, connect.
             </Text>
-            <Link color="blue.500">Contact Us</Link>
+            <Button
+              leftIcon={<Phone size={20} />}
+              colorScheme="blue"
+              variant="solid"
+              onClick={handleContactClick}
+            >
+              Contact Us
+            </Button>
           </VStack>
         </Box>
       </Container>

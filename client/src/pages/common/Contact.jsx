@@ -23,7 +23,7 @@ function ContactUs() {
   return (
     <>
       <NavBar />
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" my="10">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box
             width={{ base: "100%", md: "70%" }}
