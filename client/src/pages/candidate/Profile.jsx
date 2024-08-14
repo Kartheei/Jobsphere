@@ -271,7 +271,7 @@ function Profile() {
   return (
     <>
       <NavBar />
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" mt="8" mb={10}>
         <Box className="profile-header">
           <Heading size="2xl" fontWeight="bold" letterSpacing="wide">
             Profile
@@ -290,8 +290,8 @@ function Profile() {
             objectFit="cover"
             mb="4"
             boxShadow="md"
-            // loading="lazy"
-            // decoding="async"
+            loading="lazy"
+            decoding="async"
           />
           <Text fontSize="2xl" fontWeight="bold">
             {profileData.name}
@@ -321,8 +321,8 @@ function Profile() {
                     <Text fontSize="lg">
                       {profileData.dateOfBirth
                         ? new Date(profileData.dateOfBirth)
-                            .toISOString()
-                            .split("T")[0]
+                          .toISOString()
+                          .split("T")[0]
                         : "Enter your date of birth..."}
                     </Text>
                   )}
@@ -389,10 +389,10 @@ function Profile() {
                   ) : (
                     <Text fontSize="lg">
                       {profileData.address &&
-                      profileData.address.streetName &&
-                      profileData.address.city &&
-                      profileData.address.postalCode &&
-                      profileData.address.country ? (
+                        profileData.address.streetName &&
+                        profileData.address.city &&
+                        profileData.address.postalCode &&
+                        profileData.address.country ? (
                         <>
                           {profileData.address.streetName},{" "}
                           {profileData.address.city},{" "}

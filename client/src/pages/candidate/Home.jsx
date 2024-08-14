@@ -112,7 +112,7 @@ function Home() {
         </Container>
       </Box>
 
-      <Container maxW="container.xl" mt="16">
+      <Container maxW="container.xl" mt="16" mb={20}>
         <Heading as="h3" size="xl" mb="8" textAlign="center">
           Get Your Job
         </Heading>
@@ -125,7 +125,7 @@ function Home() {
         ) : (
           <VStack spacing="8" align="stretch">
             {jobs.map((job) => (
-              <Box key={job._id} className="job-card">
+              <Box key={job._id} className="job-card" >
                 <Flex justifyContent="space-between" alignItems="center">
                   <Box>
                     <Heading as="h4" size="md" mb="1">

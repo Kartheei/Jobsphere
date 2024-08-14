@@ -98,7 +98,7 @@ function AboutUs() {
           About Us
         </Heading>
       </Box>
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" mt="8" mb={20}>
         <Box display="flex" alignItems="center" justifyContent="center">
           <Image
             src="/images/image5.webp"
@@ -237,7 +237,7 @@ function AboutUs() {
               Start working with Jobsphere that can provide everything you need
               to generate awareness, drive traffic, connect.
             </Text>
-            <Link color="blue.500">Contact Us</Link>
+            {/* <Link color="blue.500">Contact Us</Link> */}
           </VStack>
         </Box>
       </Container>

@@ -172,6 +172,7 @@ function JobCreation() {
               type="submit"
               alignSelf="end"
               isDisabled={isLoading}
+              mb={10}
             >
               {isLoading ? <Spinner size="sm" /> : "Submit"}
             </Button>

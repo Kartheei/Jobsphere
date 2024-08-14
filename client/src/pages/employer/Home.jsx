@@ -87,7 +87,7 @@ const Home = () => {
         </Container>
       </Box>
 
-      <Container maxW="container.xl" mt="8" textAlign="center">
+      <Container maxW="container.xl" mt="8" mb={10} textAlign="center">
         {isLoading ? (
           <Spinner size="xl" />
         ) : (

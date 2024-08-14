@@ -76,7 +76,7 @@ function JobDisplay() {
     <ChakraProvider>
       <CSSReset />
       <NavBar />
-      <Container maxW="container.xl" mt={{ base: 4, md: 8 }}>
+      <Container maxW="container.xl" mt={{ base: 4, md: 8 }} mb={20}>
         <Heading size="lg" mb="4">
           {isSearch
             ? "Job Search Results"

@@ -151,7 +151,7 @@ const EmployerProfile = () => {
         />
       </Box>
 
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" mt="8" mb={10}>
         <Flex alignItems="center" mb="8">
           <Box className="profile-picture" mr="4">
             <Image
@@ -317,15 +317,19 @@ const EmployerProfile = () => {
             <Heading as="h4" size="md" mb="2">
               Employee Testimonials
             </Heading>
-            <Text>
-              &quot;XYZ Company is an amazing place to work with endless
-              opportunities for growth.&quot;
-            </Text>
-            <Text>- John Doe</Text>
-            <Text>
-              &quot;Supportive environment and great work-life balance.&quot;
-            </Text>
-            <Text>- Jane Smith</Text>
+            <Box mb={5}>
+              <Text>
+                &quot;This Company is an amazing place to work with endless
+                opportunities for growth.&quot;
+              </Text>
+              <Text>- John Doe</Text>
+            </Box>
+            <Box mb={5}>
+              <Text>
+                &quot;Supportive environment and great work-life balance.&quot;
+              </Text>
+              <Text>- Jane Smith</Text>
+            </Box>
           </Box>
         </SimpleGrid>
       </Container>
