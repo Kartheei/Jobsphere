@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Flex,
   Heading,
@@ -11,13 +12,12 @@ import {
   Box,
   Link,
   FormControl,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt } from "react-icons/fa";
+import { User } from "lucide-react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { forgotPassword } from "../../services/authService";
 
-const CFaUserAlt = chakra(FaUserAlt);
+import { forgotPassword } from "../../services/authService";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -26,8 +26,8 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setEmail(e.target.value)
-  }
+    setEmail(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ const ForgotPassword = () => {
       // API call from authService for forgot password
       const response = await forgotPassword(email);
 
-      if(response){
+      if (response) {
         toast({
           title: "OTP sent successfully.",
           status: "success",
@@ -86,12 +86,14 @@ const ForgotPassword = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <CFaUserAlt color="white" />
+                    <User color="white" />
                   </InputLeftElement>
-                  <Input type="email" 
-                  placeholder="Enter email address." 
-                  onChange={handleChange}
-                  value={email}/>
+                  <Input
+                    type="email"
+                    placeholder="Enter email address."
+                    onChange={handleChange}
+                    value={email}
+                  />
                 </InputGroup>
               </FormControl>
 

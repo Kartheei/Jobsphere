@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Flex,
   Heading,
@@ -14,12 +15,10 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
+import { UserRound, Lock } from "lucide-react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { resetPassword } from "../../services/authService";
 
-const CFaUserAlt = chakra(FaUserAlt);
-const CFaLock = chakra(FaLock);
+import { resetPassword } from "../../services/authService";
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({
@@ -60,7 +59,7 @@ const ResetPassword = () => {
     try {
       // API call from authService for reset password
       const response = await resetPassword(formData);
-    
+
       if (response) {
         toast({
           title: "Password updated successfully.",
@@ -112,7 +111,7 @@ const ResetPassword = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <CFaUserAlt color="white" />
+                    <UserRound color="white" />
                   </InputLeftElement>
                   <Input
                     type="email"
@@ -127,7 +126,7 @@ const ResetPassword = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" color="white">
-                    <CFaLock color="white" />
+                    <Lock color="white" />
                   </InputLeftElement>
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -147,7 +146,7 @@ const ResetPassword = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" color="white">
-                    <CFaLock color="white" />
+                    <Lock color="white" />
                   </InputLeftElement>
                   <Input
                     type={showConfPassword ? "text" : "password"}

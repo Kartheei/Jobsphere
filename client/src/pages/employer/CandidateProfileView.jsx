@@ -15,7 +15,7 @@ import {
   GridItem,
   Icon,
 } from "@chakra-ui/react";
-import { FaBriefcase, FaGraduationCap, FaUser } from "react-icons/fa";
+import { BriefcaseBusiness, GraduationCap, User } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 import Footer from "../../components/common/Footer";
@@ -181,7 +181,7 @@ const CandidateProfileView = () => {
             display="flex"
             alignItems="center"
           >
-            <Icon as={FaUser} w={5} h={5} mr="2" />
+            <Icon as={User} w={5} h={5} mr="2" />
             About
           </Heading>
           <Text
@@ -216,7 +216,7 @@ const CandidateProfileView = () => {
                   borderColor="blue.500"
                 >
                   <Flex alignItems="center" mb="2">
-                    <Icon as={FaBriefcase} w={5} h={5} color="blue.500" />
+                    <Icon as={BriefcaseBusiness} w={5} h={5} color="blue.500" />
                     <Text ml="2" fontWeight="bold" fontSize="lg">
                       {exp.jobTitle}
                     </Text>
@@ -257,7 +257,7 @@ const CandidateProfileView = () => {
                   borderColor="green.500"
                 >
                   <Flex alignItems="center" mb="2">
-                    <Icon as={FaGraduationCap} w={5} h={5} color="green.500" />
+                    <Icon as={GraduationCap} w={5} h={5} color="green.500" />
                     <Text ml="2" fontWeight="bold" fontSize="lg">
                       {edu.degree}
                     </Text>

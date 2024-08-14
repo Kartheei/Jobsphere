@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
-  ChakraProvider,
   Box,
   Button,
   Container,
   Flex,
   Heading,
-  CSSReset,
-  Text,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
+// Lazy load components for better performance
+const NavBar = React.lazy(() => import("../../components/employer/NavBar"));
+const Footer = React.lazy(() => import("../../components/common/Footer"));
+const RecentJobs = React.lazy(
+  () => import("../../components/employer/RecentJobs")
+);
+const Stats = React.lazy(() => import("../../components/employer/Stats"));
+
 import "../../assets/styles/empHome.css";
-import Footer from "../../components/common/Footer";
-import NavBar from "../../components/employer/NavBar";
 import { fetchEmployerStats, fetchRecentJobs } from "../../services/jobService";
 
 const Home = () => {
@@ -36,7 +38,13 @@ const Home = () => {
         setStats(statsData);
         setRecentJobs(jobsData);
       } catch (error) {
-        return error;
+        toast({
+          title: "Error fetching data.",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -45,22 +53,22 @@ const Home = () => {
     getStatsAndJobs();
   }, [toast]);
 
-  const handlePostJobClick = () => {
+  const handlePostJobClick = useCallback(() => {
     navigate("/employer/job-creation");
-  };
+  }, [navigate]);
 
-  const truncateText = (text, wordLimit) => {
-    const words = text.split(" ");
-    if (words.length > wordLimit) {
-      return words.slice(0, wordLimit).join(" ") + "...";
-    }
-    return text;
-  };
+  // Memoize components to prevent unnecessary re-renders
+  const memoizedStats = useMemo(() => <Stats stats={stats} />, [stats]);
+  const memoizedRecentJobs = useMemo(
+    () => <RecentJobs recentJobs={recentJobs} />,
+    [recentJobs]
+  );
 
   return (
-    <ChakraProvider>
-      <CSSReset />
-      <NavBar />
+    <>
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <NavBar />
+      </React.Suspense>
 
       <Box className="emp-hero-section">
         <Container maxW="container.md">
@@ -86,70 +94,18 @@ const Home = () => {
           <Spinner size="xl" />
         ) : (
           <>
-            <Flex justify="center" mb="8" flexWrap="wrap">
-              <Box
-                className="stat-box"
-                mr="4"
-                mb={{ base: "4", md: "0" }}
-                bg="#2d3748"
-                color="white"
-              >
-                <Heading as="h3" size="xl">
-                  {stats.totalJobPosts}
-                </Heading>
-                <Text>Total job posts</Text>
-              </Box>
-              <Box className="stat-box" bg="#2d3748" color="white">
-                <Heading as="h3" size="xl">
-                  {stats.totalApplicationsReceived}
-                </Heading>
-                <Text>Applications received</Text>
-              </Box>
-            </Flex>
-
-            <Heading as="h3" size="xl" mb="8">
-              Recent Jobs Post
-            </Heading>
-            {recentJobs.map((job, index) => (
-              <Box
-                key={index}
-                p="6"
-                boxShadow="md"
-                className="recent-jobs-box"
-                borderRadius="md"
-                bg="#F7FAFC"
-                mb={4}
-              >
-                <Flex
-                  justify="space-between"
-                  alignItems="center"
-                  flexWrap="wrap"
-                >
-                  <Box textAlign="left" flex="1" minW="250px">
-                    <Heading as="h4" size="md" mb="1">
-                      {job.title}
-                    </Heading>
-                    <Text fontWeight="bold" mb="2">
-                      {job.organizationName}
-                    </Text>
-                    {truncateText(job.description, 40)}
-                  </Box>
-                  <Button
-                    mt={{ base: "4", md: "0" }}
-                    className="view-button"
-                    onClick={() => navigate(`/employer/jobs/${job._id}`)}
-                  >
-                    View
-                  </Button>
-                </Flex>
-              </Box>
-            ))}
+            <React.Suspense fallback={<Spinner size="lg" />}>
+              {memoizedStats}
+              {memoizedRecentJobs}
+            </React.Suspense>
           </>
         )}
       </Container>
 
-      <Footer contentType="employer" />
-    </ChakraProvider>
+      <React.Suspense fallback={<Spinner size="xl" />}>
+        <Footer contentType="employer" />
+      </React.Suspense>
+    </>
   );
 };
 

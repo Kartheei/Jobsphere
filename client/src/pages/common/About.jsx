@@ -1,13 +1,4 @@
 import {
-  PhoneIcon,
-  ChatIcon,
-  TimeIcon,
-  StarIcon,
-  InfoIcon,
-  CheckCircleIcon,
-  QuestionIcon,
-} from "@chakra-ui/icons";
-import {
   Box,
   Container,
   Heading,
@@ -20,6 +11,15 @@ import {
   Link,
   Icon,
 } from "@chakra-ui/react";
+import {
+  Phone,
+  MessageSquare,
+  Clock,
+  Star,
+  Info,
+  CircleCheck,
+  CircleHelp,
+} from "lucide-react";
 
 import NavBar from "../../components/candidate/NavBar";
 import Footer from "../../components/common/Footer";
@@ -29,37 +29,37 @@ function AboutUs() {
     {
       title: "24/7 Support",
       description: "Many desktop publishing now use and a search for job.",
-      icon: PhoneIcon,
+      icon: Phone,
     },
     {
       title: "Tech & Startup Jobs",
       description: "Many desktop publishing now use and a search for job.",
-      icon: ChatIcon,
+      icon: MessageSquare,
     },
     {
       title: "Quick & Easy",
       description: "Many desktop publishing now use and a search for job.",
-      icon: TimeIcon,
+      icon: Clock,
     },
     {
       title: "Save Time",
       description: "Many desktop publishing now use and a search for job.",
-      icon: StarIcon,
+      icon: Star,
     },
     {
       title: "Apply with Confidence",
       description: "Many desktop publishing now use and a search for job.",
-      icon: InfoIcon,
+      icon: Info,
     },
     {
       title: "Reduce Hiring Bias",
       description: "Many desktop publishing now use and a search for job.",
-      icon: CheckCircleIcon,
+      icon: CircleCheck,
     },
     {
       title: "Proactive Employers",
       description: "Many desktop publishing now use and a search for job.",
-      icon: QuestionIcon,
+      icon: CircleHelp,
     },
   ];
 

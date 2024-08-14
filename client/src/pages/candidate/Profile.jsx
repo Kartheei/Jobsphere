@@ -25,8 +25,7 @@ import {
   Grid,
   GridItem,
 } from "@chakra-ui/react";
-import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CloudUpload } from "lucide-react";
 
 import { DragAndDropUpload } from "../../components/candidate/DragandDropUpload";
 import NavBar from "../../components/candidate/NavBar";
@@ -439,13 +438,18 @@ function Profile() {
                 align="center"
                 justify="center"
               >
-                <FontAwesomeIcon
-                  icon={faFile}
-                  size="2xl"
-                  style={{ color: "#215e8c" }}
-                  width={"50px"}
-                  height={"50px"}
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M12 13v8" />
+                  <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                  <path d="m8 17 4-4 4 4" />
+                </svg>
               </Flex>
               <Text fontSize="sm" mt="2" textAlign="center">
                 Download Resume

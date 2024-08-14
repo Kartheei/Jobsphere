@@ -1,7 +1,5 @@
-import { useState, useContext } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useState, useContext, useCallback, lazy, Suspense } from "react";
+
 import {
   Flex,
   Heading,
@@ -19,13 +17,20 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock } from "react-icons/fa";
+import { yupResolver } from "@hookform/resolvers/yup";
+// Lazy load lucide-react icons
+const UserRound = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.UserRound }))
+);
+const Lock = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.Lock }))
+);
+import { useForm } from "react-hook-form";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+
 import { AuthContext } from "../../context/AuthContext";
 import { loginUser } from "../../services/authService";
-
-const CFaUserAlt = chakra(FaUserAlt);
-const CFaLock = chakra(FaLock);
 
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -106,7 +111,7 @@ const Signin = () => {
               <FormControl isInvalid={errors.email}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <CFaUserAlt color="white" />
+                    <UserRound color="white" />
                   </InputLeftElement>
                   <Input
                     type="email"
@@ -119,7 +124,7 @@ const Signin = () => {
               <FormControl isInvalid={errors.password}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" color="white">
-                    <CFaLock color="white" />
+                    <Lock color="white" />
                   </InputLeftElement>
                   <Input
                     type={showPassword ? "text" : "password"}
