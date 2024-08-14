@@ -165,7 +165,9 @@ const JobDetails = () => {
                       mt={{ base: "4", md: "0" }}
                       className="view-button"
                       onClick={handleApplyClick}
-                      isDisabled={applicationStatus !== null}
+                      isDisabled={
+                        applicationStatus !== null || job.status === "inactive"
+                      }
                     >
                       {applicationStatus ? `Applied` : "Apply"}
                     </Button>

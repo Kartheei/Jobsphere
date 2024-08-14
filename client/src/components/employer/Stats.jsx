@@ -12,17 +12,18 @@ const Stats = ({ stats }) => {
         mb={{ base: "4", md: "0" }}
         bg="#2d3748"
         color="white"
+        w="180px"
       >
         <Heading as="h3" size="xl">
           {stats.totalJobPosts}
         </Heading>
-        <Text>Total job posts</Text>
+        <Text>Posted Jobs</Text>
       </Box>
-      <Box className="stat-box" bg="#2d3748" color="white">
+      <Box className="stat-box" w="180px" bg="#2d3748" color="white">
         <Heading as="h3" size="xl">
           {stats.totalApplicationsReceived}
         </Heading>
-        <Text>Applications received</Text>
+        <Text>Received Applications </Text>
       </Box>
     </Flex>
   );
