@@ -104,7 +104,7 @@ const JobDetailsUpdate = () => {
   return (
     <>
       <NavBar />
-      <Container maxW="container.xl" mt="8">
+      <Container maxW="container.xl" my="10">
         <Box>
           <Heading size="xl" mb="8" textAlign="left">
             Update Job Details
@@ -179,7 +179,7 @@ const JobDetailsUpdate = () => {
                 {errors.employmentType?.message}
               </FormErrorMessage>
             </FormControl>
-            <Button colorScheme="blue" size="lg" alignSelf="end" type="submit">
+            <Button colorScheme="blue" size="md" alignSelf="end" type="submit">
               Update
             </Button>
           </VStack>

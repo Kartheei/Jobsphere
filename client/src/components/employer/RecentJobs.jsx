@@ -32,13 +32,13 @@ const RecentJobs = ({ recentJobs }) => {
         >
           <Flex justify="space-between" alignItems="center" flexWrap="wrap">
             <Box textAlign="left" flex="1" minW="250px">
-              <Heading as="h4" size="md" mb="1">
+              <Heading as="h4" size="md" mb="3">
                 {job.title}
               </Heading>
-              <Text fontWeight="bold" mb="2">
+              <Text maxWidth="1048px" mb="2">
                 {job.organizationName}
+                {truncateText(job.description, 40)}
               </Text>
-              {truncateText(job.description, 40)}
             </Box>
             <Button
               mt={{ base: "4", md: "0" }}

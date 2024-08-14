@@ -125,7 +125,7 @@ function Home() {
         ) : (
           <VStack spacing="8" align="stretch">
             {jobs.map((job) => (
-              <Box key={job._id} className="job-card" >
+              <Box key={job._id} className="job-card">
                 <Flex justifyContent="space-between" alignItems="center">
                   <Box>
                     <Heading as="h4" size="md" mb="1">
