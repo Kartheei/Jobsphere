@@ -1,5 +1,6 @@
+/* Critical CSS (to be inlined in index.html) */
 .emp-hero-section {
-  background-image: url("/images/Hero_Candidate.webp"); /* Ensure the path is correct */
+  background-image: url("/images/Hero_Candidate.webp");
   background-size: cover !important;
   background-position: center !important;
   height: 500px !important;
@@ -16,7 +17,6 @@
 }
 
 .emp-hero-heading {
-  width: auto !important;
   color: #28395a;
   line-height: 4rem !important;
 }
@@ -26,6 +26,7 @@
   color: white !important;
 }
 
+/* Non-critical CSS */
 .stat-box {
   background-color: #2d3748;
   color: white;
@@ -49,11 +50,12 @@
   background-color: #28395a !important;
   color: white !important;
 }
+
 .btn-disable {
   background-color: #e5737a !important;
-  color: white !important ;
+  color: white !important;
 }
-/* Styles for the buttons */
+
 .btn-delete {
   background-color: #e53e3e !important;
   color: #fff !important;
@@ -69,8 +71,9 @@
 }
 
 .btn-approve:hover {
-  background-color: #2f855a !important  ;
+  background-color: #2f855a !important;
 }
+
 .candidate-box {
   height: 40px;
   width: 100%;
@@ -81,6 +84,7 @@
   gap: 700px;
   margin-bottom: 12px;
 }
+
 .candidate-name {
   padding: 8px;
   padding-left: 100px;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { Search2Icon } from "@chakra-ui/icons";
 import {
   Button,
   Input,
@@ -9,6 +8,7 @@ import {
   useBreakpointValue,
   useToast,
 } from "@chakra-ui/react";
+import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const SearchBar = () => {
@@ -48,12 +48,12 @@ export const SearchBar = () => {
   return (
     <InputGroup borderRadius={5}>
       <InputLeftElement pointerEvents="none">
-        <Search2Icon color="gray.600" />
+        <Search color="#1a202c" />
       </InputLeftElement>
       <Input
         width={inputWidth}
         placeholder="Job Title or Location"
-        border="1px solid #28395a"
+        border="1px solid #1a202c"
         value={searchQuery}
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}

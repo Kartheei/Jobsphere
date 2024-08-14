@@ -16,7 +16,7 @@ import {
   GridItem,
   Checkbox,
 } from "@chakra-ui/react";
-import { FaRegEdit, FaRegTrashAlt, FaEye } from "react-icons/fa";
+import { Pencil, Trash2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import "../../assets/styles/empHome.css";
@@ -136,11 +136,11 @@ const JobPosted = () => {
         <Grid templateColumns={{ base: "1fr", md: "1fr" }} gap={6}>
           <GridItem>
             <Box
-              // p={6}
-              // boxShadow="md"
-              // borderRadius="lg"
-              // bg="white"
-              // className="right-nav-box"
+            // p={6}
+            // boxShadow="md"
+            // borderRadius="lg"
+            // bg="white"
+            // className="right-nav-box"
             >
               <VStack spacing={4} align="center">
                 {rightNav &&
@@ -203,7 +203,7 @@ const JobPosted = () => {
                           <Button
                             size="sm"
                             colorScheme="blue"
-                            leftIcon={<Icon as={FaEye} />}
+                            leftIcon={<Icon as={Eye} />}
                             onClick={() => handleViewClick(data._id)}
                           >
                             View
@@ -211,7 +211,7 @@ const JobPosted = () => {
                           <Button
                             size="sm"
                             colorScheme="teal"
-                            leftIcon={<Icon as={FaRegEdit} />}
+                            leftIcon={<Icon as={Pencil} />}
                             onClick={() => handleEditClick(data._id)}
                           >
                             Update
@@ -219,7 +219,7 @@ const JobPosted = () => {
                           <Button
                             size="sm"
                             colorScheme="red"
-                            leftIcon={<Icon as={FaRegTrashAlt} />}
+                            leftIcon={<Icon as={Trash2} />}
                             onClick={() => handleDeleteClick(data._id)}
                           >
                             Delete

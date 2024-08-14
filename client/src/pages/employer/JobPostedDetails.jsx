@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -24,7 +23,7 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-import { FaRegEdit, FaRegTrashAlt, FaEye } from "react-icons/fa";
+import { Pencil, Trash2, Eye, ChevronDown } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Footer from "../../components/common/Footer";
@@ -195,7 +194,7 @@ const JobPostedDetails = () => {
                         <Td>
                           <IconButton
                             aria-label="View Profile"
-                            icon={<FaEye />}
+                            icon={<Eye />}
                             onClick={() =>
                               navigate(
                                 `/employer/candidate/${application.user_id._id}`
@@ -207,7 +206,7 @@ const JobPostedDetails = () => {
                           <Menu>
                             <MenuButton
                               as={Button}
-                              rightIcon={<ChevronDownIcon />}
+                              rightIcon={<ChevronDown />}
                               size="sm"
                             >
                               Actions

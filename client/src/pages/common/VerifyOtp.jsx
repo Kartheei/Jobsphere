@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState, useCallback, lazy, Suspense } from "react";
+
 import {
   Flex,
   Heading,
@@ -7,57 +8,64 @@ import {
   InputGroup,
   Stack,
   InputLeftElement,
-  chakra,
   Box,
   Link,
   FormControl,
   useToast,
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+
 import { verifyOtp } from "../../services/authService";
 
-const CFaUserAlt = chakra(FaUserAlt);
-const CFaKey = chakra(FaKey);
+// Lazy load lucide-react icons
+const UserRound = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.UserRound }))
+);
+const KeyRound = lazy(() =>
+  import("lucide-react").then((module) => ({ default: module.KeyRound }))
+);
 
 const VerifyOtp = () => {
   const [formData, setFormData] = useState({ email: "", otp: "" });
-
   const toast = useToast();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = useCallback(
+    (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    },
+    [formData]
+  );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // API call from authService to verify OTP
-      const response = await verifyOtp(formData);
-
-      if (response) {
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        const response = await verifyOtp(formData);
+        if (response) {
+          toast({
+            title: "OTP verified.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          navigate("/auth/reset-password");
+        }
+      } catch (error) {
         toast({
-          title: "OTP verified.",
-          status: "success",
+          title: "Invalid or expired OTP.",
+          description: error.message,
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
-        navigate("/auth/reset-password");
       }
-    } catch (error) {
-      toast({
-        title: "Invalid or expired OTP.",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  };
+    },
+    [formData, toast, navigate]
+  );
 
   return (
     <Flex
@@ -90,7 +98,9 @@ const VerifyOtp = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
-                    <CFaUserAlt color="white" />
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <UserRound color="white" />
+                    </Suspense>
                   </InputLeftElement>
                   <Input
                     type="email"
@@ -105,14 +115,17 @@ const VerifyOtp = () => {
               <FormControl>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none" color="white">
-                    <CFaKey color="white" />
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <KeyRound color="white" />
+                    </Suspense>
                   </InputLeftElement>
-                  <Input 
+                  <Input
                     type="text"
                     name="otp"
                     placeholder="Enter OTP."
                     onChange={handleChange}
-                    value={formData.otp} />
+                    value={formData.otp}
+                  />
                 </InputGroup>
               </FormControl>
 

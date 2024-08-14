@@ -1,6 +1,5 @@
 import { useContext } from "react";
 
-import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
@@ -26,6 +25,7 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
+import { Menu as LucideMenu } from "lucide-react";
 import { Link as RouterLink } from "react-router-dom"; // Import RouterLink
 
 import "../../assets/styles/HeaderFooter.css";
@@ -115,7 +115,7 @@ const NavBar = () => {
           ) : (
             <IconButton
               aria-label="Open Menu"
-              icon={<HamburgerIcon />}
+              icon={<LucideMenu />}
               onClick={onOpen}
             />
           )}

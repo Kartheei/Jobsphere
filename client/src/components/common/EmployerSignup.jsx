@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -19,6 +18,7 @@ import {
   Link,
   useToast,
 } from "@chakra-ui/react";
+import { Eye, EyeOff } from "lucide-react";
 import PropTypes from "prop-types";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
@@ -174,7 +174,7 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
                                 setShowPassword((showPassword) => !showPassword)
                               }
                             >
-                              {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                              {showPassword ? <Eye /> : <EyeOff />}
                             </Button>
                           </InputRightElement>
                         </InputGroup>
@@ -196,7 +196,7 @@ const EmployerSignup = ({ handleToggle, isCandidate }) => {
                                 setShowCnfPassword((prev) => !prev)
                               }
                             >
-                              {showCnfPassword ? <ViewIcon /> : <ViewOffIcon />}
+                              {showCnfPassword ? <Eye /> : <EyeOff />}
                             </Button>
                           </InputRightElement>
                         </InputGroup>
